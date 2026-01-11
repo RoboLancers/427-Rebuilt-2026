@@ -12,4 +12,27 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+  public static class ShooterConstants {
+    public static final int kP = 50;
+    public static final int kI = 0;
+    public static final int kD = 0;
+
+    public static final int DegPerSecmagnitude = 90;
+    public static final int DegPerSecPerSecmagnitude = 45;
+    public static final int controllerAmagnitude = 60;
+    public static final int controllerBmagnitude = 300;
+
+    public static final int ks = 0;
+    public static final int kv = 0;
+    public static final int ka = 0;
+    public static final int reductionStages = 0;
+
+    public static final double controllerxdutyCycle = 0.3;
+    public static final double controllerydutyCycle = -0.3;
+
+    public static final int shooterdeviceId = 0;
+
+    public static final int numMotors = 0;
+
+  }
 }
