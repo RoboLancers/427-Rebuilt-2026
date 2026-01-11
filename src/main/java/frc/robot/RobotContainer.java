@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
+import frc.robot.Constants.IntakeConstants;
 
 import static edu.wpi.first.units.Units.RPM; 
 
@@ -47,10 +48,10 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is
     // pressed,
     // cancelling on release.
-    m_driverController.a().whileTrue(m_IntakeSubsystem.setVelocity(RPM.of(60)));
-    m_driverController.b().whileTrue(m_IntakeSubsystem.setVelocity(RPM.of(300)));
-    m_driverController.x().whileTrue(m_IntakeSubsystem.set(0.3));
-    m_driverController.y().whileTrue(m_IntakeSubsystem.set(-0.3));
+    m_driverController.a().whileTrue(m_IntakeSubsystem.setVelocity(RPM.of(IntakeConstants.Intake_RPM)));
+    m_driverController.b().whileTrue(m_IntakeSubsystem.setVelocity(RPM.of(IntakeConstants.Intake_RPM)));
+    m_driverController.x().whileTrue(m_IntakeSubsystem.set(IntakeConstants.x_DutyCycle));
+    m_driverController.y().whileTrue(m_IntakeSubsystem.set(IntakeConstants.y_DutyCycle));
     
 }
 
