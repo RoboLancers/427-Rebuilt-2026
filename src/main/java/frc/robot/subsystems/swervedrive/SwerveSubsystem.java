@@ -2,18 +2,14 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-
-
-
-
 package frc.robot.subsystems.swervedrive;
 
+//Imports! :D
 import java.io.File;
 import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Filesystem;
+//import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import swervelib.SwerveDrive;
@@ -21,21 +17,27 @@ import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveParser;
 
 
-
-
+//This is the main class for the swerve drive subsystem 
 public class SwerveSubsystem extends SubsystemBase {
   double maximumSpeed = Units.feetToMeters(4.5);
   private final SwerveDrive  swerveDrive;
+  
 
   /** Creates a new SwerveSubsystem. */
   public SwerveSubsystem(File directory) {
-    File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
+    //File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
+    //Catches any errors within the code and crashes the program if there are any
+       /* DO NOT TOUCH
+              |
+              V    */ 
     try {
     swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
 
+    swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
+    swerveDrive.setCosineCompensator(false); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
 
   }
 
@@ -49,13 +51,15 @@ public class SwerveSubsystem extends SubsystemBase {
       Translation2d scaledInputs = SwerveMath.scaleTranslation(new Translation2d(translationX.getAsDouble(), translationY.getAsDouble()), 0.8);
  
         //Make the robot move
+        //Mat
         swerveDrive.driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(scaledInputs.getX(), scaledInputs.getY(),
-                            headingX.getAsDouble(),
-                            headingY.getAsDouble(),
-                            swerveDrive.getOdometryHeading().getRadians(),
-                            swerveDrive.getMaximumChassisVelocity()));
+                                       headingX.getAsDouble(),
+                                       headingY.getAsDouble(),
+                                       swerveDrive.getOdometryHeading().getRadians(),
+                                       swerveDrive.getMaximumChassisVelocity()));
   });
 }
+
   /**
    * Command to drive the robot using translative values and heading as angular velocity
    * 
@@ -64,9 +68,11 @@ public class SwerveSubsystem extends SubsystemBase {
    * @param angularRotationX   Rotation of the robot to set
    * @return Drive command.
    */
+
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
   return run(() -> {
     //Make the robot move
+    //More Mat
     swerveDrive.drive(new Translation2d(translationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity(),
                                         translationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity()),
                                         angularRotationX.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity(),
