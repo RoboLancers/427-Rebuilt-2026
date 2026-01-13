@@ -22,17 +22,34 @@ public final class Constants {
     public static final int controllerAmagnitude = 60;
     public static final int controllerBmagnitude = 300;
 
+    /**
+     * Need info for below
+     */
+
     public static final int ks = 0;
     public static final int kv = 0;
     public static final int ka = 0;
     public static final int reductionStages = 0;
+    public static final int StatorLimit = 40;
+    
+    /**
+     * Need info for below
+     */
+
+    public static final int Diameter = 4;
+    public static final int Mass = 1;
+    public static final int UpperSoftLimit = 1000;
 
     public static final double controllerxdutyCycle = 0.3;
     public static final double controllerydutyCycle = -0.3;
 
-    public static final int shooterdeviceId = 0;
+    /**
+     * Need info for below
+     */
+    
+    public static final int shooterdeviceId = 4;
 
-    public static final int numMotors = 0;
+    public static final int numMotors = 1;
 
   }
 }

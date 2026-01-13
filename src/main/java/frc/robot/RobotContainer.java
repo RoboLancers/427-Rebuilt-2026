@@ -49,7 +49,8 @@ public class RobotContainer {
     
     m_driverController.x().whileTrue(m_shooterSubsystem.set(ShooterConstants.controllerxdutyCycle));
     m_driverController.y().whileTrue(m_shooterSubsystem.set(ShooterConstants.controllerydutyCycle));
-    
+
+
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is

@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
+import frc.robot.Constants.ShooterConstants;
 
 import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Inches;
@@ -19,7 +21,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ShooterConstants;
+
 import yams.gearing.GearBox;
 import yams.gearing.MechanismGearing;
 import yams.mechanisms.SmartMechanism;
@@ -31,8 +33,22 @@ import yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
 import yams.motorcontrollers.local.SparkWrapper;
+import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 public class ShooterSubsystem extends SubsystemBase {
+
+  SmartMotorControllerTelemetryConfig motorTelemetryConfig = new SmartMotorControllerTelemetryConfig()
+  .withMechanismPosition()
+  .withRotorPosition()
+  .withMechanismLowerLimit()
+  .withMechanismUpperLimit();
+
+  SmartMotorControllerConfig mototConfig = new SmartMotorControllerConfig(this)
+  .withClosedLoopController(4, 0, 0, DegreesPerSecond.of(100), DegreesPerSecondPerSecond.of(90))
+  .withSoftLimit(Degrees.of(-30), Degrees.of(100))
+  .withGearing(new MechanismGearing(GearBox.fromReductionStages(3,4)))
+  .withIdleMode(MotorMode.BRAKE)
+  .withTelemetry("ElevatorMotor", motorTelemetryConfig);
 
   private SmartMotorControllerConfig smcConfig = new SmartMotorControllerConfig(this)
   .withControlMode(ControlMode.CLOSED_LOOP)
@@ -45,22 +61,22 @@ public class ShooterSubsystem extends SubsystemBase {
 
   .withTelemetry("ShooterMotor", TelemetryVerbosity.HIGH)
 
-  .withGearing(new MechanismGearing(GearBox.fromReductionStages(3, 4)))
+  .withGearing(new MechanismGearing(GearBox.fromReductionStages(ShooterConstants.reductionStages)))
   
 
 
   .withMotorInverted(false)
   .withIdleMode(MotorMode.COAST)
-  .withStatorCurrentLimit(Amps.of(40));
+  .withStatorCurrentLimit(Amps.of(ShooterConstants.StatorLimit));
 
-  private SparkMax spark = new SparkMax(4, MotorType.kBrushless);
+  private SparkMax spark = new SparkMax(ShooterConstants.shooterdeviceId, MotorType.kBrushless);
 
-  private SmartMotorController sparkSmartMotorController = new SparkWrapper(spark, DCMotor.getNEO(1), smcConfig);
+  private SmartMotorController sparkSmartMotorController = new SparkWrapper(spark, DCMotor.getNEO(ShooterConstants.numMotors), smcConfig);
 
   private final FlyWheelConfig shooterConfig = new FlyWheelConfig(sparkSmartMotorController)
-  .withDiameter(Inches.of(4))
-  .withMass(Pounds.of(1))
-  .withUpperSoftLimit(RPM.of(1000))
+  .withDiameter(Inches.of(ShooterConstants.Diameter))
+  .withMass(Pounds.of(ShooterConstants.Mass))
+  .withUpperSoftLimit(RPM.of(ShooterConstants.UpperSoftLimit))
   .withTelemetry("ShooterMech", TelemetryVerbosity.HIGH);
 
   private FlyWheel shooter = new FlyWheel (shooterConfig);
