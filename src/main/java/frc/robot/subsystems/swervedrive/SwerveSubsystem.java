@@ -4,16 +4,23 @@
 
 package frc.robot.subsystems.swervedrive;
 
-//Imports! :D
+//Imports! D:
 import java.io.File;
 import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 //import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import swervelib.SwerveController;
 import swervelib.SwerveDrive;
+import swervelib.SwerveInputStream;
 import swervelib.math.SwerveMath;
+import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 
 
@@ -28,19 +35,20 @@ public class SwerveSubsystem extends SubsystemBase {
     //File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
     //Catches any errors within the code and crashes the program if there are any
        /* DO NOT TOUCH
+       Yknow what, dont touch in generalI dont know
+              what this part does and none of us should
               |
               V    */ 
     try {
     swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
     } catch (Exception e) {
       throw new RuntimeException(e);
-    }
 
     swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
     swerveDrive.setCosineCompensator(false); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
 
   }
-
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -80,4 +88,51 @@ public class SwerveSubsystem extends SubsystemBase {
                                         false);
   });
   }
+
+  public void drive(Translation2d translation, double Rotation, boolean fieldReletive) {
+    swerveDrive.drive(translation,
+                      Rotation,
+                      fieldReletive,
+                      false);
+  }
+
+  public ChassisSpeeds getFieldVelocity() {
+    return swerveDrive.getFieldVelocity();
+  }
+    return swerveDrive.swerveDriveConfiguration;
+  }
+
+
+
+  public void lock() {
+    swerveDrive.lockPose();
+  }
+
+  public Rotation2d getPitch() {
+    return swerveDrive.getPitch();
+  }
+ 
+  public SwerveDrive getSwerveDrive(){
+    return swerveDrive;
+  }
+
+  public Command driveFieldOriented(SwerveInputStream driveDirectAngle) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'driveFieldOriented'");
+  }
+
+public Object resetOdometry(Pose2d pose2d) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'resetOdometry'");
+}
+
+public Command centerModulesCommand() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'centerModulesCommand'");
+}
+
+public Object sysIdDriveMotorCommand() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'sysIdDriveMotorCommand'");
+}
 }
