@@ -36,20 +36,29 @@ import yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
 import yams.motorcontrollers.local.SparkWrapper;
+import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new intake. */
+  SmartMotorControllerTelemetryConfig motorTelemetryConfig = new SmartMotorControllerTelemetryConfig()
+  .withMechanismPosition()
+  .withRotorPosition()
+  .withMechanismLowerLimit()
+  .withMechanismUpperLimit();
+
+
+  
   private SmartMotorControllerConfig smcConfig = new SmartMotorControllerConfig(this)
   .withControlMode(ControlMode.CLOSED_LOOP)
   // Feedback Constants (PID Constants)
-  .withClosedLoopController(IntakeConstants.KP,IntakeConstants.KI, IntakeConstants.KD, DegreesPerSecond.of(IntakeConstants.MaxVelocity), DegreesPerSecondPerSecond.of(IntakeConstants.MaxAcceleration))
-  .withSimClosedLoopController(IntakeConstants.KP,IntakeConstants.KI, IntakeConstants.KD, DegreesPerSecond.of(IntakeConstants.MaxVelocity), DegreesPerSecondPerSecond.of(IntakeConstants.MaxAcceleration))
+  .withClosedLoopController(IntakeConstants.KP, IntakeConstants.KI, IntakeConstants.KD, DegreesPerSecond.of(IntakeConstants.MaxVelocity), DegreesPerSecondPerSecond.of(IntakeConstants.MaxAcceleration))
+  .withSimClosedLoopController(IntakeConstants.KP, IntakeConstants.KI, IntakeConstants.KD, DegreesPerSecond.of(IntakeConstants.MaxVelocity), DegreesPerSecondPerSecond.of(IntakeConstants.MaxAcceleration))
   // FeedForward Constants
   .withFeedforward(new SimpleMotorFeedforward(IntakeConstants.ks, IntakeConstants.kv, IntakeConstants.ka))
   .withSimFeedforward(new SimpleMotorFeedforward(IntakeConstants.ks, IntakeConstants.kv, IntakeConstants.ka))
   // Telemtry name and verbosity level
-  .withTelemetry("IntakeMotor", TelemetryVerbosity.HIGH)
+  .withTelemetry("IntakeMotor", motorTelemetryConfig)
   // Gearing from the motor rotor to final shaft
   .withGearing(IntakeConstants.Intake_GearRatio)
   // Motor Properties to prevent over currenting
