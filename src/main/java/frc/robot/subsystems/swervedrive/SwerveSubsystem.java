@@ -12,6 +12,7 @@ import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
+import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -22,54 +23,33 @@ import edu.wpi.first.wpilibj.DriverStation;
 //import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-//import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import swervelib.SwerveController;
 import swervelib.SwerveDrive;
+import swervelib.SwerveDriveTest;
 import swervelib.SwerveInputStream;
 import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
+import swervelib.SwerveDriveTest;
+import swervelib.math.SwerveMath;
+import swervelib.parser.SwerveControllerConfiguration;
+import swervelib.parser.SwerveDriveConfiguration;
+import swervelib.parser.SwerveParser;
+import swervelib.telemetry.SwerveDriveTelemetry;
+import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 
 //This is the main class for the swerve drive subsystem 
 public class SwerveSubsystem extends SubsystemBase {
-   public Command followPathCommand(String pathName) {
-    try{
-        PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+  double maximumSpeed = Units.feetToMeters(4.5);
+  private final SwerveDrive  swerveDrive;
 
-        return new FollowPathCommand(
-                path,
-                
-                this::getPose, // Robot pose supplier
-                this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                this::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds, AND feedforwards
-                new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                        new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
-                ),
-                Constants.robotConfig, // The robot configuration
-                () -> {
-                  // Boolean supplier that controls when the path will be mirrored for the red alliance
-                  // This will flip the path being followed to the red side of the field.
-                  // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-                  var alliance = DriverStation.getAlliance();
-                  if (alliance.isPresent()) {
-                    return alliance.get() == DriverStation.Alliance.Red;
-                  }
-                  return false;
-                },
-                this // Reference to this subsystem to set requirements
-        );
-    } catch (Exception e) {
-        DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
-        return Commands.none();
-    }
-      
-    }
-
+  /* Creates a new SwerveSubsystem. */
+  public SwerveSubsystem(File directory) {
     //File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
     //Catches any errors within the code and crashes the program if there are any
        /* DO NOT TOUCH
@@ -80,17 +60,24 @@ public class SwerveSubsystem extends SubsystemBase {
     try {
     swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      throw new RuntimeException(e);   
+    }
+      // This method will be called once per scheduler run during simulation
 
-    swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
-    swerveDrive.setCosineCompensator(false); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
-
-  }
   }
   @Override
+  public void simulationPeriodic() {
+    
+  }
   public void periodic() {
     // This method will be called once per scheduler run
   }
+  public Command sysIdDriveMotorCommand() {
+      return SwerveDriveTest.generateSysIdCommand(
+        SwerveDriveTest.setDriveSysIdRoutine(new Config(),
+           this, swerveDrive, 12, true),
+           3.0, 5.0, 3.0);
+    }
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier headingX, DoubleSupplier headingY) {
     return run(() -> {
        
@@ -127,6 +114,27 @@ public class SwerveSubsystem extends SubsystemBase {
   });
   }
 
+    public void driveFieldOriented(ChassisSpeeds velocity)
+  {
+    swerveDrive.driveFieldOriented(velocity);
+  }
+
+  /**
+   * Drive the robot given a chassis field oriented velocity.
+   *
+   * @param velocity Velocity according to the field.
+   */
+  public Command driveFieldOriented(Supplier<ChassisSpeeds> velocity)
+  {
+    return run(() -> {
+      swerveDrive.driveFieldOriented(velocity.get());
+    });
+  }
+
+  public void zeroGyro() {
+    swerveDrive.zeroGyro();
+  }
+
   public void drive(Translation2d translation, double Rotation, boolean fieldReletive) {
     swerveDrive.drive(translation,
                       Rotation,
@@ -137,8 +145,11 @@ public class SwerveSubsystem extends SubsystemBase {
   public ChassisSpeeds getFieldVelocity() {
     return swerveDrive.getFieldVelocity();
   }
+  public SwerveDriveConfiguration getSwerveDriveConfiguration(){ 
+
     return swerveDrive.swerveDriveConfiguration;
   }
+
 
 
 
@@ -169,8 +180,7 @@ public Command centerModulesCommand() {
     throw new UnsupportedOperationException("Unimplemented method 'centerModulesCommand'");
 }
 
-public Object sysIdDriveMotorCommand() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'sysIdDriveMotorCommand'");
-}
-}
+
+
+  }
+
