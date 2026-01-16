@@ -137,8 +137,22 @@ public class RobotContainer {
 
     configureButtonBindings();
     
-    // Configure the trigger bindings
     configureBindings();
+
+     field = new Field2d();
+        SmartDashboard.putData("Field", field);
+
+        PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
+            field.setRobotPose(pose);
+        });
+
+        PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
+            field.getObject("target pose").setPose(pose);
+        });
+
+        PathPlannerLogging.setLogActivePathCallback((poses) -> {
+            field.getObject("path").setPoses(poses);
+        });
   }
 
   public Command getAutonomousCommand() {
@@ -228,4 +242,6 @@ public class RobotContainer {
     // An example command will be run in autonomous
     return Autos.exampleAuto(m_exampleSubsystem);
   }
+
+
 }
