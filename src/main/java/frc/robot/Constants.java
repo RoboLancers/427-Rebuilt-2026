@@ -13,6 +13,18 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   public static class ShooterConstants {
+
+    public static final int ClosedLoopControllerkP = 4;
+    public static final int ClosedLoopControllerkI = 0;
+    public static final int ClosedLoopControllerkD = 0;
+    public static final int ClosedLoopControllerDegreesPerSec = 100;
+    public static final int ClosedLoopControllerDegreesPerSecPerSec = 90;
+
+    public static final int SoftLimitDegree = -30;
+    public static final int SoftLimitDegreeMagnitude = 100;
+
+    public static final int GearingreductionStages = 3;
+
     public static final int kP = 50;
     public static final int kI = 0;
     public static final int kD = 0;
@@ -31,6 +43,13 @@ public final class Constants {
     public static final int ka = 0;
     public static final int reductionStages = 0;
     public static final int StatorLimit = 40;
+
+    public static final double ClosedLoopRampRate = 0.25;
+    public static final double OpenLoopRampRate = 0.25;
+
+    public static final double debouncerTime = 0.1;
+
+    public static final int StatorAmps = 40;
     
     /**
      * Need info for below

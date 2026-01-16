@@ -9,7 +9,7 @@
       "name": "Main",
       "request": "launch",
       "mainClass": "frc.robot.Main",
-      "projectName": "321-Reefscape-2025"
+      "projectName": "427-Rebuilt-2026"
     },
     {
       "type": "wpilib",

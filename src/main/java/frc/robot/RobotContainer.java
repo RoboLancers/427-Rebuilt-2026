@@ -44,11 +44,11 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    m_driverController.a().whileTrue(m_shooterSubsystem.setVelocity(RPM.of(ShooterConstants.controllerAmagnitude)));
-    m_driverController.b().whileTrue(m_shooterSubsystem.setVelocity(RPM.of(ShooterConstants.controllerBmagnitude)));
+    m_driverController.rightTrigger().whileTrue(m_shooterSubsystem.setVelocity(RPM.of(ShooterConstants.controllerAmagnitude)));
+    // m_driverController.b().whileTrue(m_shooterSubsystem.setVelocity(RPM.of(ShooterConstants.controllerBmagnitude)));
     
-    m_driverController.x().whileTrue(m_shooterSubsystem.set(ShooterConstants.controllerxdutyCycle));
-    m_driverController.y().whileTrue(m_shooterSubsystem.set(ShooterConstants.controllerydutyCycle));
+    // m_driverController.x().whileTrue(m_shooterSubsystem.set(ShooterConstants.controllerxdutyCycle));
+    // m_driverController.y().whileTrue(m_shooterSubsystem.set(ShooterConstants.controllerydutyCycle));
 
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`

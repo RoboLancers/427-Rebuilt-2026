@@ -1,30 +1,25 @@
 package frc.robot.subsystems;
-import frc.robot.Constants.ShooterConstants;
-
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Inches;
-import static edu.wpi.first.units.Units.Feet;
 import static edu.wpi.first.units.Units.Pounds;
-import static edu.wpi.first.units.Units.RPM;
-import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
-import static edu.wpi.first.units.Units.Volts;
+import static edu.wpi.first.units.Units.RPM;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.Constants.ShooterConstants;
 import yams.gearing.GearBox;
 import yams.gearing.MechanismGearing;
-import yams.mechanisms.SmartMechanism;
 import yams.mechanisms.config.FlyWheelConfig;
 import yams.mechanisms.velocity.FlyWheel;
 import yams.motorcontrollers.SmartMotorController;
@@ -37,16 +32,18 @@ import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 public class ShooterSubsystem extends SubsystemBase {
 
+  public int FuelCounter;
+  
   SmartMotorControllerTelemetryConfig motorTelemetryConfig = new SmartMotorControllerTelemetryConfig()
   .withMechanismPosition()
   .withRotorPosition()
   .withMechanismLowerLimit()
   .withMechanismUpperLimit();
 
-  SmartMotorControllerConfig mototConfig = new SmartMotorControllerConfig(this)
-  .withClosedLoopController(4, 0, 0, DegreesPerSecond.of(100), DegreesPerSecondPerSecond.of(90))
-  .withSoftLimit(Degrees.of(-30), Degrees.of(100))
-  .withGearing(new MechanismGearing(GearBox.fromReductionStages(3,4)))
+  SmartMotorControllerConfig motorConfig = new SmartMotorControllerConfig(this)
+  .withClosedLoopController(ShooterConstants.ClosedLoopControllerkP, ShooterConstants.ClosedLoopControllerkI, ShooterConstants.ClosedLoopControllerkI, DegreesPerSecond.of(ShooterConstants.ClosedLoopControllerDegreesPerSec), DegreesPerSecondPerSecond.of(ShooterConstants.ClosedLoopControllerDegreesPerSecPerSec))
+  .withSoftLimit(Degrees.of(ShooterConstants.SoftLimitDegree), Degrees.of(ShooterConstants.SoftLimitDegreeMagnitude))
+  .withGearing(ShooterConstants.GearingreductionStages)
   .withIdleMode(MotorMode.BRAKE)
   .withTelemetry("ElevatorMotor", motorTelemetryConfig);
 
@@ -62,16 +59,23 @@ public class ShooterSubsystem extends SubsystemBase {
   .withTelemetry("ShooterMotor", TelemetryVerbosity.HIGH)
 
   .withGearing(new MechanismGearing(GearBox.fromReductionStages(ShooterConstants.reductionStages)))
-  
-
 
   .withMotorInverted(false)
   .withIdleMode(MotorMode.COAST)
-  .withStatorCurrentLimit(Amps.of(ShooterConstants.StatorLimit));
+  .withStatorCurrentLimit(Amps.of(ShooterConstants.StatorLimit))
+  .withClosedLoopRampRate(Seconds.of(ShooterConstants.ClosedLoopRampRate))
+  .withOpenLoopRampRate(Seconds.of(ShooterConstants.OpenLoopRampRate));
+
 
   private SparkMax spark = new SparkMax(ShooterConstants.shooterdeviceId, MotorType.kBrushless);
 
   private SmartMotorController sparkSmartMotorController = new SparkWrapper(spark, DCMotor.getNEO(ShooterConstants.numMotors), smcConfig);
+
+  private Debouncer statorDebounce = new Debouncer(ShooterConstants.debouncerTime);
+
+  public boolean isGamePieceIn() {
+    return statorDebounce.calculate(sparkSmartMotorController.getStatorCurrent().gte(Amps.of(40)));
+  }
 
   private final FlyWheelConfig shooterConfig = new FlyWheelConfig(sparkSmartMotorController)
   .withDiameter(Inches.of(ShooterConstants.Diameter))
@@ -120,6 +124,12 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     shooter.updateTelemetry();
+
+    boolean Fuel = isGamePieceIn();
+    if (Fuel) {
+      FuelCounter -= 1;
+    }
+     
   }
 
   @Override
