@@ -1,24 +1,38 @@
 {
     "fileName": "REVLib.json",
     "name": "REVLib",
+<<<<<<< HEAD
     "version": "2026.0.1",
     "frcYear": "2026",
+=======
+    "version": "2025.0.3",
+    "frcYear": "2025",
+>>>>>>> 56e1134b7c71dff4e610f90bac6d3bec44f3940d
     "uuid": "3f48eb8c-50fe-43a6-9cb7-44c86353c4cb",
     "mavenUrls": [
         "https://maven.revrobotics.com/"
     ],
+<<<<<<< HEAD
     "jsonUrl": "https://software-metadata.revrobotics.com/REVLib-2026.json",
+=======
+    "jsonUrl": "https://software-metadata.revrobotics.com/REVLib-2025.json",
+>>>>>>> 56e1134b7c71dff4e610f90bac6d3bec44f3940d
     "javaDependencies": [
         {
             "groupId": "com.revrobotics.frc",
             "artifactId": "REVLib-java",
+<<<<<<< HEAD
             "version": "2026.0.1"
+=======
+            "version": "2025.0.3"
+>>>>>>> 56e1134b7c71dff4e610f90bac6d3bec44f3940d
         }
     ],
     "jniDependencies": [
         {
             "groupId": "com.revrobotics.frc",
             "artifactId": "REVLib-driver",
+<<<<<<< HEAD
             "version": "2026.0.1",
             "skipInvalidPlatforms": true,
             "isJar": false,
@@ -50,6 +64,9 @@
             "groupId": "com.revrobotics.frc",
             "artifactId": "RevLibWpiBackendDriver",
             "version": "2026.0.1",
+=======
+            "version": "2025.0.3",
+>>>>>>> 56e1134b7c71dff4e610f90bac6d3bec44f3940d
             "skipInvalidPlatforms": true,
             "isJar": false,
             "validPlatforms": [
@@ -66,7 +83,11 @@
         {
             "groupId": "com.revrobotics.frc",
             "artifactId": "REVLib-cpp",
+<<<<<<< HEAD
             "version": "2026.0.1",
+=======
+            "version": "2025.0.3",
+>>>>>>> 56e1134b7c71dff4e610f90bac6d3bec44f3940d
             "libName": "REVLib",
             "headerClassifier": "headers",
             "sharedLibrary": false,
@@ -83,7 +104,11 @@
         {
             "groupId": "com.revrobotics.frc",
             "artifactId": "REVLib-driver",
+<<<<<<< HEAD
             "version": "2026.0.1",
+=======
+            "version": "2025.0.3",
+>>>>>>> 56e1134b7c71dff4e610f90bac6d3bec44f3940d
             "libName": "REVLibDriver",
             "headerClassifier": "headers",
             "sharedLibrary": false,
@@ -96,6 +121,7 @@
                 "linuxarm32",
                 "osxuniversal"
             ]
+<<<<<<< HEAD
         },
         {
             "groupId": "com.revrobotics.frc",
@@ -128,6 +154,8 @@
                 "linuxarm32",
                 "osxuniversal"
             ]
+=======
+>>>>>>> 56e1134b7c71dff4e610f90bac6d3bec44f3940d
         }
     ]
 }
