@@ -38,10 +38,6 @@ public final class Constants {
     public static final double OpenLoopRampRate = 0.25;
   }
 
-  public static class MotorConstants {
-    public static final int Intake_SparkMax_ID = 4;
-    public static final int numMotors = 1; 
-  }
   public static class ShooterConstants {
 
     public static final int ClosedLoopControllerkP = 4;
@@ -96,10 +92,15 @@ public final class Constants {
      * Need info for below
      */
     
-    public static final int shooterdeviceId = 4;
+    public static final int shooterdeviceId = 5;
 
     public static final int numMotors = 1;
 
+  }
+  
+  public static class MotorConstants {
+    public static final int Intake_SparkMax_ID = 4;
+    public static final int numMotors = 1; 
   }
 }
  
