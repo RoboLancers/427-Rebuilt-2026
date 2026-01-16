@@ -74,7 +74,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private Debouncer statorDebounce = new Debouncer(ShooterConstants.debouncerTime);
 
   public boolean isGamePieceIn() {
-    return statorDebounce.calculate(sparkSmartMotorController.getStatorCurrent().gte(Amps.of(40)));
+    return statorDebounce.calculate(sparkSmartMotorController.getStatorCurrent().gte(Amps.of(ShooterConstants.StatorAmps)));
   }
 
   private final FlyWheelConfig shooterConfig = new FlyWheelConfig(sparkSmartMotorController)
