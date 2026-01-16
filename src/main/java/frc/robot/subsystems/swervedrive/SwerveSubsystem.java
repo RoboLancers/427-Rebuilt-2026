@@ -13,11 +13,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
-//import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import swervelib.SwerveController;
+//import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import swervelib.SwerveDrive;
+import swervelib.SwerveDriveTest;
 import swervelib.SwerveInputStream;
 import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveDriveConfiguration;
@@ -42,16 +43,30 @@ public class SwerveSubsystem extends SubsystemBase {
     try {
     swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
     } catch (Exception e) {
-      throw new RuntimeException(e);
-
-    swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
-    swerveDrive.setCosineCompensator(false); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
+      throw new RuntimeException(e);    
 
   }
+
+  swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
+  swerveDrive.setCosineCompensator(false); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
+
   }
   @Override
+      // This method will be called once per scheduler run during simulation
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+    public void simulationPeriodic() {
+}   
+
+
+  public final Command sysIdDriveMotorCommand() {
+      return SwerveDriveTest.generateSysIdCommand(
+       SwerveDriveTest.setDriveSysIdRoutine(new Config(),
+           this, swerveDrive, 12, true),
+           3.0, 5.0, 3.0);
+      
   }
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier headingX, DoubleSupplier headingY) {
     return run(() -> {
@@ -99,8 +114,11 @@ public class SwerveSubsystem extends SubsystemBase {
   public ChassisSpeeds getFieldVelocity() {
     return swerveDrive.getFieldVelocity();
   }
+  public SwerveDriveConfiguration getSwerveDriveConfiguration(){ 
+
     return swerveDrive.swerveDriveConfiguration;
   }
+
 
 
 
@@ -130,9 +148,7 @@ public Command centerModulesCommand() {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'centerModulesCommand'");
 }
-
-public Object sysIdDriveMotorCommand() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'sysIdDriveMotorCommand'");
+public void zeroGyro() {
+    swerveDrive.zeroGyro();
 }
 }
