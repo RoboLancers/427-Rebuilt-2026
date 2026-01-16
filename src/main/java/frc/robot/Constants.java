@@ -42,4 +42,64 @@ public final class Constants {
     public static final int Intake_SparkMax_ID = 4;
     public static final int numMotors = 1; 
   }
+  public static class ShooterConstants {
+
+    public static final int ClosedLoopControllerkP = 4;
+    public static final int ClosedLoopControllerkI = 0;
+    public static final int ClosedLoopControllerkD = 0;
+    public static final int ClosedLoopControllerDegreesPerSec = 100;
+    public static final int ClosedLoopControllerDegreesPerSecPerSec = 90;
+
+    public static final int SoftLimitDegree = -30;
+    public static final int SoftLimitDegreeMagnitude = 100;
+
+    public static final int GearingreductionStages = 3;
+
+    public static final int kP = 50;
+    public static final int kI = 0;
+    public static final int kD = 0;
+
+    public static final int DegPerSecmagnitude = 90;
+    public static final int DegPerSecPerSecmagnitude = 45;
+    public static final int controllerAmagnitude = 60;
+    public static final int controllerBmagnitude = 300;
+
+    /**
+     * Need info for below
+     */
+
+    public static final int ks = 0;
+    public static final int kv = 0;
+    public static final int ka = 0;
+    public static final int reductionStages = 0;
+    public static final int StatorLimit = 40;
+
+    public static final double ClosedLoopRampRate = 0.25;
+    public static final double OpenLoopRampRate = 0.25;
+
+    public static final double debouncerTime = 0.1;
+
+    public static final int StatorAmps = 40;
+    
+    /**
+     * Need info for below
+     */
+
+    public static final int Diameter = 4;
+    public static final int Mass = 1;
+    public static final int UpperSoftLimit = 1000;
+
+    public static final double controllerxdutyCycle = 0.3;
+    public static final double controllerydutyCycle = -0.3;
+
+    /**
+     * Need info for below
+     */
+    
+    public static final int shooterdeviceId = 4;
+
+    public static final int numMotors = 1;
+
+  }
 }
+ 
