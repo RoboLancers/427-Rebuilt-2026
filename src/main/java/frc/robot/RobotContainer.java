@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
 
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -57,10 +58,10 @@ public class RobotContainer {
       SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> m_driverController.getLeftY() * -1,
                                                                 () -> m_driverController.getLeftX() * -1)
-                                                            .withControllerRotationAxis(m_driverController::getRightX)
-                                                            .deadband(OperatorConstants.DEADBAND)
-                                                            .scaleTranslation(0.8)
-                                                            .allianceRelativeControl(true);
+                                                                .withControllerRotationAxis(m_driverController::getRightX)
+                                                                .deadband(OperatorConstants.DEADBAND)
+                                                                .scaleTranslation(0.8)
+                                                                .allianceRelativeControl(true);
 
      SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(m_driverController::getRightX,
                                                                                                 m_driverController::getRightY)
@@ -76,31 +77,17 @@ public class RobotContainer {
   SwerveInputStream driveAngularVelocityKeyboard = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                         () -> -m_driverController.getLeftY(),
                                                                         () -> -m_driverController.getLeftX())
-                                                                    .withControllerRotationAxis(() -> m_driverController.getRawAxis(
-                                                                        2))
+                                                                    .withControllerRotationAxis(() -> m_driverController.getRawAxis(2))
                                                                     .deadband(OperatorConstants.DEADBAND)
                                                                     .scaleTranslation(0.8)
                                                                     .allianceRelativeControl(true);
   // Derive the heading axis with math!
-  SwerveInputStream driveDirectAngleKeyboard     = driveAngularVelocityKeyboard.copy()
-                                                                               .withControllerHeadingAxis(() ->
-                                                                                                              Math.sin(
-                                                                                                                  m_driverController.getRawAxis(
-                                                                                                                      2) *
-                                                                                                                  Math.PI) *
-                                                                                                              (Math.PI *
-                                                                                                               2),
-                                                                                                          () ->
-                                                                                                              Math.cos(
-                                                                                                                  m_driverController.getRawAxis(
-                                                                                                                      2) *
-                                                                                                                  Math.PI) *
-                                                                                                              (Math.PI *
-                                                                                                               2))
-                                                                               .headingWhile(true)
-                                                                               .translationHeadingOffset(true)
-                                                                               .translationHeadingOffset(Rotation2d.fromDegrees(
-                                                                                   0));
+  SwerveInputStream driveDirectAngleKeyboard = driveAngularVelocityKeyboard.copy()
+                                                                           .withControllerHeadingAxis(() -> Math.sin(m_driverController.getRawAxis(2) * Math.PI) * (Math.PI * 2),
+                                                                                                      () -> Math.cos(m_driverController.getRawAxis(2) * Math.PI) * (Math.PI * 2))
+                                                                           .headingWhile(true)
+                                                                           .translationHeadingOffset(true)
+                                                                           .translationHeadingOffset(Rotation2d.fromDegrees(0));
                                                             
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -129,10 +116,10 @@ public class RobotContainer {
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
 
-    Command driveFieldOrientedDirectAngle      = drivebase.driveFieldOriented(driveDirectAngle);
+    Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
     Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
-    Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented);
-    Command driveFieldOrientedDirectAngleKeyboard      = drivebase.driveFieldOriented(driveDirectAngleKeyboard);
+    Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
+    Command driveFieldOrientedDirectAngleKeyboard = drivebase.driveFieldOriented(driveDirectAngleKeyboard);
     Command driveFieldOrientedAnglularVelocityKeyboard = drivebase.driveFieldOriented(driveAngularVelocityKeyboard); {
 
 
@@ -150,19 +137,13 @@ public class RobotContainer {
                                  Rotation2d.fromDegrees(90));
       //drivebase.getSwerveDrive().field.getObject("targetPose").setPose(target);
       driveDirectAngleKeyboard.driveToPose(() -> target,
-                                           new ProfiledPIDController(5,
-                                                                     0,
-                                                                     0,
-                                                                     new Constraints(5, 2)),
-                                           new ProfiledPIDController(5,
-                                                                     0,
-                                                                     0,
-                                                                     new Constraints(Units.degreesToRadians(360),
-                                                                                     Units.degreesToRadians(180))
+                                           new ProfiledPIDController(5,0,0, new Constraints(5, 2)),
+                                           new ProfiledPIDController(5,0,0, new Constraints(Units.degreesToRadians(360),
+                                                                                            Units.degreesToRadians(180))
                                            ));
-      driverXbox.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
-      driverXbox.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
-      driverXbox.button(2).whileTrue(Commands.runEnd(() -> driveDirectAngleKeyboard.driveToPoseEnabled(true),
+      m_driverController.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
+      m_driverController.a().whileTrue(drivebase.sysIdDriveMotorCommand());
+      m_driverController.b().whileTrue(Commands.runEnd(() -> driveDirectAngleKeyboard.driveToPoseEnabled(true),
                                                      () -> driveDirectAngleKeyboard.driveToPoseEnabled(false)));
 
 
