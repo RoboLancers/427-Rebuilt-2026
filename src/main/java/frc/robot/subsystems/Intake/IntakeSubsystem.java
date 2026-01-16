@@ -21,6 +21,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -40,14 +41,15 @@ import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 
 public class IntakeSubsystem extends SubsystemBase {
+  public int FuelCounter = 0;
+
+
   /** Creates a new intake. */
   SmartMotorControllerTelemetryConfig motorTelemetryConfig = new SmartMotorControllerTelemetryConfig()
   .withMechanismPosition()
   .withRotorPosition()
   .withMechanismLowerLimit()
   .withMechanismUpperLimit();
-
-
   
   private SmartMotorControllerConfig smcConfig = new SmartMotorControllerConfig(this)
   .withControlMode(ControlMode.CLOSED_LOOP)
@@ -71,8 +73,13 @@ public class IntakeSubsystem extends SubsystemBase {
   
   private SmartMotorController sparkSmartMotorController = new SparkWrapper(spark, DCMotor.getNEO(MotorConstants.numMotors), smcConfig);
 
-  private final FlyWheelConfig intakeConfig = new FlyWheelConfig(sparkSmartMotorController)
-  // Diameter of the flywheel
+  private Debouncer statorDebounce = new Debouncer(IntakeConstants.DebounceTime);
+
+  public boolean isGamePieceIn(){
+    return statorDebounce.calculate(sparkSmartMotorController.getStatorCurrent().gte(Amps.of(IntakeConstants.DebounceMagnitude)));
+  }
+
+  private  FlyWheelConfig intakeConfig = new FlyWheelConfig(sparkSmartMotorController)
   .withDiameter(Inches.of(IntakeConstants.FlyWheel_Diameter))
   //Mass of the flywheel
   .withMass(Pounds.of(IntakeConstants.FlyWheel_Mass))
@@ -82,12 +89,6 @@ public class IntakeSubsystem extends SubsystemBase {
   .withTelemetry("IntakeMech", TelemetryVerbosity.HIGH);
 
   private FlyWheel intake = new FlyWheel(intakeConfig);
-
-  public AngularVelocity getVelocity() {return intake.getSpeed();}
-
-  public Command setVelocity(AngularVelocity speed) {return intake.setSpeed(speed);}
-
-  public Command set(double dutyCycle) {return  intake.set(dutyCycle);}
 
   public IntakeSubsystem() {}
 
@@ -105,10 +106,19 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     intake.updateTelemetry();
+    boolean GamePiece = isGamePieceIn();
+    if(GamePiece == true){
+      FuelCounter += 1;
+    }
   }
 
   @Override
   public void simulationPeriodic() {
     intake.simIterate();
   }
+  public AngularVelocity getVelocity() {return intake.getSpeed();}
+
+  public Command setVelocity(AngularVelocity speed) {return intake.setSpeed(speed);}
+
+  public Command set(double dutyCycle) {return  intake.set(dutyCycle);}
 }
