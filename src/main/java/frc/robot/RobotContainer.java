@@ -1,5 +1,11 @@
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -16,6 +22,12 @@ import frc.robot.subsystems.ExampleSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  public Command getAutonomousCommand() {
+    return new PathPlannerAuto("Example Auto");
+  }
+
+  private final SendableChooser<Command> autoChooser;
+
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -24,8 +36,50 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    boolean isCompetition = true;
+
+    autoChooser = AutoBuilder.buildAutoChooser();
+
+    autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
+      (stream) -> isCompetition
+        ? stream.filter(auto -> auto.getName().startsWith("comp"))
+        : stream
+    );
+
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+
+    swerve = new Swerve();
+    exampleSubsystem = new ExampleSubsystem();
+
+    NamedCommands.registerCommand("autoBalance", swerve.autoBalanceCommand());
+    NamedCommands.registerCommand("exampleCommand", exampleSubsystem.exampleCommand());
+    NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
+
+    new EventTrigger("run intake").whileTrue(Commands.print("running intake"));
+    new EventTrigger("shoot note").and(new Trigger(exampleSubsystem::someCondition)).onTrue(Commands.print("shoot note");
+
+    new PointTowardsZoneTrigger("Speaker").whileTrue(Commands.print("aiming at speaker"));
+
+    autoCommand = new PathPlannerAuto("Example Auto");
+
+    autoCommand.isRunning().onTrue(Commands.print("Example Auto started"));
+    autoCommand.timeElapsed(5).onTrue(Commands.print("5 seconds passed"));
+    autoCommand.timeRange(6, 8).whileTrue(Commands.print("between 6 and 8 seconds"));
+    autoCommand.event("Example Event Marker").onTrue(Commands.print("passed example event marker"));
+    autoCommand.pointTowardsZone("Speaker").onTrue(Commands.print("aiming at speaker"));
+    autoCommand.activePath("Example Path").onTrue(Commands.print("started following Example Path"));
+    autoCommand.nearFieldPosition(new Translation2d(2, 2), 0.5).whileTrue(Commands.print("within 0.5m of (2, 2)"));
+    autoCommand.inFieldArea(new Translation2d(2, 2), new Translation2d(4, 4)).whileTrue(Commands.print("in area of (2, 2) - (4, 4)"));
+
+    configureButtonBindings();
+    
     // Configure the trigger bindings
     configureBindings();
+  }
+
+  public Command getAutonomousCommand() {
+    return autoChooser.getSelected();
   }
 
   /**
