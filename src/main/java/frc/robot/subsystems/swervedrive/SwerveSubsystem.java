@@ -7,31 +7,39 @@ package frc.robot.subsystems.swervedrive;
 //Imports! D:
 import java.io.File;
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-//import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
 import swervelib.SwerveInputStream;
 import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
+import swervelib.SwerveDriveTest;
+import swervelib.math.SwerveMath;
+import swervelib.parser.SwerveControllerConfiguration;
+import swervelib.parser.SwerveDriveConfiguration;
+import swervelib.parser.SwerveParser;
+import swervelib.telemetry.SwerveDriveTelemetry;
+import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 
 //This is the main class for the swerve drive subsystem 
 public class SwerveSubsystem extends SubsystemBase {
   double maximumSpeed = Units.feetToMeters(4.5);
   private final SwerveDrive  swerveDrive;
-  
 
-  /** Creates a new SwerveSubsystem. */
+
+  /* Creates a new SwerveSubsystem. */
   public SwerveSubsystem(File directory) {
     //File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
     //Catches any errors within the code and crashes the program if there are any
@@ -43,31 +51,24 @@ public class SwerveSubsystem extends SubsystemBase {
     try {
     swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
     } catch (Exception e) {
-      throw new RuntimeException(e);    
-
-  }
-
-  swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
-  swerveDrive.setCosineCompensator(false); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
+      throw new RuntimeException(e);   
+    }
+      // This method will be called once per scheduler run during simulation
 
   }
   @Override
-      // This method will be called once per scheduler run during simulation
+  public void simulationPeriodic() {
+    
+  }
   public void periodic() {
     // This method will be called once per scheduler run
   }
-
-    public void simulationPeriodic() {
-}   
-
-
-  public final Command sysIdDriveMotorCommand() {
+  public Command sysIdDriveMotorCommand() {
       return SwerveDriveTest.generateSysIdCommand(
-       SwerveDriveTest.setDriveSysIdRoutine(new Config(),
+        SwerveDriveTest.setDriveSysIdRoutine(new Config(),
            this, swerveDrive, 12, true),
            3.0, 5.0, 3.0);
-      
-  }
+    }
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier headingX, DoubleSupplier headingY) {
     return run(() -> {
        
@@ -102,6 +103,27 @@ public class SwerveSubsystem extends SubsystemBase {
                                         true,
                                         false);
   });
+  }
+
+    public void driveFieldOriented(ChassisSpeeds velocity)
+  {
+    swerveDrive.driveFieldOriented(velocity);
+  }
+
+  /**
+   * Drive the robot given a chassis field oriented velocity.
+   *
+   * @param velocity Velocity according to the field.
+   */
+  public Command driveFieldOriented(Supplier<ChassisSpeeds> velocity)
+  {
+    return run(() -> {
+      swerveDrive.driveFieldOriented(velocity.get());
+    });
+  }
+
+  public void zeroGyro() {
+    swerveDrive.zeroGyro();
   }
 
   public void drive(Translation2d translation, double Rotation, boolean fieldReletive) {
@@ -148,7 +170,8 @@ public Command centerModulesCommand() {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'centerModulesCommand'");
 }
-public void zeroGyro() {
-    swerveDrive.zeroGyro();
-}
-}
+
+
+
+  }
+
