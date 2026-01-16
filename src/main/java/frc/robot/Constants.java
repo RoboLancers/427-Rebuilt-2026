@@ -34,6 +34,8 @@ public final class Constants {
 
     public static final double DebounceTime = 0.1;
     public static final double DebounceMagnitude = 40;
+    public static final double ClosedLoopRampRate = 0.25;
+    public static final double OpenLoopRampRate = 0.25;
   }
 
   public static class MotorConstants {

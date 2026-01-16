@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems.Intake;
 
 import frc.robot.Constants.IntakeConstants;
@@ -13,9 +9,7 @@ import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Pounds;
-import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
-import static edu.wpi.first.units.Units.Volts;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -66,7 +60,9 @@ public class IntakeSubsystem extends SubsystemBase {
   // Motor Properties to prevent over currenting
   .withMotorInverted(false)
   .withIdleMode(MotorMode.COAST)
-  .withStatorCurrentLimit(Amps.of(IntakeConstants.CurrentLimit));
+  .withStatorCurrentLimit(Amps.of(IntakeConstants.CurrentLimit))
+  .withClosedLoopRampRate(Seconds.of(IntakeConstants.ClosedLoopRampRate))
+  .withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate));
 
   // Vendor motor controller object
   private SparkMax spark = new SparkMax(MotorConstants.Intake_SparkMax_ID, MotorType.kBrushless);
