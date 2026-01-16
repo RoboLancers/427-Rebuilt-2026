@@ -76,7 +76,7 @@ public class SwerveSubsystem extends SubsystemBase {
  
         //Make the robot move
         //Mat
-        swerveDrive.driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(scaledInputs.getX(), scaledInputs.getY(),
+        driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(scaledInputs.getX(), scaledInputs.getY(),
                                        headingX.getAsDouble(),
                                        headingY.getAsDouble(),
                                        swerveDrive.getOdometryHeading().getRadians(),
@@ -156,10 +156,7 @@ public class SwerveSubsystem extends SubsystemBase {
     return swerveDrive;
   }
 
-  public Command driveFieldOriented(SwerveInputStream driveDirectAngle) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'driveFieldOriented'");
-  }
+
 
 public Object resetOdometry(Pose2d pose2d) {
     // TODO Auto-generated method stub
