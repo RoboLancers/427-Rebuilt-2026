@@ -1,3 +1,4 @@
+
 package frc.robot;
 
 import java.io.File;
@@ -26,6 +27,7 @@ import swervelib.SwerveInputStream;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
+
 
 
 
@@ -61,8 +63,6 @@ public class RobotContainer {
      SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(m_driverController::getRightX,
                                                                                                 m_driverController::getRightY)
                                                               .headingWhile(true);
-
-
   /**
    * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
    */
@@ -88,7 +88,11 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
+  
+
     configureBindings();
+
+
     DriverStation.silenceJoystickConnectionWarning(true);
   }
 
@@ -102,6 +106,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+
+    if(RobotBase.isSimulation()){
+      drivebase.resetPose(new Pose2d(2,2,new Rotation2d()));
+    }
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
@@ -142,8 +150,6 @@ public class RobotContainer {
       m_driverController.b().whileTrue(Commands.runEnd(() -> driveDirectAngleKeyboard.driveToPoseEnabled(true),
                                                      () -> driveDirectAngleKeyboard.driveToPoseEnabled(false)));
 
-
-
     }
     if (DriverStation.isTest())
     {
@@ -164,7 +170,7 @@ public class RobotContainer {
     }
 
   }
-
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
