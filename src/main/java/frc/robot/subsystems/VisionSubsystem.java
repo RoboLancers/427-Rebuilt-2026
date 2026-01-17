@@ -30,7 +30,6 @@ public class VisionSubsystem extends SubsystemBase {
   private final PhotonPoseEstimator photonEstimator;
   private Matrix<N3, N1> curStdDevs;
   private final EstimateConsumer estConsumer;
-
   // Simulation
   private PhotonCameraSim cameraSim;
   private VisionSystemSim visionSim;

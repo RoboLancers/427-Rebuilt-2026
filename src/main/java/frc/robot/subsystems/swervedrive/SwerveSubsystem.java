@@ -5,6 +5,7 @@
 package frc.robot.subsystems.swervedrive;
 
 // Imports! D:
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -29,6 +30,8 @@ public class SwerveSubsystem extends SubsystemBase {
   double maximumSpeed = Units.feetToMeters(4.5);
   private final SwerveDrive swerveDrive;
 
+  private final SwerveDrivePoseEstimator poseEstimator;
+
   /* Creates a new SwerveSubsystem. */
   public SwerveSubsystem(File directory) {
     // File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
@@ -46,6 +49,24 @@ public class SwerveSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
 
   }
+
+  public void SwerveDrive() {
+
+    var stateStdDevs = vecBuilder.fill(0.1, 0.1, 0.1);
+    var visionStdDevs = vecBuilder.fill(1, 1, 1);
+    poseEstimator =
+        new SwerveDrivePoseEstimator(
+            kinematics,
+            getGyroYaw(),
+            getModulePositions(),
+            new Pose2d(),
+            stateStdDevs,
+            visionStdDevs);
+  }
+
+  /*
+
+  */
 
   @Override
   public void simulationPeriodic() {}
@@ -118,7 +139,7 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Drive the robot given a chassis field oriented velocity.
    *
-   * @param velocity Velocity according to the field.
+   * @param velocity Velocity according to the field. p
    */
   public Command driveFieldOriented(Supplier<ChassisSpeeds> velocity) {
     return run(
