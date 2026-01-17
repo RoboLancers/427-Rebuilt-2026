@@ -41,8 +41,7 @@ public class VisionSubsystem extends SubsystemBase {
    */
   public VisionSubsystem(EstimateConsumer estConsumer) {
     this.estConsumer = estConsumer;
-    final PhotonCamera camera;
-    final PhotonPoseEstimator photonEstimator;
+
     Matrix<N3, N1> curStdDevs;
     Constants constants = new Constants();
     Constants.visionConstants vision = new Constants.visionConstants();
