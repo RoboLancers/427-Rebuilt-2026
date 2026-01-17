@@ -40,22 +40,22 @@ public class VisionSubsystem extends SubsystemBase {
    *     edu.wpi.first.math.estimator.SwerveDrivePoseEstimator}
    */
   public VisionSubsystem(EstimateConsumer estConsumer) {
+    this.estConsumer = estConsumer;
     final PhotonCamera camera;
     final PhotonPoseEstimator photonEstimator;
     Matrix<N3, N1> curStdDevs;
     Constants constants = new Constants();
     Constants.visionConstants vision = new Constants.visionConstants();
 
-    this.estConsumer = estConsumer;
-    camera = new PhotonCamera(kCameraName);
-    photonEstimator = new PhotonPoseEstimator(kTagLayout, kRobotToCam);
+    camera = new PhotonCamera(vision.kCameraName);
+    photonEstimator = new PhotonPoseEstimator(vision.kTagLayout, vision.kRobotToCam);
 
     // ----- Simulation
     if (Robot.isSimulation()) {
       // Create the vision system simulation which handles cameras and targets on the field.
       visionSim = new VisionSystemSim("main");
       // Add all the AprilTags inside the tag layout as visible targets to this simulated field.
-      visionSim.addAprilTags(kTagLayout);
+      visionSim.addAprilTags(vision.kTagLayout);
       // Create simulated camera properties. These can be set to mimic your actual camera.
       var cameraProp = new SimCameraProperties();
       cameraProp.setCalibration(960, 720, Rotation2d.fromDegrees(90));
@@ -67,7 +67,7 @@ public class VisionSubsystem extends SubsystemBase {
       // targets.
       cameraSim = new PhotonCameraSim(camera, cameraProp);
       // Add the simulated camera to view the targets on this simulated field.
-      visionSim.addCamera(cameraSim, kRobotToCam);
+      visionSim.addCamera(cameraSim, vision.kRobotToCam);
 
       cameraSim.enableDrawWireframe(true);
     }
@@ -114,11 +114,11 @@ public class VisionSubsystem extends SubsystemBase {
       Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
     if (estimatedPose.isEmpty()) {
       // No pose input. Default to single-tag std devs
-      curStdDevs = kSingleTagStdDevs;
+      curStdDevs = Constants.visionConstants.kSingleTagStdDevs;
 
     } else {
       // Pose present. Start running Heuristic
-      var estStdDevs = kSingleTagStdDevs;
+      var estStdDevs = Constants.visionConstants.kSingleTagStdDevs;
       int numTags = 0;
       double avgDist = 0;
 
@@ -137,12 +137,12 @@ public class VisionSubsystem extends SubsystemBase {
 
       if (numTags == 0) {
         // No tags visible. Default to single-tag std devs
-        curStdDevs = kSingleTagStdDevs;
+        curStdDevs = Constants.visionConstants.kSingleTagStdDevs;
       } else {
         // One or more tags visible, run the full heuristic.
         avgDist /= numTags;
         // Decrease std devs if multiple targets are visible
-        if (numTags > 1) estStdDevs = kMultiTagStdDevs;
+        if (numTags > 1) estStdDevs = Constants.visionConstants.kMultiTagStdDevs;
         // Increase std devs based on (average) distance
         if (numTags == 1 && avgDist > 4)
           estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
