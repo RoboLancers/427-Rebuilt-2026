@@ -31,16 +31,15 @@ import swervelib.SwerveInputStream;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 
-
-
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
+
 public class RobotContainer {
-<<<<<<< HEAD
+
   // The robot's subsystems and commands are defined here...
   public Command getAutonomousCommand() {
     return new PathPlannerAuto("Example Auto");
@@ -49,7 +48,6 @@ public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
 
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-=======
   
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController m_driverController =
@@ -74,7 +72,6 @@ public class RobotContainer {
                                                                                                 m_driverController::getRightY)
                                                               .headingWhile(true);
 
-
   /**
    * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
    */
@@ -96,7 +93,6 @@ public class RobotContainer {
                                                                            .translationHeadingOffset(true)
                                                                            .translationHeadingOffset(Rotation2d.fromDegrees(0));
                                                             
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
@@ -153,6 +149,29 @@ public class RobotContainer {
         PathPlannerLogging.setLogActivePathCallback((poses) -> {
             field.getObject("path").setPoses(poses);
         });
+        // Create a list of waypoints from poses. Each pose represents one waypoint.
+// The rotation component of the pose should be the direction of travel. Do not use holonomic rotation.
+List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+        new Pose2d(1.0, 1.0, Rotation2d.fromDegrees(0)),
+        new Pose2d(3.0, 1.0, Rotation2d.fromDegrees(0)),
+        new Pose2d(5.0, 3.0, Rotation2d.fromDegrees(90))
+);
+
+PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI); // The constraints for this path.
+// PathConstraints constraints = PathConstraints.unlimitedConstraints(12.0); // You can also use unlimited constraints, only limited by motor torque and nominal battery voltage
+
+// Create the path using the waypoints created above
+PathPlannerPath path = new PathPlannerPath(
+        waypoints,
+        constraints,
+        null, // The ideal starting state, this is only relevant for pre-planned paths, so can be null for on-the-fly paths.
+        new GoalEndState(0.0, Rotation2d.fromDegrees(-90)) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
+);
+
+// Prevent the path from being flipped if the coordinates are already correct
+path.preventFlipping = true;
+// Use the PathPlannerAuto class to get a path group from an auto
+List<PathPlannerPath> pathGroup = PathPlannerAuto.getPathGroupFromAutoFile("Example Auto");
   }
 
   public Command getAutonomousCommand() {
@@ -168,6 +187,7 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
+
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
@@ -208,10 +228,8 @@ public class RobotContainer {
       m_driverController.a().whileTrue(drivebase.sysIdDriveMotorCommand());
       m_driverController.b().whileTrue(Commands.runEnd(() -> driveDirectAngleKeyboard.driveToPoseEnabled(true),
                                                      () -> driveDirectAngleKeyboard.driveToPoseEnabled(false)));
-
-
-
     }
+
     if (DriverStation.isTest())
     {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Overrides drive command above!
@@ -229,9 +247,7 @@ public class RobotContainer {
       m_driverController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       m_driverController.rightBumper().onTrue(Commands.none());
     }
-
   }
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -241,7 +257,13 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return Autos.exampleAuto(m_exampleSubsystem);
+  try{
+      PathPlannerPath path = PathPlannerPath.fromPathFile("Example Path");
+
+      return AutoBuilder.followPath(path);
+  } catch (Exception e) {
+      DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+      return Commands.none();
+    }
   }
-
-
 }
