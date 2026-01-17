@@ -48,7 +48,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    m_driverController.rightTrigger().whileTrue(m_shooterSubsystem.setVelocity(RPM.of(ShooterConstants.controllerAmagnitude)));
+    m_driverController.x().whileTrue(m_shooterSubsystem.set(ShooterConstants.controllerxdutyCycle));
     // m_driverController.b().whileTrue(m_shooterSubsystem.setVelocity(RPM.of(ShooterConstants.controllerBmagnitude)));
     
     // m_driverController.x().whileTrue(m_shooterSubsystem.set(ShooterConstants.controllerxdutyCycle));
@@ -61,10 +61,12 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is
     // pressed,
     // cancelling on release.
-    m_driverController.rightBumper().whileTrue(m_IntakeSubsystem.setVelocity(RPM.of(IntakeConstants.Intake_RPM)));
-    m_driverController.leftBumper().whileTrue(m_IntakeSubsystem.setVelocity(RPM.of(-IntakeConstants.Intake_RPM)));
+    // m_driverController.rightBumper().whileTrue(m_IntakeSubsystem.setVelocity(RPM.of(IntakeConstants.Intake_RPM)));
+    // m_driverController.leftBumper().whileTrue(m_IntakeSubsystem.setVelocity(RPM.of(-IntakeConstants.Intake_RPM)));
   
-    
+    m_driverController.a().whileTrue(m_IntakeSubsystem.set(IntakeConstants.x_DutyCycle));
+    m_driverController.b().whileTrue(m_IntakeSubsystem.set(IntakeConstants.y_DutyCycle));
+  
 }
 
 

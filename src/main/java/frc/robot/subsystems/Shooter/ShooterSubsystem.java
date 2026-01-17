@@ -91,7 +91,7 @@ public class ShooterSubsystem extends SubsystemBase {
      * @return Shooter velocity.
      */
     public AngularVelocity getVelocity() {return shooter.getSpeed();}
-
+ 
     public Command setVelocity(AngularVelocity speed) {return shooter.setSpeed(speed);}
     public Command set(double dutyCycle) {return shooter.set(dutyCycle);}
 

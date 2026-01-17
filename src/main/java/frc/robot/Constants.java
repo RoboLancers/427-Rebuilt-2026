@@ -13,7 +13,7 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   public static class IntakeConstants {
-    public static final int Intake_RPM = 1;
+    public static final int Intake_RPM = 60;
     public static final int FlyWheel_Diameter = 4;   //get info
     public static final int FlyWheel_Mass = 1;      //get info
     public static final int SoftLimit = 1000;
@@ -67,7 +67,7 @@ public final class Constants {
     public static final int ks = 0;
     public static final int kv = 0;
     public static final int ka = 0;
-    public static final int reductionStages = 0;
+    public static final int reductionStages = 12;
     public static final int StatorLimit = 40;
 
     public static final double ClosedLoopRampRate = 0.25;
