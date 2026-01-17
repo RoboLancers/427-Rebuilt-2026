@@ -14,8 +14,8 @@ public final class Constants {
   }
   public static class IntakeConstants {
     public static final int Intake_RPM = 60;
-    public static final int FlyWheel_Diameter = 4;   //get info
-    public static final int FlyWheel_Mass = 1;      //get info
+    public static final int FlyWheel_Diameter = 2;   //get info
+    public static final double FlyWheel_Mass = 0.029;      //get info
     public static final int SoftLimit = 1000;
 
     public static final int KP = 50;    
@@ -38,7 +38,7 @@ public final class Constants {
     public static final double OpenLoopRampRate = 0.25;
   }
 
-  public static class ShooterConstants {
+  public static class FeederConstants {
 
     public static final int ClosedLoopControllerkP = 4;
     public static final int ClosedLoopControllerkI = 0;
@@ -82,7 +82,7 @@ public final class Constants {
      */
 
     public static final int Diameter = 4;
-    public static final int Mass = 1;
+    public static final double Mass = 0.3;
     public static final int UpperSoftLimit = 1000;
 
     public static final double controllerxdutyCycle = 0.3;
@@ -92,15 +92,34 @@ public final class Constants {
      * Need info for below
      */
     
-    public static final int shooterdeviceId = 5;
 
-    public static final int numMotors = 1;
 
   }
   
   public static class MotorConstants {
     public static final int Intake_SparkMax_ID = 4;
-    public static final int numMotors = 1; 
+    public static final int IntakenumMotors = 1; 
+    public static final int FeederdeviceId = 5;
+    public static final int FeedernumMotors = 1;
+  }
+
+  public static class FuelConstants {
+    public static final int SpinUpTime = 0;
+
+    public static final double IntakingFeeder = -1.0;
+    public static final double IntakingIntake = 1.0;
+
+    public static final double EjectingFeeder = 0.9;
+    public static final double EjectingIntake = 0.9;
+
+    public static final double LaunchingFeeder = 0.9;
+    public static final double LaunchingIntake = 0.8;
+
+    public static final int StoppingFeeder = 0;
+    public static final int StoppingIntake =  0;
+    
+    public static final double spinupFeeder = 0.6;
+    public static final double spinupIntake = 0.4;
   }
 }
  

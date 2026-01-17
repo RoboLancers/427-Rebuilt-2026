@@ -1,22 +1,26 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.FuelConstants;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Feeder.Feeder;
+import frc.robot.subsystems.IntakeShooter.IntakeShooter;
 
 /** An example command that uses an example subsystem. */
 public class ExampleCommand extends Command {
   @SuppressWarnings("PMD.UnusedPrivateField")
-  private final ExampleSubsystem m_subsystem;
+  //private final ExampleSubsystem m_subsystem;
+  private final IntakeShooter m_IntakeShooter = new IntakeShooter();
+  private final Feeder m_feeder = new Feeder();
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ExampleCommand(ExampleSubsystem subsystem) {
-    m_subsystem = subsystem;
+  public ExampleCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(m_IntakeShooter, m_feeder);
   }
 
   // Called when the command is initially scheduled.
@@ -25,7 +29,10 @@ public class ExampleCommand extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    m_feeder.set(FuelConstants.LaunchingFeeder);
+    m_IntakeShooter.set(FuelConstants.LaunchingIntake);
+  }
 
   // Called once the command ends or is interrupted.
   @Override

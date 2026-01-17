@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Shooter;
+package frc.robot.subsystems.Feeder;
 
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Degrees;
@@ -18,7 +18,8 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.MotorConstants;
+import frc.robot.Constants.FeederConstants;
 import yams.gearing.GearBox;
 import yams.gearing.MechanismGearing;
 import yams.mechanisms.config.FlyWheelConfig;
@@ -31,7 +32,7 @@ import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
 import yams.motorcontrollers.local.SparkWrapper;
 import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
-public class ShooterSubsystem extends SubsystemBase {
+public class Feeder extends SubsystemBase {
 
   public int FuelCounter;
   
@@ -42,60 +43,60 @@ public class ShooterSubsystem extends SubsystemBase {
   .withMechanismUpperLimit();
 
   SmartMotorControllerConfig motorConfig = new SmartMotorControllerConfig(this)
-  .withClosedLoopController(ShooterConstants.ClosedLoopControllerkP, ShooterConstants.ClosedLoopControllerkI, ShooterConstants.ClosedLoopControllerkI, DegreesPerSecond.of(ShooterConstants.ClosedLoopControllerDegreesPerSec), DegreesPerSecondPerSecond.of(ShooterConstants.ClosedLoopControllerDegreesPerSecPerSec))
-  .withSoftLimit(Degrees.of(ShooterConstants.SoftLimitDegree), Degrees.of(ShooterConstants.SoftLimitDegreeMagnitude))
-  .withGearing(ShooterConstants.GearingreductionStages)
+  .withClosedLoopController(FeederConstants.ClosedLoopControllerkP, FeederConstants.ClosedLoopControllerkI, FeederConstants.ClosedLoopControllerkI, DegreesPerSecond.of(FeederConstants.ClosedLoopControllerDegreesPerSec), DegreesPerSecondPerSecond.of(FeederConstants.ClosedLoopControllerDegreesPerSecPerSec))
+  .withSoftLimit(Degrees.of(FeederConstants.SoftLimitDegree), Degrees.of(FeederConstants.SoftLimitDegreeMagnitude))
+  .withGearing(FeederConstants.GearingreductionStages)
   .withIdleMode(MotorMode.BRAKE)
-  .withTelemetry("ElevatorMotor", motorTelemetryConfig);
+  .withTelemetry("FeederMotor", motorTelemetryConfig);
 
   private SmartMotorControllerConfig smcConfig = new SmartMotorControllerConfig(this)
   .withControlMode(ControlMode.CLOSED_LOOP)
 
-  .withClosedLoopController(ShooterConstants.kP, ShooterConstants.kI, ShooterConstants.kD, DegreesPerSecond.of(ShooterConstants.DegPerSecmagnitude), DegreesPerSecondPerSecond.of(ShooterConstants.DegPerSecPerSecmagnitude))
-  .withSimClosedLoopController(ShooterConstants.kP, ShooterConstants.kI, ShooterConstants.kD, DegreesPerSecond.of(ShooterConstants.DegPerSecmagnitude), DegreesPerSecondPerSecond.of(ShooterConstants.DegPerSecPerSecmagnitude))
+  .withClosedLoopController(FeederConstants.kP, FeederConstants.kI, FeederConstants.kD, DegreesPerSecond.of(FeederConstants.DegPerSecmagnitude), DegreesPerSecondPerSecond.of(FeederConstants.DegPerSecPerSecmagnitude))
+  .withSimClosedLoopController(FeederConstants.kP, FeederConstants.kI, FeederConstants.kD, DegreesPerSecond.of(FeederConstants.DegPerSecmagnitude), DegreesPerSecondPerSecond.of(FeederConstants.DegPerSecPerSecmagnitude))
 
-  .withFeedforward(new SimpleMotorFeedforward(ShooterConstants.ks, ShooterConstants.kv, ShooterConstants.ka))
-  .withSimFeedforward(new SimpleMotorFeedforward(ShooterConstants.ks, ShooterConstants.kv, ShooterConstants.ka))
+  .withFeedforward(new SimpleMotorFeedforward(FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
+  .withSimFeedforward(new SimpleMotorFeedforward(FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
 
-  .withTelemetry("ShooterMotor", TelemetryVerbosity.HIGH)
+  .withTelemetry("FeederMotor", TelemetryVerbosity.HIGH)
 
-  .withGearing(new MechanismGearing(GearBox.fromReductionStages(ShooterConstants.reductionStages)))
+  .withGearing(new MechanismGearing(GearBox.fromReductionStages(FeederConstants.reductionStages)))
 
   .withMotorInverted(false)
   .withIdleMode(MotorMode.COAST)
-  .withStatorCurrentLimit(Amps.of(ShooterConstants.StatorLimit))
-  .withClosedLoopRampRate(Seconds.of(ShooterConstants.ClosedLoopRampRate))
-  .withOpenLoopRampRate(Seconds.of(ShooterConstants.OpenLoopRampRate));
+  .withStatorCurrentLimit(Amps.of(FeederConstants.StatorLimit))
+  .withClosedLoopRampRate(Seconds.of(FeederConstants.ClosedLoopRampRate))
+  .withOpenLoopRampRate(Seconds.of(FeederConstants.OpenLoopRampRate));
 
 
-  private SparkMax spark = new SparkMax(ShooterConstants.shooterdeviceId, MotorType.kBrushless);
+  private SparkMax spark = new SparkMax(MotorConstants.FeederdeviceId, MotorType.kBrushless);
 
-  private SmartMotorController sparkSmartMotorController = new SparkWrapper(spark, DCMotor.getNEO(ShooterConstants.numMotors), smcConfig);
+  private SmartMotorController sparkSmartMotorController = new SparkWrapper(spark, DCMotor.getNEO(MotorConstants.FeedernumMotors), smcConfig);
 
-  private Debouncer statorDebounce = new Debouncer(ShooterConstants.debouncerTime);
+  private Debouncer statorDebounce = new Debouncer(FeederConstants.debouncerTime);
 
   public boolean isGamePieceIn() {
-    return statorDebounce.calculate(sparkSmartMotorController.getStatorCurrent().gte(Amps.of(ShooterConstants.StatorAmps)));
+    return statorDebounce.calculate(sparkSmartMotorController.getStatorCurrent().gte(Amps.of(FeederConstants.StatorAmps)));
   }
 
-  private final FlyWheelConfig shooterConfig = new FlyWheelConfig(sparkSmartMotorController)
-  .withDiameter(Inches.of(ShooterConstants.Diameter))
-  .withMass(Pounds.of(ShooterConstants.Mass))
-  .withUpperSoftLimit(RPM.of(ShooterConstants.UpperSoftLimit))
-  .withTelemetry("ShooterMech", TelemetryVerbosity.HIGH);
+  private final FlyWheelConfig FeederConfig = new FlyWheelConfig(sparkSmartMotorController)
+  .withDiameter(Inches.of(FeederConstants.Diameter))
+  .withMass(Pounds.of(FeederConstants.Mass))
+  .withUpperSoftLimit(RPM.of(FeederConstants.UpperSoftLimit))
+  .withTelemetry("FeederMech", TelemetryVerbosity.HIGH);
 
-  private FlyWheel shooter = new FlyWheel (shooterConfig);
+  private FlyWheel Feeder = new FlyWheel (FeederConfig);
     /**
-     * Gets the current velocity of the shooter.
+     * Gets the current velocity of the Feeder.
      * 
-     * @return Shooter velocity.
+     * @return Feeder velocity.
      */
-    public AngularVelocity getVelocity() {return shooter.getSpeed();}
+    public AngularVelocity getVelocity() {return Feeder.getSpeed();}
  
-    public Command setVelocity(AngularVelocity speed) {return shooter.setSpeed(speed);}
-    public Command set(double dutyCycle) {return shooter.set(dutyCycle);}
+    public Command setVelocity(AngularVelocity speed) {return Feeder.setSpeed(speed);}
+    public Command set(double dutyCycle) {return Feeder.set(dutyCycle);}
 
-  public ShooterSubsystem() {}
+  public Feeder() {}
 
   /**
    * Example command factory method.
@@ -124,7 +125,7 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    shooter.updateTelemetry();
+    Feeder.updateTelemetry();
 
     boolean Fuel = isGamePieceIn();
     if (Fuel) {
@@ -136,6 +137,6 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
-    shooter.simIterate();
+    Feeder.simIterate();
   }
 }

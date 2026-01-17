@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Intake;
+package frc.robot.subsystems.IntakeShooter;
 
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.MotorConstants;
@@ -18,11 +18,10 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import yams.gearing.GearBox;
-import yams.gearing.MechanismGearing;
-import yams.mechanisms.SmartMechanism;
+
 import yams.mechanisms.config.FlyWheelConfig;
 import yams.mechanisms.velocity.FlyWheel;
 import yams.motorcontrollers.SmartMotorController;
@@ -34,9 +33,12 @@ import yams.motorcontrollers.local.SparkWrapper;
 import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 
-public class IntakeSubsystem extends SubsystemBase {
+public class IntakeShooter extends SubsystemBase {
   public int FuelCounter = 0;
 
+  protected void execute() {
+    SmartDashboard.putNumber("Fuel Number", FuelCounter);
+  } 
 
   /** Creates a new intake. */
   SmartMotorControllerTelemetryConfig motorTelemetryConfig = new SmartMotorControllerTelemetryConfig()
@@ -67,7 +69,7 @@ public class IntakeSubsystem extends SubsystemBase {
   // Vendor motor controller object
   private SparkMax spark = new SparkMax(MotorConstants.Intake_SparkMax_ID, MotorType.kBrushless);
   
-  private SmartMotorController sparkSmartMotorController = new SparkWrapper(spark, DCMotor.getNEO(MotorConstants.numMotors), smcConfig);
+  private SmartMotorController sparkSmartMotorController = new SparkWrapper(spark, DCMotor.getNEO(MotorConstants.IntakenumMotors), smcConfig);
 
   private Debouncer statorDebounce = new Debouncer(IntakeConstants.DebounceTime);
 
@@ -86,7 +88,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private FlyWheel intake = new FlyWheel(intakeConfig);
 
-  public IntakeSubsystem() {}
+  public IntakeShooter() {}
 
   public Command intakeMethodCommand() {
     return runOnce(
