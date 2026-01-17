@@ -3,6 +3,7 @@ package frc.robot;
 
 import java.io.File;
 
+import choreo.auto.AutoChooser;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -53,8 +54,8 @@ public class RobotContainer {
     private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   
     SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                  () -> m_driverController.getLeftY() * -1,
-                                                                  () -> m_driverController.getLeftX() * -1)
+                                                                  () -> -m_driverController.getLeftY() * Constants.MAX_SPEED,
+                                                                  () -> -m_driverController.getLeftX() * Constants.MAX_SPEED)
                                                               .withControllerRotationAxis(m_driverController::getRightX)
                                                               .deadband(OperatorConstants.DEADBAND)
                                                               .scaleTranslation(0.8)
@@ -129,7 +130,7 @@ public class RobotContainer {
 
     if (RobotBase.isSimulation())
     {
-      drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
+      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); //Change this one
     } else
     {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
@@ -140,15 +141,15 @@ public class RobotContainer {
       Pose2d target = new Pose2d(new Translation2d(1, 4),
                                  Rotation2d.fromDegrees(90));
       //drivebase.getSwerveDrive().field.getObject("targetPose").setPose(target);
-      driveDirectAngleKeyboard.driveToPose(() -> target,
+      driveDirectAngle.driveToPose(() -> target,
                                            new ProfiledPIDController(5,0,0, new Constraints(5, 2)),
                                            new ProfiledPIDController(5,0,0, new Constraints(Units.degreesToRadians(360),
                                                                                             Units.degreesToRadians(180))
                                            ));
       m_driverController.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
       m_driverController.a().whileTrue(drivebase.sysIdDriveMotorCommand());
-      m_driverController.b().whileTrue(Commands.runEnd(() -> driveDirectAngleKeyboard.driveToPoseEnabled(true),
-                                                     () -> driveDirectAngleKeyboard.driveToPoseEnabled(false)));
+      m_driverController.b().whileTrue(Commands.runEnd(() -> driveDirectAngle.driveToPoseEnabled(true), //And this one
+                                                     () -> driveDirectAngle.driveToPoseEnabled(false))); //And this one
 
     }
     if (DriverStation.isTest())
