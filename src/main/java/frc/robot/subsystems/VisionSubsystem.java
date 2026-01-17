@@ -14,15 +14,22 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.subsystems.VisionSubsystem.EstimateConsumer;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
+
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
+import swervelib.telemetry.SwerveDriveTelemetry;
 
 public class VisionSubsystem extends SubsystemBase {
 
@@ -33,13 +40,16 @@ public class VisionSubsystem extends SubsystemBase {
   // Simulation
   private PhotonCameraSim cameraSim;
   private VisionSystemSim visionSim;
-
+private SwerveSubsystem swerve ;
   /**
    * @param estConsumer Lamba that will accept a pose estimate and pass it to your desired {@link
    *     edu.wpi.first.math.estimator.SwerveDrivePoseEstimator}
    */
-  public VisionSubsystem(EstimateConsumer estConsumer) {
+  public VisionSubsystem(EstimateConsumer estConsumer, SwerveSubsystem swerve, Supplier<Pose2d> currentPose, Field2d field) {
     this.estConsumer = estConsumer;
+    this.swerve = swerve;
+    this.currentPose = currentPose;
+    this.field2d = field;
 
     Matrix<N3, N1> curStdDevs;
     Constants constants = new Constants();
@@ -71,14 +81,32 @@ public class VisionSubsystem extends SubsystemBase {
     }
   }
 
+
+  public void updatePoseEstimation(SwerveSubsystem swerve) {
+    
+    if(SwerveDriveTelemetry.isSimulation && swerve.getSimulationDriveTrainPose().isPresent()) {
+      visionSim.update(swerve.getSimulationDriveTrainPose().get());
+    }
+    for (Cameras camera : Cameras.values()) {
+      Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
+      if(poseEst.isPresent()) {
+        var pose = poseEst.get();
+        swerve.addVisionMeasurement(pose.estimatedPose.toPose2d(),
+                                    pose.timestampSeconds,
+                                    camera.curStdDevs);
+      }
+    }
+  }
+
+
   public void periodic() {
     Optional<EstimatedRobotPose> visionEst = Optional.empty();
-    for (var result : camera.getAllUnreadResults()) {
-      visionEst = photonEstimator.estimateCoprocMultiTagPose(result);
+    for (PhotonPipelineResult cameraResult : camera.getAllUnreadResults()) {
+      visionEst = photonEstimator.estimateCoprocMultiTagPose(cameraResult);
       if (visionEst.isEmpty()) {
-        visionEst = photonEstimator.estimateLowestAmbiguityPose(result);
+          visionEst = photonEstimator.estimateLowestAmbiguityPose(cameraResult);
       }
-      updateEstimationStdDevs(visionEst, result.getTargets());
+      updateEstimationStdDevs(visionEst, cameraResult.getTargets());
 
       if (Robot.isSimulation()) {
         visionEst.ifPresentOrElse(
@@ -90,16 +118,151 @@ public class VisionSubsystem extends SubsystemBase {
               getSimDebugField().getObject("VisionEstimation").setPoses();
             });
       }
+    }
+
+  enum Cameras
+  {
+    /**
+     * Left Camera
+     */
+    LEFT_CAM("left",
+             new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
+             new Translation3d(Units.inchesToMeters(12.056),
+                               Units.inchesToMeters(10.981),
+                               Units.inchesToMeters(8.44)),
+             VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
+    /**
+     * Right Camera
+     */
+    RIGHT_CAM("right",
+              new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(-30)),
+              new Translation3d(Units.inchesToMeters(12.056),
+                                Units.inchesToMeters(-10.981),
+                                Units.inchesToMeters(8.44)),
+              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
+    /**
+     * Center Camera
+     */
+    CENTER_CAM("center",
+               new Rotation3d(0, Units.degreesToRadians(18), 0),
+               new Translation3d(Units.inchesToMeters(-4.628),
+                                 Units.inchesToMeters(-10.687),
+                                 Units.inchesToMeters(16.129)),
+               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
+
+    /**
+     * Latency alert to use when high latency is detected.
+     */
+  
+    public final  Alert                        latencyAlert;
+    /**
+     * Camera instance for comms.
+     */
+    public final  PhotonCamera                 camera;
+    /**
+     * Pose estimator for camera.
+     */
+    public final  PhotonPoseEstimator          poseEstimator;
+    /**
+     * Standard Deviation for single tag readings for pose estimation.
+     */
+    private final Matrix<N3, N1>               singleTagStdDevs;
+    /**
+     * Standard deviation for multi-tag readings for pose estimation.
+     */
+    private final Matrix<N3, N1>               multiTagStdDevs;
+    /**
+     * Transform of the camera rotation and translation relative to the center of the robot
+     */
+    private final Transform3d                  robotToCamTransform;
+    /**
+     * Current standard deviations used.
+     */
+    public        Matrix<N3, N1>               curStdDevs;
+    /**
+     * Estimated robot pose.
+     */
+    public Optional<EstimatedRobotPose> estimatedRobotPose = Optional.empty();
+
+    /**
+     * Simulated camera instance which only exists during simulations.
+     */
+    public        PhotonCameraSim              cameraSim;
+    /**
+     * Results list to be updated periodically and cached to avoid unnecessary queries.
+     */
+    public        List<PhotonPipelineResult>   resultsList       = new ArrayList<>();
+    /**
+     * Last read from the camera timestamp to prevent lag due to slow data fetches.
+     */
+    private       double                       lastReadTimestamp = Microseconds.of(NetworkTablesJNI.now()).in(Seconds);
+
+    /**
+     * Construct a Photon Camera class with help. Standard deviations are fake values, experiment and determine
+     * estimation noise on an actual robot.
+     *
+     * @param name                  Name of the PhotonVision camera found in the PV UI.
+     * @param robotToCamRotation    {@link Rotation3d} of the camera.
+     * @param robotToCamTranslation {@link Translation3d} relative to the center of the robot.
+     * @param singleTagStdDevs      Single AprilTag standard deviations of estimated poses from the camera.
+     * @param multiTagStdDevsMatrix Multi AprilTag standard deviations of estimated poses from the camera.
+     */
+    Cameras(String name, Rotation3d robotToCamRotation, Translation3d robotToCamTranslation,
+            Matrix<N3, N1> singleTagStdDevs, Matrix<N3, N1> multiTagStdDevsMatrix)
+    {
+      latencyAlert = new Alert("'" + name + "' Camera is experiencing high latency.", AlertType.kWarning);
+
+      camera = new PhotonCamera(name);
+
+      // https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html
+      robotToCamTransform = new Transform3d(robotToCamTranslation, robotToCamRotation);
+
+      poseEstimator = new PhotonPoseEstimator(Vision.fieldLayout,
+                                              PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+                                              robotToCamTransform);
+      poseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+
+      this.singleTagStdDevs = singleTagStdDevs;
+      this.multiTagStdDevs = multiTagStdDevsMatrix;
+
+      if (Robot.isSimulation())
+      {
+        SimCameraProperties cameraProp = new SimCameraProperties();
+        // A 640 x 480 camera with a 100 degree diagonal FOV.
+        cameraProp.setCalibration(960, 720, Rotation2d.fromDegrees(100));
+        // Approximate detection noise with average and standard deviation error in pixels.
+        cameraProp.setCalibError(0.25, 0.08);
+        // Set the camera image capture framerate (Note: this is limited by robot loop rate).
+        cameraProp.setFPS(30);
+        // The average and standard deviation in milliseconds of image data latency.
+        cameraProp.setAvgLatencyMs(35);
+        cameraProp.setLatencyStdDevMs(5);
+
+        cameraSim = new PhotonCameraSim(camera, cameraProp);
+        cameraSim.enableDrawWireframe(true);
+      }
+    }
+
+
+
+
+
+
+
 
       visionEst.ifPresent(
           est -> {
             // Change our trust in the measurement based on the tags we can see
             var estStdDevs = getEstimationStdDevs();
 
-            estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
-          });
-    }
-  }
+            estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs) ;
+    });
+  
+
+
+
+
+
 
   /**
    * Calculates new standard deviations This algorithm is a heuristic that creates dynamic standard
@@ -182,3 +345,4 @@ public class VisionSubsystem extends SubsystemBase {
     public void accept(Pose2d pose, double timestamp, Matrix<N3, N1> estimationStdDevs);
   }
 }
+  }

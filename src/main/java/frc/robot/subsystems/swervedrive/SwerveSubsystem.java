@@ -16,7 +16,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
+import frc.robot.subsystems.VisionSubsystem;
+
 import java.io.File;
+import java.util.Arrays;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import swervelib.SwerveDrive;
@@ -29,8 +32,11 @@ import swervelib.parser.SwerveParser;
 public class SwerveSubsystem extends SubsystemBase {
   double maximumSpeed = Units.feetToMeters(4.5);
   private final SwerveDrive swerveDrive;
+  private final boolean visionDriveTest = false;
+  private VisionSubsystem vision;
 
-  private final SwerveDrivePoseEstimator poseEstimator;
+  //private final SwerveDrivePoseEstimator poseEstimator;
+
 
   /* Creates a new SwerveSubsystem. */
   public SwerveSubsystem(File directory) {
@@ -48,31 +54,28 @@ public class SwerveSubsystem extends SubsystemBase {
     }
     // This method will be called once per scheduler run during simulation
 
+
+    if(visionDriveTest) {
+  // Stop the odometry thread if we are using vision that way we can synchronize updates better.
+  swerveDrive.stopOdometryThread();
+}
+
   }
 
-  public void SwerveDrive() {
+public void setupPhotonVision() {
+      vision = new VisionSubsystem(swerveDrive::getPose, swerveDrive.field);
+    }
 
-    var stateStdDevs = vecBuilder.fill(0.1, 0.1, 0.1);
-    var visionStdDevs = vecBuilder.fill(1, 1, 1);
-    poseEstimator =
-        new SwerveDrivePoseEstimator(
-            kinematics,
-            getGyroYaw(),
-            getModulePositions(),
-            new Pose2d(),
-            stateStdDevs,
-            visionStdDevs);
-  }
-
-  /*
-
-  */
 
   @Override
   public void simulationPeriodic() {}
 
   public void periodic() {
     // This method will be called once per scheduler run
+    if(visionDriveTest) {
+      swerveDrive.updateOdometry();
+      vision.updatePoseEstimation(swerveDrive);
+    }
   }
 
   public Command sysIdDriveMotorCommand() {
