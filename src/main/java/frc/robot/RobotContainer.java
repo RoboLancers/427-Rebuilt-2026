@@ -3,6 +3,7 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,30 +32,21 @@ import swervelib.SwerveInputStream;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
- */
 
 public class RobotContainer {
 
-  // The robot's subsystems and commands are defined here...
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto("Example Auto");
+  try{
+  } catch (Exception e) {
+    DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+  }
+        return Commands.none();
   }
 
   private final SendableChooser<Command> autoChooser;
-
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   
-    // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController m_driverController =
         new CommandXboxController(OperatorConstants.kDriverControllerPort);
-  
-    // The robot's subsystems and commands are defined here...
-    private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   
     private final Field2d field = new Field2d();
   
@@ -72,9 +64,7 @@ public class RobotContainer {
                                                                                                 m_driverController::getRightY)
                                                               .headingWhile(true);
 
-  /**
-   * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
-   */
+  
   SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
                                                              .allianceRelativeControl(false);
 
@@ -85,7 +75,7 @@ public class RobotContainer {
                                                                     .deadband(OperatorConstants.DEADBAND)
                                                                     .scaleTranslation(0.8)
                                                                     .allianceRelativeControl(true);
-  // Derive the heading axis with math!
+ 
   SwerveInputStream driveDirectAngleKeyboard = driveAngularVelocityKeyboard.copy()
                                                                            .withControllerHeadingAxis(() -> Math.sin(m_driverController.getRawAxis(2) * Math.PI) * (Math.PI * 2),
                                                                                                       () -> Math.cos(m_driverController.getRawAxis(2) * Math.PI) * (Math.PI * 2))
@@ -93,7 +83,7 @@ public class RobotContainer {
                                                                            .translationHeadingOffset(true)
                                                                            .translationHeadingOffset(Rotation2d.fromDegrees(0));
                                                             
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  
   public RobotContainer() {
 
     boolean isCompetition = true;
@@ -149,56 +139,48 @@ public class RobotContainer {
         PathPlannerLogging.setLogActivePathCallback((poses) -> {
             field.getObject("path").setPoses(poses);
         });
-        // Create a list of waypoints from poses. Each pose represents one waypoint.
-// The rotation component of the pose should be the direction of travel. Do not use holonomic rotation.
+      
 List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
         new Pose2d(1.0, 1.0, Rotation2d.fromDegrees(0)),
         new Pose2d(3.0, 1.0, Rotation2d.fromDegrees(0)),
         new Pose2d(5.0, 3.0, Rotation2d.fromDegrees(90))
 );
 
-PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI); // The constraints for this path.
-// PathConstraints constraints = PathConstraints.unlimitedConstraints(12.0); // You can also use unlimited constraints, only limited by motor torque and nominal battery voltage
-
-// Create the path using the waypoints created above
+PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI); 
 PathPlannerPath path = new PathPlannerPath(
         waypoints,
         constraints,
-        null, // The ideal starting state, this is only relevant for pre-planned paths, so can be null for on-the-fly paths.
-        new GoalEndState(0.0, Rotation2d.fromDegrees(-90)) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
+        null, 
+        new GoalEndState(0.0, Rotation2d.fromDegrees(-90))
 );
 
-// Prevent the path from being flipped if the coordinates are already correct
 path.preventFlipping = true;
-// Use the PathPlannerAuto class to get a path group from an auto
 List<PathPlannerPath> pathGroup = PathPlannerAuto.getPathGroupFromAutoFile("Example Auto");
-  }
-
-  public Command getAutonomousCommand() {
     return autoChooser.getSelected();
+
+PPHolonomicDriveController.overrideXFeedback(() -> {
+    return 0.0;
+});
+PPHolonomicDriveController.clearXFeedbackOverride();
+
+PPHolonomicDriveController.overrideYFeedback(() -> {
+    return 0.0;
+});
+PPHolonomicDriveController.clearYFeedbackOverride();
+
+PPHolonomicDriveController.overrideRotationFeedback(() -> {
+    return 0.0;
+});
+PPHolonomicDriveController.clearRotationFeedbackOverride();
+
+PPHolonomicDriveController.clearFeedbackOverrides();
+PathPlannerPath exampleChoreoTraj = PathPlannerPath.fromChoreoTrajectory("Example Choreo Traj");
+PathPlannerPath exampleChoreoTrajSplit = PathPlannerPath.fromChoreoTrajectory("Example Choreo Traj", 1);
   }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
 
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is
-    // pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-  }
-
+  
     Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
     Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
     Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
@@ -218,7 +200,6 @@ List<PathPlannerPath> pathGroup = PathPlannerAuto.getPathGroupFromAutoFile("Exam
     {
       Pose2d target = new Pose2d(new Translation2d(1, 4),
                                  Rotation2d.fromDegrees(90));
-      //drivebase.getSwerveDrive().field.getObject("targetPose").setPose(target);
       driveDirectAngleKeyboard.driveToPose(() -> target,
                                            new ProfiledPIDController(5,0,0, new Constraints(5, 2)),
                                            new ProfiledPIDController(5,0,0, new Constraints(Units.degreesToRadians(360),
@@ -232,7 +213,7 @@ List<PathPlannerPath> pathGroup = PathPlannerAuto.getPathGroupFromAutoFile("Exam
 
     if (DriverStation.isTest())
     {
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Overrides drive command above!
+      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); 
 
       m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       m_driverController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
@@ -247,23 +228,6 @@ List<PathPlannerPath> pathGroup = PathPlannerAuto.getPathGroupFromAutoFile("Exam
       m_driverController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       m_driverController.rightBumper().onTrue(Commands.none());
     }
-  }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
-  try{
-      PathPlannerPath path = PathPlannerPath.fromPathFile("Example Path");
-
-      return AutoBuilder.followPath(path);
-  } catch (Exception e) {
-      DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
-      return Commands.none();
+    }
     }
   }
-}
