@@ -85,7 +85,10 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
+
     configureBindings();
+
+    DriverStation.silenceJoystickConnectionWarning(true);
   }
 
   /**
@@ -98,6 +101,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+
+    if (RobotBase.isSimulation()) {
+      drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
+    }
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
