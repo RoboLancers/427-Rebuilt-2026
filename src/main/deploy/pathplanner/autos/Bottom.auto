@@ -3,70 +3,7 @@
   "command": {
     "type": "sequential",
     "data": {
-      "commands": [
-        {
-          "type": "path",
-          "data": {
-            "pathName": "botPos1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "botPos2"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "botPos3"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "End Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "botPos4"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        }
-      ]
+      "commands": []
     }
   },
   "resetOdom": true,
