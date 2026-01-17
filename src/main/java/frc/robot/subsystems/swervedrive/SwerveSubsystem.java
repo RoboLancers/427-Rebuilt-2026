@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 //import edu.wpi.first.wpilibj.Filesystem;
@@ -27,6 +28,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
 import swervelib.SwerveInputStream;
@@ -162,7 +164,7 @@ public class SwerveSubsystem extends SubsystemBase {
  
         //Make the robot move
         //Mat
-        swerveDrive.driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(scaledInputs.getX(), scaledInputs.getY(),
+        driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(scaledInputs.getX(), scaledInputs.getY(),
                                        headingX.getAsDouble(),
                                        headingY.getAsDouble(),
                                        swerveDrive.getOdometryHeading().getRadians(),
@@ -177,6 +179,8 @@ public class SwerveSubsystem extends SubsystemBase {
    * @param translationY       Translation in the Y direction
    * @param angularRotationX   Rotation of the robot to set
    * @return Drive command.
+   * 
+   * IT DOES SOMETHING
    */
 
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
@@ -190,6 +194,8 @@ public class SwerveSubsystem extends SubsystemBase {
                                         false);
   });
   }
+
+
 
     public void driveFieldOriented(ChassisSpeeds velocity)
   {
@@ -208,9 +214,35 @@ public class SwerveSubsystem extends SubsystemBase {
     });
   }
 
+  public void drive(ChassisSpeeds velocity) {
+    swerveDrive.driveFieldOriented(velocity);
+  }
+
+  public Pose2d getPose(){
+    return swerveDrive.getPose();
+  }
+
+  public Rotation2d getHeading(){
+    return getPose().getRotation();
+  }
+
+  public ChassisSpeeds getTargetSpeeds(double xInput, double yInput, double headingX, double headingY){
+    Translation2d scaledInputs = SwerveMath.cubeTranslation(new Translation2d(xInput, yInput));
+    return swerveDrive.swerveController.getTargetSpeeds(scaledInputs.getX(),
+                                                        scaledInputs.getY(),
+                                                        headingX, headingY,
+                                                        getHeading().getRadians(),
+                                                        Constants.MAX_SPEED);
+  }
+
   public void zeroGyro() {
     swerveDrive.zeroGyro();
   }
+
+  public SwerveDriveKinematics getKinematics() {
+    return swerveDrive.kinematics;
+  }
+
 
   public void drive(Translation2d translation, double Rotation, boolean fieldReletive) {
     swerveDrive.drive(translation,
@@ -242,10 +274,7 @@ public class SwerveSubsystem extends SubsystemBase {
     return swerveDrive;
   }
 
-  public Command driveFieldOriented(SwerveInputStream driveDirectAngle) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'driveFieldOriented'");
-  }
+
 
 public Object resetOdometry(Pose2d pose2d) {
     // TODO Auto-generated method stub
@@ -255,6 +284,10 @@ public Object resetOdometry(Pose2d pose2d) {
 public Command centerModulesCommand() {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'centerModulesCommand'");
+}
+public ChassisSpeeds getTargetSpeeds(double asDouble, double asDouble2, Rotation2d rotation2d) {
+  // TODO Auto-generated method stub
+  throw new UnsupportedOperationException("Unimplemented method 'getTargetSpeeds'");
 }
 
 
