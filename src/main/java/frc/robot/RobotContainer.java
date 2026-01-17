@@ -4,9 +4,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.FeederConstants;
+import frc.robot.Constants.FuelConstants;
+import frc.robot.subsystems.IntakeShooter.IntakeShooter;
+import frc.robot.subsystems.Feeder.Feeder;
+import frc.robot.subsystems.Fuel.FuelSubsystem;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+
+import static edu.wpi.first.units.Units.RPM; 
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -16,16 +23,24 @@ import frc.robot.subsystems.ExampleSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final IntakeShooter m_IntakeShooter = new IntakeShooter();
+  private final Feeder m_feeder = new Feeder();
+  //private final FuelSubsystem m_fuel = new FuelSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+    new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
+    // m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
+
+   m_feeder.setDefaultCommand(m_feeder.set(0));
+   m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
+    //m_fuel.setDefaultCommand(m_fuel.stopCommand());
   }
 
   /**
@@ -37,24 +52,59 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is
-    // pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+  public Command Intake() {
+    return m_IntakeShooter.set(FuelConstants.IntakingIntake).alongWith(m_feeder.set(FuelConstants.IntakingFeeder));
   }
+  public Command Eject() {
+    return m_IntakeShooter.set(FuelConstants.EjectingIntake).alongWith(m_feeder.set(FuelConstants.EjectingFeeder));
+  }
+  public Command Launch() {
+    return m_IntakeShooter.set(FuelConstants.LaunchingIntake).alongWith(m_feeder.set(FuelConstants.LaunchingFeeder));
+  }
+  public Command Stop() {
+    return m_IntakeShooter.set(FuelConstants.StoppingIntake).alongWith(m_feeder.set(FuelConstants.StoppingFeeder));
+  }
+  public Command SpinUp() {
+    return m_IntakeShooter.set(FuelConstants.spinupIntake).alongWith(m_feeder.set(FuelConstants.spinupFeeder));
+  }
+  private void configureBindings() {
+
+  // //m_driverController.x().whileTrue(m_feeder.set(FeederConstants.controllerxdutyCycle));
+  // m_driverController.leftBumper().whileTrue(m_fuel.runEnd(() -> m_fuel.intake(), () -> m_fuel.stop()));
+
+  // m_driverController.rightBumper()
+  // .whileTrue(m_fuel.launchCommand());
+  //   //.whileTrue(m_fuel.spinUpCommand().withTimeout(FuelConstants.SpinUpTime)
+  //     //.andThen(m_fuel.launchCommand())
+  //     //.finallyDo(() -> m_fuel.stop()));
+      
+  // m_driverController.a()
+  //   .whileTrue(m_fuel.runEnd(() -> m_fuel.eject(), () -> m_fuel.stop()));
+
+  m_driverController.leftBumper().whileTrue(Intake());
+  m_driverController.rightBumper().whileTrue(Launch());
+  m_driverController.a().whileTrue(Eject());
+    //m_feeder.set(FeederConstants.controllerxdutyCycle).alongWith(m_IntakeShooter.set(IntakeConstants.x_DutyCycle)));
+  
+
+
+  
+  
+}
+
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
-  }
+  //public Command getAutonomousCommand() {
+  // An example command will be run in autonomous
+  //return Autos.exampleAuto(m_IntakeShooter);
+  //}
+  
+  
+  
 }
+
