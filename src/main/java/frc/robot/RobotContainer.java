@@ -3,11 +3,21 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.Waypoint;
+import com.pathplanner.lib.util.FileVersionException;
+import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import org.json.simple.parser.ParseException;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -36,14 +46,15 @@ import edu.wpi.first.wpilibj.RobotBase;
 public class RobotContainer {
 
   public Command getAutonomousCommand() {
-  try{
-  } catch (Exception e) {
-    DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+     return autoChooser.getSelected();
   }
-        return Commands.none();
-  }
+  boolean isCompetition = true;
 
-  private final SendableChooser<Command> autoChooser;
+  private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
+      (stream) -> isCompetition
+        ? stream.filter(auto -> auto.getName().startsWith("comp"))
+        : stream
+    );
   
     private final CommandXboxController m_driverController =
         new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -85,47 +96,22 @@ public class RobotContainer {
                                                             
   
   public RobotContainer() {
-
-    boolean isCompetition = true;
-
-    autoChooser = AutoBuilder.buildAutoChooser();
-
-    autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
-      (stream) -> isCompetition
-        ? stream.filter(auto -> auto.getName().startsWith("comp"))
-        : stream
-    );
-
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
-    swerve = new Swerve();
-    exampleSubsystem = new ExampleSubsystem();
+    //private Swerve swerve = new Swerve();
+    final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 
-    NamedCommands.registerCommand("autoBalance", swerve.autoBalanceCommand());
-    NamedCommands.registerCommand("exampleCommand", exampleSubsystem.exampleCommand());
-    NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
+    //NamedCommands.registerCommand("autoBalance", drivebase.autoBalanceCommand());
+    //NamedCommands.registerCommand("exampleCommand", exampleSubsystem.exampleCommand());
+    //NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
 
-    new EventTrigger("run intake").whileTrue(Commands.print("running intake"));
-    new EventTrigger("shoot note").and(new Trigger(exampleSubsystem::someCondition)).onTrue(Commands.print("shoot note");
+    //new EventTrigger("run intake").whileTrue(Commands.print("running intake"));
+    //new EventTrigger("shoot note").and(new Trigger(exampleSubsystem::someCondition)).onTrue(Commands.print("shoot note"));
 
-    new PointTowardsZoneTrigger("Speaker").whileTrue(Commands.print("aiming at speaker"));
-
-    autoCommand = new PathPlannerAuto("Example Auto");
-
-    autoCommand.isRunning().onTrue(Commands.print("Example Auto started"));
-    autoCommand.timeElapsed(5).onTrue(Commands.print("5 seconds passed"));
-    autoCommand.timeRange(6, 8).whileTrue(Commands.print("between 6 and 8 seconds"));
-    autoCommand.event("Example Event Marker").onTrue(Commands.print("passed example event marker"));
-    autoCommand.pointTowardsZone("Speaker").onTrue(Commands.print("aiming at speaker"));
-    autoCommand.activePath("Example Path").onTrue(Commands.print("started following Example Path"));
-    autoCommand.nearFieldPosition(new Translation2d(2, 2), 0.5).whileTrue(Commands.print("within 0.5m of (2, 2)"));
-    autoCommand.inFieldArea(new Translation2d(2, 2), new Translation2d(4, 4)).whileTrue(Commands.print("in area of (2, 2) - (4, 4)"));
-
-    configureButtonBindings();
+    //new PointTowardsZoneTrigger("Speaker").whileTrue(Commands.print("aiming at speaker"));
     
     configureBindings();
 
-     field = new Field2d();
         SmartDashboard.putData("Field", field);
 
         PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
@@ -155,8 +141,13 @@ PathPlannerPath path = new PathPlannerPath(
 );
 
 path.preventFlipping = true;
-List<PathPlannerPath> pathGroup = PathPlannerAuto.getPathGroupFromAutoFile("Example Auto");
-    return autoChooser.getSelected();
+try {
+  List<PathPlannerPath> pathGroup = PathPlannerAuto.getPathGroupFromAutoFile("Example Auto");
+} catch (IOException e) {
+  e.printStackTrace();
+} catch (ParseException e) {
+  e.printStackTrace();
+}
 
 PPHolonomicDriveController.overrideXFeedback(() -> {
     return 0.0;
@@ -174,10 +165,25 @@ PPHolonomicDriveController.overrideRotationFeedback(() -> {
 PPHolonomicDriveController.clearRotationFeedbackOverride();
 
 PPHolonomicDriveController.clearFeedbackOverrides();
-PathPlannerPath exampleChoreoTraj = PathPlannerPath.fromChoreoTrajectory("Example Choreo Traj");
-PathPlannerPath exampleChoreoTrajSplit = PathPlannerPath.fromChoreoTrajectory("Example Choreo Traj", 1);
+try {
+  PathPlannerPath exampleChoreoTraj = PathPlannerPath.fromChoreoTrajectory("Example Choreo Traj");
+} catch (FileVersionException e) {
+  e.printStackTrace();
+} catch (IOException e) {
+  e.printStackTrace();
+} catch (ParseException e) {
+  e.printStackTrace();
+}
+try {
+  PathPlannerPath exampleChoreoTrajSplit = PathPlannerPath.fromChoreoTrajectory("Example Choreo Traj", 1);
+} catch (FileVersionException e) {
+  e.printStackTrace();
+} catch (IOException e) {
+  e.printStackTrace();
+} catch (ParseException e) {
+  e.printStackTrace();
+}
   }
-
 
   private void configureBindings() {
   

@@ -91,11 +91,18 @@ public class SwerveSubsystem extends SubsystemBase {
   
  
   public SwerveSubsystem(File directory) {
+    RobotConfig config; 
     try {
+      config = RobotConfig.fromGUISettings();
     swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
+
     } catch (Exception e) {
       throw new RuntimeException(e);   
-    }
+    } 
+    setpointGenerator = new SwerveSetpointGenerator(
+      config,
+      Units.rotationsToRadians(10.0)
+    );
   }
 
     /**
@@ -110,19 +117,15 @@ public class SwerveSubsystem extends SubsystemBase {
 
         return new FollowPathCommand(
                 path,
-                this::getPose, // Robot pose supplier
-                this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                this::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds, AND feedforwards
-                new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                        new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+                this::getPose,
+                this::getRobotRelativeSpeeds,
+                this::drive,
+                new PPHolonomicDriveController(
+                        new PIDConstants(5.0, 0.0, 0.0),
+                        new PIDConstants(5.0, 0.0, 0.0)
                 ),
-                Constants.robotConfig, // The robot configuration
+                Constants.robotConfig,
                 () -> {
-                  // Boolean supplier that controls when the path will be mirrored for the red alliance
-                  // This will flip the path being followed to the red side of the field.
-                  // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
                   var alliance = DriverStation.getAlliance();
                   if (alliance.isPresent()) {
                     return alliance.get() == DriverStation.Alliance.Red;
@@ -139,7 +142,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
-    
   }
   public void periodic() {
   }
