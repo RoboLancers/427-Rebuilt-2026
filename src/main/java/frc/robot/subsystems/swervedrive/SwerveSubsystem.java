@@ -2,10 +2,12 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+
 package frc.robot.subsystems.swervedrive;
 
 //Imports! D:
 import java.io.File;
+import java.util.Arrays;
 import java.util.function.DoubleSupplier;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
@@ -91,9 +93,14 @@ public class SwerveSubsystem extends SubsystemBase {
   
  
   public SwerveSubsystem(File directory) {
-    RobotConfig config; 
+    //File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
+    //Catches any errors within the code and crashes the program if there are any
+       /* DO NOT TOUCH
+       Yknow what, dont touch in generalI dont know
+              what this part does and none of us should
+              |
+              V   PUT A AN END HER */
     try {
-      config = RobotConfig.fromGUISettings();
     swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
 
     } catch (Exception e) {
@@ -164,7 +171,7 @@ public class SwerveSubsystem extends SubsystemBase {
                                        swerveDrive.getOdometryHeading().getRadians(),
                                        swerveDrive.getMaximumChassisVelocity()));
   });
-}
+  }
 
   /**
    * Command to drive the robot using translative values and heading as angular velocity
@@ -211,6 +218,10 @@ public class SwerveSubsystem extends SubsystemBase {
   public Pose2d getPose(){
     return swerveDrive.getPose();
   }
+
+  public void resetPose(Pose2d pose) {
+    swerveDrive.resetOdometry(pose);
+ }
 
   public Rotation2d getHeading(){
     return getPose().getRotation();
@@ -260,16 +271,25 @@ public class SwerveSubsystem extends SubsystemBase {
   public SwerveDrive getSwerveDrive(){
     return swerveDrive;
   }
+   public void resetOdometry(Pose2d initialHolonomicPose){
+    swerveDrive.resetOdometry(initialHolonomicPose);
+  }
 
-public Object resetOdometry(Pose2d pose2d) {
-    throw new UnsupportedOperationException("Unimplemented method 'resetOdometry'");
-}
+  public Command centerModulesCommand() {
+      return run(() -> Arrays.asList(swerveDrive.getModules())
+                           .forEach(it -> it.setAngle(0.0)));
+  }
 
-public Command centerModulesCommand() {
-    throw new UnsupportedOperationException("Unimplemented method 'centerModulesCommand'");
-}
+  public ChassisSpeeds getTargetSpeeds(double xInput, double yInput, Rotation2d angle) {
+    Translation2d scaledInputs = SwerveMath.cubeTranslation(new Translation2d(xInput, yInput));
 
-public ChassisSpeeds getTargetSpeeds(double asDouble, double asDouble2, Rotation2d rotation2d) {
-  throw new UnsupportedOperationException("Unimplemented method 'getTargetSpeeds'");
-}
+    return swerveDrive.swerveController.getTargetSpeeds(scaledInputs.getX(),
+                                                      scaledInputs.getY(),
+                                                      angle.getRadians(),
+                                                      getHeading().getRadians(),
+                                                      Constants.MAX_SPEED);
+  }
+
+
+
 }

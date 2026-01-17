@@ -1,3 +1,4 @@
+
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -27,10 +28,12 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
@@ -41,6 +44,7 @@ import swervelib.SwerveInputStream;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
+
 
 
 public class RobotContainer {
@@ -63,19 +67,20 @@ public class RobotContainer {
   
     private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   
-      SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> m_driverController.getLeftY() * -1,
-                                                                () -> m_driverController.getLeftX() * -1)
-                                                                .withControllerRotationAxis(m_driverController::getRightX)
-                                                                .deadband(OperatorConstants.DEADBAND)
-                                                                .scaleTranslation(0.8)
-                                                                .allianceRelativeControl(true);
+    SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
+                                                                  () -> m_driverController.getLeftY() * -1,
+                                                                  () -> m_driverController.getLeftX() * -1)
+                                                              .withControllerRotationAxis(m_driverController::getRightX)
+                                                              .deadband(OperatorConstants.DEADBAND)
+                                                              .scaleTranslation(0.8)
+                                                              .allianceRelativeControl(true);
 
      SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(m_driverController::getRightX,
                                                                                                 m_driverController::getRightY)
                                                               .headingWhile(true);
-
-  
+  /**
+   * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
+   */
   SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
                                                              .allianceRelativeControl(false);
 
@@ -111,6 +116,9 @@ public class RobotContainer {
     //new PointTowardsZoneTrigger("Speaker").whileTrue(Commands.print("aiming at speaker"));
     
     configureBindings();
+
+
+    DriverStation.silenceJoystickConnectionWarning(true);
 
         SmartDashboard.putData("Field", field);
 
@@ -186,7 +194,20 @@ try {
   }
 
   private void configureBindings() {
-  
+
+    if(RobotBase.isSimulation()){
+      drivebase.resetPose(new Pose2d(2,2,new Rotation2d()));
+    }
+    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+    new Trigger(m_exampleSubsystem::exampleCondition)
+        .onTrue(new ExampleCommand(m_exampleSubsystem));
+
+    // Schedule `exampleMethodCommand` when the Xbox controller's B button is
+    // pressed,
+    // cancelling on release.
+    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+  }
+
     Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
     Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
     Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
@@ -234,6 +255,16 @@ try {
       m_driverController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       m_driverController.rightBumper().onTrue(Commands.none());
     }
-    }
-    }
+
+  }
+  
+
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+  public Command getAutonomousCommand() {
+    // An example command will be run in autonomous
+    return Autos.exampleAuto(m_exampleSubsystem);
   }
