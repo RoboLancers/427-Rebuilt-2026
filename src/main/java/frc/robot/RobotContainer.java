@@ -96,7 +96,6 @@ public class RobotContainer {
                                                                            .translationHeadingOffset(true)
                                                                            .translationHeadingOffset(Rotation2d.fromDegrees(0));
                                                             
-  
   public RobotContainer() {
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -113,7 +112,6 @@ public class RobotContainer {
     //new PointTowardsZoneTrigger("Speaker").whileTrue(Commands.print("aiming at speaker"));
     
     configureBindings();
-
 
     DriverStation.silenceJoystickConnectionWarning(true);
 

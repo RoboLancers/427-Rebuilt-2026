@@ -13,7 +13,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "cenPos1"
+            "pathName": "cenpos1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Climb Rung 1"
           }
         }
       ]
