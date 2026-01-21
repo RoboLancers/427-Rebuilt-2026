@@ -17,11 +17,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
 import frc.robot.subsystems.VisionSubsystem;
-
 import java.io.File;
 import java.util.Arrays;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
+import org.photonvision.PhotonPoseEstimator;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
 import swervelib.math.SwerveMath;
@@ -62,14 +62,15 @@ public class SwerveSubsystem extends SubsystemBase {
 
   }
 
+   
 public void setupPhotonVision() {
-      vision = new VisionSubsystem(swerveDrive::getPose, swerveDrive.field);
+      vision = new VisionSubsystem(PhotonPoseEstimator.addVisionMeasurement, drivebase, swerveDrive::getPose, swerveDrive.field);
     }
 
 
   @Override
   public void simulationPeriodic() {}
-
+     
   public void periodic() {
     // This method will be called once per scheduler run
     if(visionDriveTest) {

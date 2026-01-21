@@ -4,31 +4,50 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Microseconds;
+import static edu.wpi.first.units.Units.Milliseconds;
+import static edu.wpi.first.units.Units.Seconds;
+
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTablesJNI;
+import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.subsystems.VisionSubsystem.EstimateConsumer;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
+import java.awt.Desktop;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
-
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.PhotonUtils;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
+import swervelib.SwerveDrive;
+import swervelib.telemetry.SwerveDriveTelemetry;
+target;
+import swervelib.SwerveDrive;
 import swervelib.telemetry.SwerveDriveTelemetry;
 
 public class VisionSubsystem extends SubsystemBase {
@@ -38,17 +57,13 @@ public class VisionSubsystem extends SubsystemBase {
   private Matrix<N3, N1> curStdDevs;
   private final EstimateConsumer estConsumer;
   // Simulation
-  private PhotonCameraSim cameraSim;
-  private VisionSystemSim visionSim;
-private SwerveSubsystem swerve ;
   /**
    * @param estConsumer Lamba that will accept a pose estimate and pass it to your desired {@link
    *     edu.wpi.first.math.estimator.SwerveDrivePoseEstimator}
-   */
-  public VisionSubsystem(EstimateConsumer estConsumer, SwerveSubsystem swerve, Supplier<Pose2d> currentPose, Field2d field) {
-    this.estConsumer = estConsumer;
-    this.swerve = swerve;
-    this.currentPose = currentPose;
+   * 
+   */c VisionSubsystem(EstimateConsumer estConsumer, SwerveSubsystem swerve, Supplier<Pose2d> currentPose, Field2d field2d) {
+    this.estConsumer = esEstimateConsumer estConsumer, 
+    this.estConsumer = estConsumer;    this.currentPose = currentPose;
     this.field2d = field;
 
     Matrix<N3, N1> curStdDevs;
@@ -78,20 +93,40 @@ private SwerveSubsystem swerve ;
       visionSim.addCamera(cameraSim, vision.kRobotToCam);
 
       cameraSim.enableDrawWireframe(true);
+
+
+      for (Cameras c : Cameras.values()) {
+        c.addToVisionSim(visionSim);
+      }
+      openSimCameraViews();
+
     }
   }
 
 
-  public void updatePoseEstimation(SwerveSubsystem swerve) {
+  private void openSimCameraViews() {
+    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+      try {
+        Desktop.getDesktop().browse(new URI("http://localhost:1182/"));
+        Desktop.getDesktop().browse(new URI("http://localhost:1184/"));
+        Desktop.getDesktop().browse(new URI("http://localhost:1186/"));
+      } catch (IOException | URISytaxException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+
+  public void updatePoseEstimation(SwerveDrive swerveDrive) {
     
-    if(SwerveDriveTelemetry.isSimulation && swerve.getSimulationDriveTrainPose().isPresent()) {
-      visionSim.update(swerve.getSimulationDriveTrainPose().get());
+    if(SwerveDriveTelemetry.isSimulation && swerveDrive.getSimulationDriveTrainPose().isPresent()) {
+      visionSim.update(swerveDrive.getSimulationDriveTrainPose().get());
     }
     for (Cameras camera : Cameras.values()) {
       Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
       if(poseEst.isPresent()) {
         var pose = poseEst.get();
-        swerve.addVisionMeasurement(pose.estimatedPose.toPose2d(),
+        swerveDrive.addVisionMeasurement(pose.estimatedPose.toPose2d(),
                                     pose.timestampSeconds,
                                     camera.curStdDevs);
       }
@@ -120,7 +155,7 @@ private SwerveSubsystem swerve ;
       }
     }
 
-  enum Cameras
+   enum Cameras
   {
     /**
      * Left Camera
@@ -250,13 +285,12 @@ private SwerveSubsystem swerve ;
 
 
 
-      visionEst.ifPresent(
+      visionEst.@ifPresent(
           est -> {
             // Change our trust in the measurement based on the tags we can see
             var estStdDevs = getEstimationStdDevs();
-
-            estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs) ;
-    });
+             estConsumer.accept(est.estimatedPose.toPose2d(),est.timestampSeconds, estStdDevs);
+           } );
   
 
 
@@ -345,4 +379,4 @@ private SwerveSubsystem swerve ;
     public void accept(Pose2d pose, double timestamp, Matrix<N3, N1> estimationStdDevs);
   }
 }
-  }
+  }}
