@@ -118,8 +118,8 @@ public final class Constants {
     public static final int StoppingFeeder = 0;
     public static final int StoppingIntake =  0;
     
-    public static final double spinupFeeder = 0.6;
-    public static final double spinupIntake = 0.4;
+    public static final double SpinupFeeder = 0.6;
+    public static final double SpinupIntake = 0.4;
   }
 }
  

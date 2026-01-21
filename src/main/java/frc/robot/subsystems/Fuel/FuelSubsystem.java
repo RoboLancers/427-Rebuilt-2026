@@ -1,5 +1,6 @@
 package frc.robot.subsystems.Fuel; 
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -11,7 +12,7 @@ import frc.robot.subsystems.IntakeShooter.IntakeShooter;
 public class FuelSubsystem extends SubsystemBase {
     private final IntakeShooter m_IntakeShooter = new IntakeShooter();
     private final Feeder m_feeder = new Feeder();
-        
+
     public FuelSubsystem() {
 
     }
@@ -42,8 +43,8 @@ public class FuelSubsystem extends SubsystemBase {
     }
 
     public void spinUp() {
-        m_feeder.set(FuelConstants.spinupFeeder);
-        m_IntakeShooter.set(FuelConstants.spinupIntake);
+        m_feeder.set(FuelConstants.SpinupFeeder);
+        m_IntakeShooter.set(FuelConstants.SpinupIntake);
     }
 
     public Command spinUpCommand() {

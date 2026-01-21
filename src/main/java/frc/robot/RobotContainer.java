@@ -52,9 +52,11 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
+
   public Command Intake() {
     return m_IntakeShooter.set(FuelConstants.IntakingIntake).alongWith(m_feeder.set(FuelConstants.IntakingFeeder));
   }
+
   public Command Eject() {
     return m_IntakeShooter.set(FuelConstants.EjectingIntake).alongWith(m_feeder.set(FuelConstants.EjectingFeeder));
   }
@@ -65,7 +67,7 @@ public class RobotContainer {
     return m_IntakeShooter.set(FuelConstants.StoppingIntake).alongWith(m_feeder.set(FuelConstants.StoppingFeeder));
   }
   public Command SpinUp() {
-    return m_IntakeShooter.set(FuelConstants.spinupIntake).alongWith(m_feeder.set(FuelConstants.spinupFeeder));
+    return m_IntakeShooter.set(FuelConstants.SpinupIntake).alongWith(m_feeder.set(FuelConstants.SpinupFeeder));
   }
   private void configureBindings() {
 
@@ -73,7 +75,6 @@ public class RobotContainer {
   // m_driverController.leftBumper().whileTrue(m_fuel.runEnd(() -> m_fuel.intake(), () -> m_fuel.stop()));
 
   // m_driverController.rightBumper()
-  // .whileTrue(m_fuel.launchCommand());
   //   //.whileTrue(m_fuel.spinUpCommand().withTimeout(FuelConstants.SpinUpTime)
   //     //.andThen(m_fuel.launchCommand())
   //     //.finallyDo(() -> m_fuel.stop()));
