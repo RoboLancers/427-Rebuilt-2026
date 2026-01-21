@@ -7,19 +7,57 @@
         {
           "type": "path",
           "data": {
-            "pathName": "botpos1"
+            "pathName": "topPos1"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Shoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "topdepot1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "End Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "topdepot2"
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "botpos2"
+            "pathName": "topPos2"
           }
         },
         {
@@ -35,7 +73,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "botpos3"
+                  "pathName": "topPos3"
                 }
               }
             ]
@@ -54,7 +92,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "botpos4"
+                  "pathName": "topPos4"
                 }
               }
             ]
@@ -79,7 +117,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "botpos5"
+                  "pathName": "topPos5"
                 }
               }
             ]
@@ -98,51 +136,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "botpos6"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "botpos9"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "End Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "botpos10"
+                  "pathName": "topPos6"
                 }
               }
             ]

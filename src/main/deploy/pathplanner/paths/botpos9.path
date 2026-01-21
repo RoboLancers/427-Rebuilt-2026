@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.658,
-        "y": 2.833
+        "x": 4.8,
+        "y": 2.85
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.056686808746576,
-        "y": 2.8670967755298262
+        "x": 5.198686808746576,
+        "y": 2.884096775529826
       },
       "isLocked": false,
       "linkedName": null
@@ -48,7 +48,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }
