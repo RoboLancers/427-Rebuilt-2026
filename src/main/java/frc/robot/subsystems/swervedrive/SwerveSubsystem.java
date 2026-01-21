@@ -156,7 +156,7 @@ public class SwerveSubsystem extends SubsystemBase {
             0.02
         );
         setModuleStates(previousSetpoint.moduleStates());
-
+      }
   @Override
   public void simulationPeriodic() {
     
