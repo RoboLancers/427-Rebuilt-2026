@@ -53,14 +53,14 @@ public class RobotContainer {
                                                                   () -> -m_driverController.getLeftY() * Constants.MAX_SPEED,
                                                                   () -> -m_driverController.getLeftX() * Constants.MAX_SPEED)
                                                               .withControllerRotationAxis(
-                                                                  () -> -m_driverController.getRightX())
+                                                                                         () -> m_driverController.getRightX() * Constants.MAX_ANGULAR_SPEED) //ASDFGHJKL
                                                               .deadband(OperatorConstants.DEADBAND)
-                                                              .scaleTranslation(1)
+                                                              .scaleTranslation(0.8)
                                                               .allianceRelativeControl(true);
 
      SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(
-                                                                   () -> -m_driverController.getRightY() * Constants.MAX_ANGULAR_SPEED,
-                                                                   () -> -m_driverController.getRightX() * Constants.MAX_ANGULAR_SPEED)
+                                                                                               () -> -m_driverController.getRightY() * Constants.MAX_ANGULAR_SPEED,
+                                                                                               () -> -m_driverController.getRightX() * Constants.MAX_ANGULAR_SPEED) //ASDFGHJKL
                                                               .headingWhile(true);
   /**
    * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
@@ -71,7 +71,7 @@ public class RobotContainer {
   SwerveInputStream driveAngularVelocityKeyboard = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                         () -> -m_driverController.getLeftY() * Constants.MAX_SPEED, 
                                                                         () -> -m_driverController.getLeftX() * Constants.MAX_SPEED)
-                                                                    .withControllerRotationAxis(() -> m_driverController.getRawAxis(2))
+                                                                    .withControllerRotationAxis(() -> m_driverController.getRawAxis(2) * Constants.MAX_ANGULAR_SPEED) //ASDFGHJKL
                                                                     .deadband(OperatorConstants.DEADBAND)
                                                                    .scaleTranslation(0.8) 
                                                                     .allianceRelativeControl(true);
