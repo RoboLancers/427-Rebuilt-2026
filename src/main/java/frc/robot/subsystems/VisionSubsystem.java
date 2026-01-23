@@ -103,7 +103,6 @@ public class VisionSubsystem extends SubsystemBase {
         c.addToVisionSim(visionSim);
       }
       openSimCameraViews();
-
     }
   }
 
