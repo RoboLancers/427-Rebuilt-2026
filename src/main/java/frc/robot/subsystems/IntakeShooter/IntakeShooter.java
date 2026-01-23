@@ -1,7 +1,6 @@
 package frc.robot.subsystems.IntakeShooter;
 
 import frc.robot.Constants.IntakeConstants;
-import frc.robot.Constants.MotorConstants;
 
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
@@ -34,7 +33,7 @@ import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 
 public class IntakeShooter extends SubsystemBase {
-  public int FuelCounter = 0;
+  public static int FuelCounter = 0;
 
   protected void execute() {
     SmartDashboard.putNumber("Fuel Number", FuelCounter);
@@ -67,9 +66,9 @@ public class IntakeShooter extends SubsystemBase {
   .withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate));
 
   // Vendor motor controller object
-  private SparkMax spark = new SparkMax(MotorConstants.Intake_SparkMax_ID, MotorType.kBrushless);
+  private SparkMax spark = new SparkMax(IntakeConstants.Intake_SparkMax_ID, MotorType.kBrushless);
   
-  private SmartMotorController sparkSmartMotorController = new SparkWrapper(spark, DCMotor.getNEO(MotorConstants.IntakenumMotors), smcConfig);
+  private SmartMotorController sparkSmartMotorController = new SparkWrapper(spark, DCMotor.getNEO(IntakeConstants.IntakenumMotors), smcConfig);
 
   private Debouncer statorDebounce = new Debouncer(IntakeConstants.DebounceTime);
 

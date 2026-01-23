@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
@@ -13,7 +14,8 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 
-import static edu.wpi.first.units.Units.RPM; 
+import static edu.wpi.first.units.Units.RPM;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -69,8 +71,8 @@ public class RobotContainer {
   public Command SpinUp() {
     return m_IntakeShooter.set(FuelConstants.SpinupIntake).alongWith(m_feeder.set(FuelConstants.SpinupFeeder));
   }
-  private void configureBindings() {
 
+  private void configureBindings() {
   // //m_driverController.x().whileTrue(m_feeder.set(FeederConstants.controllerxdutyCycle));
   // m_driverController.leftBumper().whileTrue(m_fuel.runEnd(() -> m_fuel.intake(), () -> m_fuel.stop()));
 
@@ -82,9 +84,16 @@ public class RobotContainer {
   // m_driverController.a()
   //   .whileTrue(m_fuel.runEnd(() -> m_fuel.eject(), () -> m_fuel.stop()));
 
-  m_driverController.leftBumper().whileTrue(Intake());
+ 
+
+  if(IntakeShooter.FuelCounter >= 10){
+    Stop();
+  }else{
+    m_driverController.leftBumper().toggleOnTrue(Intake());
+  }
+
   m_driverController.rightBumper().whileTrue(Launch());
-  m_driverController.a().whileTrue(Eject());
+  m_driverController.a().whileTrue(Eject()); 
     //m_feeder.set(FeederConstants.controllerxdutyCycle).alongWith(m_IntakeShooter.set(IntakeConstants.x_DutyCycle)));
   
 

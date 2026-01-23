@@ -18,7 +18,6 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.MotorConstants;
 import frc.robot.Constants.FeederConstants;
 import yams.gearing.GearBox;
 import yams.gearing.MechanismGearing;
@@ -34,7 +33,7 @@ import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 public class Feeder extends SubsystemBase {
 
-  public int FuelCounter;
+  // public int FuelCounter;
   
   SmartMotorControllerTelemetryConfig motorTelemetryConfig = new SmartMotorControllerTelemetryConfig()
   .withMechanismPosition()
@@ -69,15 +68,15 @@ public class Feeder extends SubsystemBase {
   .withOpenLoopRampRate(Seconds.of(FeederConstants.OpenLoopRampRate));
 
 
-  private SparkMax spark = new SparkMax(MotorConstants.FeederdeviceId, MotorType.kBrushless);
+  private SparkMax spark = new SparkMax(FeederConstants.FeederdeviceId, MotorType.kBrushless);
 
-  private SmartMotorController sparkSmartMotorController = new SparkWrapper(spark, DCMotor.getNEO(MotorConstants.FeedernumMotors), smcConfig);
+  private SmartMotorController sparkSmartMotorController = new SparkWrapper(spark, DCMotor.getNEO(FeederConstants.FeedernumMotors), smcConfig);
 
-  private Debouncer statorDebounce = new Debouncer(FeederConstants.debouncerTime);
+  // private Debouncer statorDebounce = new Debouncer(FeederConstants.debouncerTime);
 
-  public boolean isGamePieceIn() {
-    return statorDebounce.calculate(sparkSmartMotorController.getStatorCurrent().gte(Amps.of(FeederConstants.StatorAmps)));
-  }
+  // public boolean isGamePieceIn() {
+  //   return statorDebounce.calculate(sparkSmartMotorController.getStatorCurrent().gte(Amps.of(FeederConstants.StatorAmps)));
+  // }
 
   private final FlyWheelConfig FeederConfig = new FlyWheelConfig(sparkSmartMotorController)
   .withDiameter(Inches.of(FeederConstants.Diameter))
@@ -127,10 +126,10 @@ public class Feeder extends SubsystemBase {
     // This method will be called once per scheduler run
     Feeder.updateTelemetry();
 
-    boolean Fuel = isGamePieceIn();
-    if (Fuel) {
-      FuelCounter -= 1;
-    }
+    // boolean Fuel = isGamePieceIn();
+    // if (Fuel) {
+    //   FuelCounter -= 1;
+    // }
      
   }
 
