@@ -143,7 +143,7 @@ public class RobotContainer {
         .set(FuelConstants.LaunchingIntake)
         .alongWith(m_feeder.set(FuelConstants.LaunchingFeeder));
   }
-
+ 
   public Command Stop() {
     return m_IntakeShooter
         .set(FuelConstants.StoppingIntake)
