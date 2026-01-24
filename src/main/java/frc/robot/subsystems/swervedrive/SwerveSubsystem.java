@@ -28,37 +28,24 @@ import swervelib.parser.SwerveParser;
 
 // This is the main class for the swerve drive subsystem
 public class SwerveSubsystem extends SubsystemBase {
-  double maximumSpeed = Units.feetToMeters(4.5);
   private final SwerveDrive swerveDrive;
-  private final boolean visionDriveTest = false;
-  private VisionSubsystem vision;
-
-  // private final SwerveDrivePoseEstimator poseEstimator;
 
   /* Creates a new SwerveSubsystem. */
   public SwerveSubsystem(File directory) {
     // File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
     // Catches any errors within the code and crashes the program if there are any
-    /* DO NOT TOUCH
-    Yknow what, dont touch in generalI dont know
-           what this part does and none of us should
-           |
-           V    */
+
+    /* DO NOT TOUCH or everything breaks
+    |
+    V    */
     try {
-      swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
+      swerveDrive =
+          new SwerveParser(directory).createSwerveDrive(Constants.DriveConstants.MAX_SPEED);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
     // This method will be called once per scheduler run during simulation
 
-    if (visionDriveTest) {
-      // Stop the odometry thread if we are using vision that way we can synchronize updates better.
-      swerveDrive.stopOdometryThread();
-    }
-  }
-
-  public void setupPhotonVision() {
-    vision = new VisionSubsystem(swerveDrive::getPose, swerveDrive.field);
   }
 
   @Override
@@ -66,10 +53,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public void periodic() {
     // This method will be called once per scheduler run
-    if (visionDriveTest) {
-      swerveDrive.updateOdometry();
-      vision.updatePoseEstimation(swerveDrive);
-    }
   }
 
   public Command sysIdDriveMotorCommand() {
@@ -91,8 +74,7 @@ public class SwerveSubsystem extends SubsystemBase {
               SwerveMath.scaleTranslation(
                   new Translation2d(translationX.getAsDouble(), translationY.getAsDouble()), 0.8);
 
-          // Make the robot move
-          // Mat
+          // Make the robot move with math
           driveFieldOriented(
               swerveDrive.swerveController.getTargetSpeeds(
                   scaledInputs.getX(),
@@ -111,7 +93,6 @@ public class SwerveSubsystem extends SubsystemBase {
    * @param translationY Translation in the Y direction
    * @param angularRotationX Rotation of the robot to set
    * @return Drive command.
-   *     <p>IT DOES SOMETHING
    */
   public Command driveCommand(
       DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
@@ -136,7 +117,7 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Drive the robot given a chassis field oriented velocity.
    *
-   * @param velocity Velocity according to the field. p
+   * @param velocity Velocity according to the field.
    */
   public Command driveFieldOriented(Supplier<ChassisSpeeds> velocity) {
     return run(
@@ -170,7 +151,7 @@ public class SwerveSubsystem extends SubsystemBase {
         headingX,
         headingY,
         getHeading().getRadians(),
-        Constants.MAX_SPEED);
+        Constants.DriveConstants.MAX_SPEED);
   }
 
   public void zeroGyro() {
@@ -222,6 +203,6 @@ public class SwerveSubsystem extends SubsystemBase {
         scaledInputs.getY(),
         angle.getRadians(),
         getHeading().getRadians(),
-        Constants.MAX_SPEED);
+        Constants.DriveConstants.MAX_SPEED);
   }
 }
