@@ -10,7 +10,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+<<<<<<< HEAD
 import edu.wpi.first.math.util.Units;
+=======
+>>>>>>> f3b41229e09984beda9d92704500552def42a4cb
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
@@ -27,13 +30,17 @@ import swervelib.parser.SwerveParser;
 
 // This is the main class for the swerve drive subsystem
 public class SwerveSubsystem extends SubsystemBase {
+<<<<<<< HEAD
   double maximumSpeed = Units.feetToMeters(4.5);
+=======
+>>>>>>> f3b41229e09984beda9d92704500552def42a4cb
   private final SwerveDrive swerveDrive;
 
   /* Creates a new SwerveSubsystem. */
   public SwerveSubsystem(File directory) {
     // File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
     // Catches any errors within the code and crashes the program if there are any
+<<<<<<< HEAD
     /* DO NOT TOUCH
     Yknow what, dont touch in generalI dont know
            what this part does and none of us should
@@ -41,6 +48,15 @@ public class SwerveSubsystem extends SubsystemBase {
            V    */
     try {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
+=======
+
+    /* DO NOT TOUCH or everything breaks
+    |
+    V    */
+    try {
+      swerveDrive =
+          new SwerveParser(directory).createSwerveDrive(Constants.DriveConstants.MAX_SPEED);
+>>>>>>> f3b41229e09984beda9d92704500552def42a4cb
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -74,8 +90,12 @@ public class SwerveSubsystem extends SubsystemBase {
               SwerveMath.scaleTranslation(
                   new Translation2d(translationX.getAsDouble(), translationY.getAsDouble()), 0.8);
 
+<<<<<<< HEAD
           // Make the robot move
           // Mat
+=======
+          // Make the robot move with math
+>>>>>>> f3b41229e09984beda9d92704500552def42a4cb
           driveFieldOriented(
               swerveDrive.swerveController.getTargetSpeeds(
                   scaledInputs.getX(),
@@ -94,7 +114,10 @@ public class SwerveSubsystem extends SubsystemBase {
    * @param translationY Translation in the Y direction
    * @param angularRotationX Rotation of the robot to set
    * @return Drive command.
+<<<<<<< HEAD
    *     <p>IT DOES SOMETHING
+=======
+>>>>>>> f3b41229e09984beda9d92704500552def42a4cb
    */
   public Command driveCommand(
       DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
@@ -153,7 +176,11 @@ public class SwerveSubsystem extends SubsystemBase {
         headingX,
         headingY,
         getHeading().getRadians(),
+<<<<<<< HEAD
         Constants.MAX_SPEED);
+=======
+        Constants.DriveConstants.MAX_SPEED);
+>>>>>>> f3b41229e09984beda9d92704500552def42a4cb
   }
 
   public void zeroGyro() {
@@ -205,6 +232,10 @@ public class SwerveSubsystem extends SubsystemBase {
         scaledInputs.getY(),
         angle.getRadians(),
         getHeading().getRadians(),
+<<<<<<< HEAD
         Constants.MAX_SPEED);
+=======
+        Constants.DriveConstants.MAX_SPEED);
+>>>>>>> f3b41229e09984beda9d92704500552def42a4cb
   }
 }
