@@ -117,6 +117,7 @@ public class IntakeShooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Fuel Number", FuelCounter);
     intake.updateTelemetry();
     boolean GamePiece = isGamePieceIn();
     if (GamePiece == true) {

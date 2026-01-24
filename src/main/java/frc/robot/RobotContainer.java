@@ -1,7 +1,5 @@
 package frc.robot;
 
-import java.io.File;
-
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,10 +17,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
 import frc.robot.subsystems.Feeder.Feeder;
 import frc.robot.subsystems.IntakeShooter.IntakeShooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import java.io.File;
 import swervelib.SwerveInputStream;
 
 /**
@@ -143,7 +141,7 @@ public class RobotContainer {
         .set(FuelConstants.LaunchingIntake)
         .alongWith(m_feeder.set(FuelConstants.LaunchingFeeder));
   }
- 
+
   public Command Stop() {
     return m_IntakeShooter
         .set(FuelConstants.StoppingIntake)
@@ -155,7 +153,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-     if (IntakeShooter.FuelCounter >= 10) {
+    if (IntakeShooter.FuelCounter >= 10) {
       Stop();
     } else {
       m_driverController.leftBumper().whileTrue(Intake());
