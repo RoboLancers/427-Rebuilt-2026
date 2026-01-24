@@ -56,7 +56,7 @@ public class RobotContainer {
         private final SendableChooser<Command> autoChooser = new SendableChooser<>();
   
     // The robot's subsystems and commands are defined here...
-    private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+    //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   
     private final Field2d field = new Field2d();
   
