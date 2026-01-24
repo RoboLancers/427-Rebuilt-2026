@@ -7,11 +7,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -23,9 +21,6 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
-
-
-
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -53,7 +48,7 @@ public class RobotContainer {
               () -> -m_driverController.getLeftY() * Constants.MAX_SPEED,
               () -> -m_driverController.getLeftX() * Constants.MAX_SPEED)
           .withControllerRotationAxis(
-                                                                                         () -> m_driverController.getRightX() * Constants.MAX_ANGULAR_SPEED) //ASDFGHJKL
+              () -> m_driverController.getRightX() * Constants.MAX_ANGULAR_SPEED) // ASDFGHJKL
           .deadband(OperatorConstants.DEADBAND)
           .scaleTranslation(0.8)
           .allianceRelativeControl(true);
@@ -62,7 +57,8 @@ public class RobotContainer {
       driveAngularVelocity
           .copy()
           .withControllerHeadingAxis(
-                                                                                               () -> -m_driverController.getRightY() * Constants.MAX_ANGULAR_SPEED,() -> -m_driverController.getRightX() * Constants.MAX_ANGULAR_SPEED) //ASDFGHJKL
+              () -> -m_driverController.getRightY() * Constants.MAX_ANGULAR_SPEED,
+              () -> -m_driverController.getRightX() * Constants.MAX_ANGULAR_SPEED) // ASDFGHJKL
           .headingWhile(true);
 
   /** Clone's the angular velocity input stream and converts it to a robotRelative input stream. */
@@ -122,7 +118,7 @@ public class RobotContainer {
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
 
-  //sets default commands and other commands depending on mode 
+  // sets default commands and other commands depending on mode
   Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
   Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
   Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
@@ -133,29 +129,30 @@ public class RobotContainer {
 
   {
     if (RobotBase.isSimulation()) {
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); //Change this one
+      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Change this one
     } else {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     }
 
-    if (Robot.isSimulation())
-    {
-      Pose2d target = new Pose2d(new Translation2d(1, 4),
-                                 Rotation2d.fromDegrees(90));
-      //drivebase.getSwerveDrive().field.getObject("targetPose").setPose(target);
-      driveDirectAngle.driveToPose(() -> target,
-                                           new ProfiledPIDController(5,0,0, new Constraints(5, 2)),
-                                           new ProfiledPIDController(5,0,0, new Constraints(Units.degreesToRadians(360),
-                                                                                            Units.degreesToRadians(180))
-                                           ));
-      m_driverController.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
+    if (Robot.isSimulation()) {
+      Pose2d target = new Pose2d(new Translation2d(1, 4), Rotation2d.fromDegrees(90));
+      // drivebase.getSwerveDrive().field.getObject("targetPose").setPose(target);
+      driveDirectAngle.driveToPose(
+          () -> target,
+          new ProfiledPIDController(5, 0, 0, new Constraints(5, 2)),
+          new ProfiledPIDController(
+              5, 0, 0, new Constraints(Units.degreesToRadians(360), Units.degreesToRadians(180))));
+      m_driverController
+          .start()
+          .onTrue(
+              Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
       m_driverController.a().whileTrue(drivebase.sysIdDriveMotorCommand());
       m_driverController
           .b()
           .whileTrue(
               Commands.runEnd(
-                  () -> driveDirectAngle.driveToPoseEnabled(true), //And this one
-                  () -> driveDirectAngle.driveToPoseEnabled(false))); //And this one
+                  () -> driveDirectAngle.driveToPoseEnabled(true), // And this one
+                  () -> driveDirectAngle.driveToPoseEnabled(false))); // And this one
     }
     if (DriverStation.isTest()) {
       drivebase.setDefaultCommand(
