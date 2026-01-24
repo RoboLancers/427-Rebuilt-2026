@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
@@ -28,6 +29,7 @@ import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 
+
 // This is the main class for the swerve drive subsystem
 public class SwerveSubsystem extends SubsystemBase {
   double maximumSpeed = Units.feetToMeters(4.5);
@@ -40,13 +42,13 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /* Creates a new SwerveSubsystem. */
   public SwerveSubsystem(File directory) {
-    // File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
-    // Catches any errors within the code and crashes the program if there are any
-    /* DO NOT TOUCH
-    Yknow what, dont touch in generalI dont know
-           what this part does and none of us should
-           |
-           V    */
+    //File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
+    //Catches any errors within the code and crashes the program if there are any
+       /* DO NOT TOUCH
+       Yknow what, dont touch in generalI dont know
+              what this part does and none of us should
+              |
+              V    */
     try {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
     } catch (Exception e) {

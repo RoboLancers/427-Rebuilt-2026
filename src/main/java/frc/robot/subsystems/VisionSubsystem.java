@@ -64,7 +64,7 @@ public class VisionSubsystem extends SubsystemBase {
    * @param estConsumer Lamba that will accept a pose estimate and pass it to your desired {@link
    *     edu.wpi.first.math.estimator.SwerveDrivePoseEstimator}
    * 
-   */c
+   */
     VisionSubsystem(EstimateConsumer estConsumer, SwerveSubsystem swerve, Supplier<Pose2d> currentPose, Field2d field2d) {
     this.estConsumer = esEstimateConsumer estConsumer, 
     this.estConsumer = estConsumer;    this.currentPose = currentPose;
