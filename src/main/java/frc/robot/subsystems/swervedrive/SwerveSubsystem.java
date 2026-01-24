@@ -37,7 +37,8 @@ public class SwerveSubsystem extends SubsystemBase {
     |
     V    */
     try {
-      swerveDrive = new SwerveParser(directory).createSwerveDrive(Constants.DriveConstants.MAX_SPEED);
+      swerveDrive =
+          new SwerveParser(directory).createSwerveDrive(Constants.DriveConstants.MAX_SPEED);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
