@@ -23,6 +23,8 @@ import swervelib.SwerveDriveTest;
 import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
+import swervelib.telemetry.SwerveDriveTelemetry;
+import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 // This is the main class for the swerve drive subsystem
 public class SwerveSubsystem extends SubsystemBase {
@@ -30,6 +32,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /* Creates a new SwerveSubsystem. */
   public SwerveSubsystem(File directory) {
+
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     // File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
     // Catches any errors within the code and crashes the program if there are any
 
