@@ -5,14 +5,12 @@
 package frc.robot.subsystems.swervedrive;
 
 // Imports! D:
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
@@ -22,13 +20,11 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
-import org.photonvision.PhotonPoseEstimator;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
 import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
-
 
 // This is the main class for the swerve drive subsystem
 public class SwerveSubsystem extends SubsystemBase {
@@ -37,18 +33,17 @@ public class SwerveSubsystem extends SubsystemBase {
   private final boolean visionDriveTest = false;
   private VisionSubsystem vision;
 
-  //private final SwerveDrivePoseEstimator poseEstimator;
-
+  // private final SwerveDrivePoseEstimator poseEstimator;
 
   /* Creates a new SwerveSubsystem. */
   public SwerveSubsystem(File directory) {
-    //File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
-    //Catches any errors within the code and crashes the program if there are any
-       /* DO NOT TOUCH
-       Yknow what, dont touch in generalI dont know
-              what this part does and none of us should
-              |
-              V    */
+    // File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
+    // Catches any errors within the code and crashes the program if there are any
+    /* DO NOT TOUCH
+    Yknow what, dont touch in generalI dont know
+           what this part does and none of us should
+           |
+           V    */
     try {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
     } catch (Exception e) {
@@ -56,26 +51,22 @@ public class SwerveSubsystem extends SubsystemBase {
     }
     // This method will be called once per scheduler run during simulation
 
-
-    if(visionDriveTest) {
-  // Stop the odometry thread if we are using vision that way we can synchronize updates better.
-  swerveDrive.stopOdometryThread();
-}
-
+    if (visionDriveTest) {
+      // Stop the odometry thread if we are using vision that way we can synchronize updates better.
+      swerveDrive.stopOdometryThread();
+    }
   }
 
-   
-public void setupPhotonVision() {
-      vision = new VisionSubsystem(PhotonPoseEstimator.addVisionMeasurement, drivebase, swerveDrive::getPose, swerveDrive.field);
-    }
-
+  public void setupPhotonVision() {
+    vision = new VisionSubsystem(swerveDrive::getPose, swerveDrive.field);
+  }
 
   @Override
   public void simulationPeriodic() {}
-     
+
   public void periodic() {
     // This method will be called once per scheduler run
-    if(visionDriveTest) {
+    if (visionDriveTest) {
       swerveDrive.updateOdometry();
       vision.updatePoseEstimation(swerveDrive);
     }

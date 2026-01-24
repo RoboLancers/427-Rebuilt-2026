@@ -22,12 +22,13 @@ import swervelib.math.Matter;
  */
 public final class Constants {
 
-  //Robot Physical Constants & Speed
+  // Robot Physical Constants & Speed
   // These values are taken from the example code. NOT FINAL
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
-  public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
-  public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
-  public static final double MAX_SPEED  = Units.feetToMeters(15); //this used to be like 14 or smth
+  public static final Matter CHASSIS =
+      new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
+  public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms sprk max velocity lag
+  public static final double MAX_SPEED = Units.feetToMeters(15); // this used to be like 14 or smth
   public static final double MAX_ANGULAR_SPEED = 15;
 
   public static class OperatorConstants {
@@ -37,7 +38,8 @@ public final class Constants {
     public static final double DEADBAND = 0.1;
     public static final double LEFT_Y_DEADBAND = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
-    public static final double TURN_CONSTANT = 6; //this used to be 6 if turning speed is stupid make it six
+    public static final double TURN_CONSTANT =
+        6; // this used to be 6 if turning speed is stupid make it six
   }
 
   public static class visionConstants {
@@ -57,7 +59,7 @@ public final class Constants {
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
   }
 
-  public static class visionConstants {
+  public static class VisionConstants {
     public final String kCameraName = "YOUR CAMERA NAME";
     // Cam mounted facing forward, half a meter forward of center, half a meter up from cen
 
