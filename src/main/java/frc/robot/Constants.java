@@ -38,7 +38,8 @@ public final class Constants {
     public static final String drivebase = "drivebase";
     // this used to be 6 if turning speed is stupid make it six
   }
-   public static class IntakeConstants {
+
+  public static class IntakeConstants {
 
     public static final int Intake_SparkMax_ID = 14;
     public static final int IntakenumMotors = 1;
