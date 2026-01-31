@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.GoalEndState;
@@ -95,18 +96,32 @@ public class RobotContainer {
   public RobotContainer() {
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
-    // private Swerve swerve = new Swerve();
+    private Swerve swerve = new Swerve();
     final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 
-    // NamedCommands.registerCommand("autoBalance", drivebase.autoBalanceCommand());
-    // NamedCommands.registerCommand("exampleCommand", exampleSubsystem.exampleCommand());
-    // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
+    NamedCommands.registerCommand("Shoot", new SomeOtherCommand());
+    NamedCommands.registerCommand("Intake", drivebase.autoBalanceCommand());
+    NamedCommands.registerCommand("Outtake", exampleSubsystem.exampleCommand());
+    NamedCommands.registerCommand("End Intake", new SomeOtherCommand());
+    NamedCommands.registerCommand("Climb Rung 1", new SomeOtherCommand());
 
     // new EventTrigger("run intake").whileTrue(Commands.print("running intake"));
     // new EventTrigger("shoot note").and(new
     // Trigger(exampleSubsystem::someCondition)).onTrue(Commands.print("shoot note"));
 
     // new PointTowardsZoneTrigger("Speaker").whileTrue(Commands.print("aiming at speaker"));
+
+    // NamedCommands.registerCommand("Coral_Score", Coral_Score);
+    // NamedCommands.registerCommand("Coral_Score_Bottom",Coral_Score);
+    // NamedCommands.registerCommand("Coral_Score_Bottom_2",Coral_Score);
+    // NamedCommands.registerCommand("Coral_Score_Bottom_3",Coral_Score);
+    // NamedCommands.registerCommand("Coral_Score_Top",Coral_Score);
+    // NamedCommands.registerCommand("Coral_Score_Top_2",Coral_Score);
+    // NamedCommands.registerCommand("Coral_Score_Top_3",Coral_Score);
+    // NamedCommands.registerCommand("Wait_Coral_Top", new WaitCommand(1.0));
+    // NamedCommands.registerCommand("Wait_Coral_Top_2", new WaitCommand(1.0));
+    // NamedCommands.registerCommand("Wait_Coral_Bottom", new WaitCommand(1.0));
+    // NamedCommands.registerCommand("Wait_Coral_Bottom_2", new WaitCommand(1.0));
 
     configureBindings();
 
