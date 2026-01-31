@@ -12,6 +12,7 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -37,6 +38,7 @@ import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 
 // This is the main class for the swerve drive subsystem
+@Logged
 public class SwerveSubsystem extends SubsystemBase {
   double maximumSpeed = Units.feetToMeters(4.5);
   private SwerveSetpointGenerator setpointGenerator;
@@ -47,14 +49,13 @@ public class SwerveSubsystem extends SubsystemBase {
   public SwerveSubsystem(File directory) {
     // File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
     // Catches any errors within the code and crashes the program if there are any
-    /* DO NOT TOUCH
-    Yknow what, dont touch in general I dont know
-           what this part does and none of us should
-           |
-           V    */
 
+    /* DO NOT TOUCH or everything breaks
+    |
+    V    */
     try {
-      swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
+      swerveDrive =
+          new SwerveParser(directory).createSwerveDrive(Constants.DriveConstants.MAX_SPEED);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -123,8 +124,7 @@ public class SwerveSubsystem extends SubsystemBase {
               SwerveMath.scaleTranslation(
                   new Translation2d(translationX.getAsDouble(), translationY.getAsDouble()), 0.8);
 
-          // Make the robot move
-          // Mat
+          // Make the robot move with math
           driveFieldOriented(
               swerveDrive.swerveController.getTargetSpeeds(
                   scaledInputs.getX(),
@@ -206,7 +206,7 @@ public class SwerveSubsystem extends SubsystemBase {
         headingX,
         headingY,
         getHeading().getRadians(),
-        Constants.MAX_SPEED);
+        Constants.DriveConstants.MAX_SPEED);
   }
 
   public void zeroGyro() {
@@ -217,10 +217,6 @@ public class SwerveSubsystem extends SubsystemBase {
     return swerveDrive.kinematics;
   }
 
-  public void driveRobotRelative(ChassisSpeeds speeds) {
-    swerveDrive.drive(speeds);
-  }
-
   public void drive(Translation2d translation, double Rotation, boolean fieldReletive) {
     swerveDrive.drive(translation, Rotation, fieldReletive, false);
   }
@@ -228,6 +224,8 @@ public class SwerveSubsystem extends SubsystemBase {
   public ChassisSpeeds getFieldVelocity() {
     return swerveDrive.getFieldVelocity();
   }
+
+  public SwerveDriveConfiguration getSwerveDriveConfiguration() {
 
   public SwerveDriveConfiguration getSwerveDriveConfiguration() {
     return swerveDrive.swerveDriveConfiguration;
@@ -255,11 +253,12 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public ChassisSpeeds getTargetSpeeds(double xInput, double yInput, Rotation2d angle) {
     Translation2d scaledInputs = SwerveMath.cubeTranslation(new Translation2d(xInput, yInput));
+
     return swerveDrive.swerveController.getTargetSpeeds(
         scaledInputs.getX(),
         scaledInputs.getY(),
         angle.getRadians(),
         getHeading().getRadians(),
-        Constants.MAX_SPEED);
+        Constants.DriveConstants.MAX_SPEED);
   }
 }

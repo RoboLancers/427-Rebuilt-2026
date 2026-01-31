@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -21,32 +22,47 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Feeder.Feeder;
+import frc.robot.subsystems.IntakeShooter.IntakeShooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import java.io.File;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import org.json.simple.parser.ParseException;
 import swervelib.SwerveInputStream;
 
+/**
+ * This class is where the bulk of the robot should be declared. Since Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * subsystems, commands, and trigger mappings) should be declared here.
+ */
+
 @Logged
 public class RobotContainer {
-
+  private final IntakeShooter m_IntakeShooter = new IntakeShooter();
+  private final Feeder m_feeder = new Feeder();
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
 
   boolean isCompetition = true;
 
-  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
-
+  // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
+  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+
+  // The robot's subsystems and commands are defined here...
+  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final Field2d field = new Field2d();
 
@@ -72,7 +88,22 @@ public class RobotContainer {
   /** Clone's the angular velocity input stream and converts it to a robotRelative input stream. */
   SwerveInputStream driveRobotOriented =
       driveAngularVelocity.copy().robotRelative(true).allianceRelativeControl(false);
+  SwerveInputStream driveDirectAngle =
+      driveAngularVelocity
+          .copy()
+          .withControllerHeadingAxis(
+              () -> -m_driverController.getRightY() * Constants.DriveConstants.MAX_ANGULAR_SPEED,
+              () ->
+                  -m_driverController.getRightX()
+                      * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
+          .headingWhile(true);
 
+  // Clone's the angular velocity input stream and converts it to a robotRelative input stream.
+
+  SwerveInputStream driveRobotOriented =
+      driveAngularVelocity.copy().robotRelative(true).allianceRelativeControl(false);
+
+  
   SwerveInputStream driveAngularVelocityKeyboard =
       SwerveInputStream.of(
               drivebase.getSwerveDrive(),
@@ -82,7 +113,7 @@ public class RobotContainer {
           .deadband(OperatorConstants.DEADBAND)
           .scaleTranslation(0.8)
           .allianceRelativeControl(true);
-
+  // Derive the heading axis with math!
   SwerveInputStream driveDirectAngleKeyboard =
       driveAngularVelocityKeyboard
           .copy()
@@ -93,6 +124,7 @@ public class RobotContainer {
           .translationHeadingOffset(true)
           .translationHeadingOffset(Rotation2d.fromDegrees(0));
 
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -124,6 +156,7 @@ public class RobotContainer {
     // NamedCommands.registerCommand("Wait_Coral_Bottom_2", new WaitCommand(1.0));
 
     configureBindings();
+
 
     DriverStation.silenceJoystickConnectionWarning(true);
 
@@ -205,19 +238,59 @@ public class RobotContainer {
     }
   }
 
+  public Command Intake() {
+    return m_IntakeShooter
+        .set(FuelConstants.IntakingIntake)
+        .alongWith(m_feeder.set(FuelConstants.IntakingFeeder));
+  }
+
+  public Command Eject() {
+    return m_IntakeShooter
+        .set(FuelConstants.EjectingIntake)
+        .alongWith(m_feeder.set(FuelConstants.EjectingFeeder));
+  }
+
+  public Command Launch() {
+    return m_IntakeShooter
+        .set(FuelConstants.LaunchingIntake)
+        .alongWith(m_feeder.set(FuelConstants.LaunchingFeeder));
+  }
+
+  public Command Stop() {
+    return m_IntakeShooter
+        .set(FuelConstants.StoppingIntake)
+        .alongWith(m_feeder.set(FuelConstants.StoppingFeeder));
+  }
+
+  public Command SpinUp() {
+    return m_IntakeShooter.set(FuelConstants.SpinupIntake);
+  }
+
   private void configureBindings() {
 
     if (RobotBase.isSimulation()) {
       drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
     }
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    // new Trigger(m_exampleSubsystem::exampleCondition)
-    //   .onTrue(new ExampleCommand(m_exampleSubsystem));
+    if (IntakeShooter.FuelCounter >= 10) {
+      Stop();
+    } else {
+      m_driverController.leftBumper().whileTrue(Intake());
+    }
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is
-    // pressed,
-    // cancelling on release.
-    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    m_driverController
+        .rightBumper()
+        .whileTrue(
+            SpinUp()
+                .withTimeout(FuelConstants.SpinUpTime)
+                .andThen(Launch())
+                .finallyDo(() -> Stop()));
+    m_driverController.a().whileTrue(Eject());
+
+    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+
+    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed, cancelling on
+    // release
+
   }
 
   Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
@@ -230,6 +303,20 @@ public class RobotContainer {
 
   {
     if (RobotBase.isSimulation()) {
+      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Change this one
+    } else {
+  // sets default commands and other commands depending on mode
+  Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
+  Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+  Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
+  Command driveFieldOrientedDirectAngleKeyboard =
+      drivebase.driveFieldOriented(driveDirectAngleKeyboard);
+  Command driveFieldOrientedAnglularVelocityKeyboard =
+      drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
+
+  {
+    if (RobotBase.isSimulation()) {
+      drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Change this one
     } else {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
@@ -255,6 +342,9 @@ public class RobotContainer {
                   () -> driveDirectAngle.driveToPoseEnabled(true), // And this one
                   () -> driveDirectAngle.driveToPoseEnabled(false))); // And this one
     }
+    if (DriverStation.isTest()) {
+      drivebase.setDefaultCommand(
+          driveFieldOrientedAnglularVelocity); // Overrides drive command above!
 
     if (DriverStation.isTest()) {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
@@ -273,6 +363,12 @@ public class RobotContainer {
           .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       m_driverController.rightBumper().onTrue(Commands.none());
     }
+    autoChooser = AutoBuilder.buildAutoChooser();
+    // AutoBuilder.buildAutoChooserWithOptionsModifier(
+    //     (stream) ->
+    //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) :
+    // stream);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 }
 
