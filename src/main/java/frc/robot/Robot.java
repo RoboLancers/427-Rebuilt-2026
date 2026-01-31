@@ -1,8 +1,13 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.simulation.BatterySim;
+import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -12,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private final RobotContainer m_robotContainer;
+  private VisionSim visionSim;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -96,5 +102,31 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    SwerveSubsystem.simulationPeriodic();
+
+    // Update camera simulation
+    visionSim.simulationPeriodic(SwerveSubsystem.getSimPose());
+
+    var debugField = visionSim.getSimDebugField();
+    debugField.getObject("EstimatedRobot").setPose(SwerveSubsystem.getPose());
+    debugField.getObject("EstimatedRobotModules").setPoses(SwerveSubsystem.getModulePoses());
+
+    // Calculate battery voltage sag due to current draw
+    var batteryVoltage =
+        BatterySim.calculateDefaultBatteryLoadedVoltage(SwerveSubsystem.getCurrentDraw());
+
+    // Using max(0.1, voltage) here isn't a *physically correct* solution,
+    // but it avoids problems with battery voltage measuring 0.
+    RoboRioSim.setVInVoltage(Math.max(0.1, batteryVoltage));
+  }
+
+  public void resetPose() {
+    // Example Only - startPose should be derived from some assumption
+    // of where your robot was placed on the field.
+    // The first pose in an autonomous path is often a good choice.
+    var startPose = new Pose2d(1, 1, new Rotation2d());
+    SwerveSubsystem.resetPose(startPose, true);
+    visionSim.resetSimPose(startPose);
+  }
 }

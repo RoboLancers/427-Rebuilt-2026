@@ -16,13 +16,11 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
-import frc.robot.Constants;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -49,17 +47,22 @@ public class RobotContainer {
               drivebase.getSwerveDrive(),
               () -> -m_driverController.getLeftY() * Constants.DriveConstants.MAX_SPEED,
               () -> -m_driverController.getLeftX() * Constants.DriveConstants.MAX_SPEED)
-          .withControllerRotationAxis(() -> m_driverController.getRightX() * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
+          .withControllerRotationAxis(
+              () ->
+                  m_driverController.getRightX()
+                      * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
           .deadband(OperatorConstants.DEADBAND)
           .scaleTranslation(0.8)
           .allianceRelativeControl(true);
 
   SwerveInputStream driveDirectAngle =
-      driveAngularVelocity 
+      driveAngularVelocity
           .copy()
           .withControllerHeadingAxis(
               () -> -m_driverController.getRightY() * Constants.DriveConstants.MAX_ANGULAR_SPEED,
-              () -> -m_driverController.getRightX() * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
+              () ->
+                  -m_driverController.getRightX()
+                      * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
           .headingWhile(true);
 
   /** Clone's the angular velocity input stream and converts it to a robotRelative input stream. */
@@ -88,7 +91,6 @@ public class RobotContainer {
 
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
@@ -112,7 +114,6 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-
     if (RobotBase.isSimulation()) {
       drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
     }
@@ -120,11 +121,10 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed, cancelling on
     // release
-  new Trigger(m_exampleSubsystem::exampleCondition)
+    new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
-
   }
- 
+
   // sets default commands and other commands depending on mode
   Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
   Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
