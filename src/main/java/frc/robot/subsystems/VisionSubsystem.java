@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.Robot;
 import java.awt.Desktop;
 import java.util.ArrayList;
@@ -68,23 +69,24 @@ public class VisionSubsystem extends SubsystemBase {
    * @param estConsumer Lamba that will accept a pose estimate and pass it to your desired {@link
    *     edu.wpi.first.math.estimator.SwerveDrivePoseEstimator}
    */
-  public VisionSubsystem(Supplier<Pose2d> currentPose, Field2d field2d) {
+  public VisionSubsystem(Supplier<Pose2d> currentPose) {
     this.currentPose = currentPose;
-    this.field2d = field2d;
+    this.field2d = new Field2d();
 
     Matrix<N3, N1> curStdDevs;
     Constants constants = new Constants();
-    Constants.visionConstants vision = new Constants.visionConstants();
+    // onstants.visionConstants vision = new Constants.visionConstants();
 
-    camera = new PhotonCamera(vision.kCameraName);
-    photonEstimator = new PhotonPoseEstimator(vision.kTagLayout, vision.kRobotToCam);
+    camera = new PhotonCamera(VisionConstants.kCameraName);
+    photonEstimator =
+        new PhotonPoseEstimator(VisionConstants.kTagLayout, VisionConstants.kRobotToCam);
 
     // ----- Simulation
     if (Robot.isSimulation()) {
       // Create the vision system simulation which handles cameras and targets on the field.
       visionSim = new VisionSystemSim("main");
       // Add all the AprilTags inside the tag layout as visible targets to this simulated field.
-      visionSim.addAprilTags(vision.kTagLayout);
+      visionSim.addAprilTags(VisionConstants.kTagLayout);
       // Create simulated camera properties. These can be set to mimic your actual camera.
       var cameraProp = new SimCameraProperties();
       cameraProp.setCalibration(960, 720, Rotation2d.fromDegrees(90));
@@ -96,7 +98,7 @@ public class VisionSubsystem extends SubsystemBase {
       // targets.
       cameraSim = new PhotonCameraSim(camera, cameraProp);
       // Add the simulated camera to view the targets on this simulated field.
-      visionSim.addCamera(cameraSim, vision.kRobotToCam);
+      visionSim.addCamera(cameraSim, VisionConstants.kRobotToCam);
 
       cameraSim.enableDrawWireframe(true);
 
@@ -342,11 +344,11 @@ public class VisionSubsystem extends SubsystemBase {
       Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
     if (estimatedPose.isEmpty()) {
       // No pose input. Default to single-tag std devs
-      curStdDevs = Constants.visionConstants.kSingleTagStdDevs;
+      curStdDevs = VisionConstants.kSingleTagStdDevs;
 
     } else {
       // Pose present. Start running Heuristic
-      var estStdDevs = Constants.visionConstants.kSingleTagStdDevs;
+      var estStdDevs = VisionConstants.kSingleTagStdDevs;
       int numTags = 0;
       double avgDist = 0;
 
@@ -365,12 +367,12 @@ public class VisionSubsystem extends SubsystemBase {
 
       if (numTags == 0) {
         // No tags visible. Default to single-tag std devs
-        curStdDevs = Constants.visionConstants.kSingleTagStdDevs;
+        curStdDevs = VisionConstants.kSingleTagStdDevs;
       } else {
         // One or more tags visible, run the full heuristic.
         avgDist /= numTags;
         // Decrease std devs if multiple targets are visible
-        if (numTags > 1) estStdDevs = Constants.visionConstants.kMultiTagStdDevs;
+        if (numTags > 1) estStdDevs = VisionConstants.kMultiTagStdDevs;
         // Increase std devs based on (average) distance
         if (numTags == 1 && avgDist > 4)
           estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);

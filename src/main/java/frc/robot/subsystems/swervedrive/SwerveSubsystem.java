@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
+import frc.robot.subsystems.VisionSubsystem;
 import java.io.File;
 import java.util.Arrays;
 import java.util.function.DoubleSupplier;
@@ -28,6 +29,7 @@ import swervelib.parser.SwerveParser;
 public class SwerveSubsystem extends SubsystemBase {
   public static final String getSimPose = null;
   private final SwerveDrive swerveDrive;
+  public VisionSubsystem vision;
 
   /* Creates a new SwerveSubsystem. */
   public SwerveSubsystem(File directory) {
@@ -44,11 +46,13 @@ public class SwerveSubsystem extends SubsystemBase {
       throw new RuntimeException(e);
     }
     // This method will be called once per scheduler run during simulation
-
+    vision = new VisionSubsystem(() -> getPose());
   }
 
   @Override
-  public static void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    vision.visionSim.update(getPose());
+  }
 
   public void periodic() {
     // This method will be called once per scheduler run

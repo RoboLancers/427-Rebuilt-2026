@@ -191,4 +191,6 @@ public class RobotContainer {
     // Configure to run auto
 
   }
+
+  public void updateVisionSim() {}
 }
