@@ -20,6 +20,7 @@ import java.util.List;
 import org.json.simple.parser.ParseException;
 
 import choreo.auto.AutoChooser;
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -44,7 +45,7 @@ import swervelib.SwerveInputStream;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
-
+@Logged
 public class RobotContainer {
 
   public Command getAutonomousCommand() {
