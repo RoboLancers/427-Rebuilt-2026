@@ -109,12 +109,6 @@ public class VisionSubsystem extends SubsystemBase {
     }
   }
 
-  public void addToVisionSim(VisionSystemSim systemSim) {
-    if (Robot.isSimulation()) {
-      systemSim.addCamera(cameraSim, robotToCamTransform);
-    }
-  }
-
   public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Cameras camera) {
     Optional<EstimatedRobotPose> poseEst = camera.getEstimatedGlobalPose();
     if (Robot.isSimulation()) {
@@ -149,27 +143,28 @@ public class VisionSubsystem extends SubsystemBase {
     }
   }
 
-  public void periodic() {
-    Optional<EstimatedRobotPose> visionEst = Optional.empty();
-    for (PhotonPipelineResult cameraResult : camera.getAllUnreadResults()) {
-      visionEst = photonEstimator.estimateCoprocMultiTagPose(cameraResult);
-      if (visionEst.isEmpty()) {
-        visionEst = photonEstimator.estimateLowestAmbiguityPose(cameraResult);
-      }
-      updateEstimationStdDevs(visionEst, cameraResult.getTargets());
+  // @Override
+  //   public void periodic() {
+  //     Optional<EstimatedRobotPose> visionEst = Optional.empty();
+  //     for (PhotonPipelineResult cameraResult : camera.getAllUnreadResults()) {
+  //       visionEst = photonEstimator.estimateCoprocMultiTagPose(cameraResult);
+  //       if (visionEst.isEmpty()) {
+  //         visionEst = photonEstimator.estimateLowestAmbiguityPose(cameraResult);
+  //       }
+  //       updateEstimationStdDevs(visionEst, cameraResult.getTargets());
 
-      if (Robot.isSimulation()) {
-        visionEst.ifPresentOrElse(
-            est ->
-                getSimDebugField()
-                    .getObject("VisionEstimation")
-                    .setPose(est.estimatedPose.toPose2d()),
-            () -> {
-              getSimDebugField().getObject("VisionEstimation").setPoses();
-            });
-      }
-    }
-  }
+  //       if (Robot.isSimulation()) {
+  //         visionEst.ifPresentOrElse(
+  //             est ->
+  //                 getSimDebugField()
+  //                     .getObject("VisionEstimation")
+  //                     .setPose(est.estimatedPose.toPose2d()),
+  //             () -> {
+  //               getSimDebugField().getObject("VisionEstimation").setPoses();
+  //             });
+  //       }
+  //     }
+  //   }
 
   enum Cameras {
     /** Left Camera */
@@ -287,109 +282,107 @@ public class VisionSubsystem extends SubsystemBase {
       }
     }
 
-    Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'getEstimatedGlobalPose'");
+    public void addToVisionSim(VisionSystemSim systemSim) {
+      if (Robot.isSimulation()) {
+        systemSim.addCamera(cameraSim, robotToCamTransform);
+      }
     }
 
-    void addToVisionSim(VisionSystemSim visionSim) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'addToVisionSim'");
-    }
-  }
-
-  public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
-    updateUnreadResults();
-    return estimatedRobotPose;
-  }
-
-  private void updateUnreadResults() {
-    double mostRecentTimestamp =
-        resultsList.isEmpty() ? 0.0 : resultsList.get(0).getTimestampSeconds();
-    double currentTimestamp = Microseconds.of(NetworkTablesJNI.now()).in(Seconds);
-    double debounceTime = Milliseconds.of(15).in(Seconds);
-    for (PhotonPipelineResult result : resultsList) {
-      mostRecentTimestamp = Math.max(mostRecentTimestamp, result.getTimestampSeconds());
+    public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
+      updateUnreadResults();
+      return estimatedRobotPose;
     }
 
-    resultsList =
-        Robot.isReal() ? camera.getAllUnreadResults() : cameraSim.getCamera().getAllUnreadResults();
-    lastReadTimestamp = currentTimestamp;
-    resultsList.sort(
-        (PhotonPipelineResult a, PhotonPipelineResult b) -> {
-          return a.getTimestampSeconds() >= b.getTimestampSeconds() ? 1 : -1;
-        });
-    if (!resultsList.isEmpty()) {
-      updateEstimatedGlobalPose();
-    }
-  }
-
-  private void updateEstimatedGlobalPose() {
-    Optional<EstimatedRobotPose> visionEst = Optional.empty();
-    for (var change : resultsList) {
-      visionEst = photonEstimator.update(change);
-      updateEstimationStdDevs(visionEst, change.getTargets());
-    }
-    estimatedRobotPose = visionEst;
-  }
-
-  /**
-   * Calculates new standard deviations This algorithm is a heuristic that creates dynamic standard
-   * deviations based on number of tags, estimation strategy, and distance from the tags.
-   *
-   * @param estimatedPose The estimated pose to guess standard deviations for.
-   * @param targets All targets in this camera frame
-   */
-  private void updateEstimationStdDevs(
-      Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
-    if (estimatedPose.isEmpty()) {
-      // No pose input. Default to single-tag std devs
-      curStdDevs = VisionConstants.kSingleTagStdDevs;
-
-    } else {
-      // Pose present. Start running Heuristic
-      var estStdDevs = VisionConstants.kSingleTagStdDevs;
-      int numTags = 0;
-      double avgDist = 0;
-
-      // Precalculation - see how many tags we found, and calculate an average-distance metric
-      for (var tgt : targets) {
-        var tagPose = photonEstimator.getFieldTags().getTagPose(tgt.getFiducialId());
-        if (tagPose.isEmpty()) continue;
-        numTags++;
-        avgDist +=
-            tagPose
-                .get()
-                .toPose2d()
-                .getTranslation()
-                .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
+    private void updateUnreadResults() {
+      double mostRecentTimestamp =
+          resultsList.isEmpty() ? 0.0 : resultsList.get(0).getTimestampSeconds();
+      double currentTimestamp = Microseconds.of(NetworkTablesJNI.now()).in(Seconds);
+      double debounceTime = Milliseconds.of(15).in(Seconds);
+      for (PhotonPipelineResult result : resultsList) {
+        mostRecentTimestamp = Math.max(mostRecentTimestamp, result.getTimestampSeconds());
       }
 
-      if (numTags == 0) {
-        // No tags visible. Default to single-tag std devs
+      resultsList =
+          Robot.isReal()
+              ? camera.getAllUnreadResults()
+              : cameraSim.getCamera().getAllUnreadResults();
+      lastReadTimestamp = currentTimestamp;
+      resultsList.sort(
+          (PhotonPipelineResult a, PhotonPipelineResult b) -> {
+            return a.getTimestampSeconds() >= b.getTimestampSeconds() ? 1 : -1;
+          });
+      if (!resultsList.isEmpty()) {
+        updateEstimatedGlobalPose();
+      }
+    }
+
+    private void updateEstimatedGlobalPose() {
+      Optional<EstimatedRobotPose> visionEst = Optional.empty();
+      for (var change : resultsList) {
+        visionEst = photonEstimator.update(change);
+        updateEstimationStdDevs(visionEst, change.getTargets());
+      }
+      estimatedRobotPose = visionEst;
+    }
+
+    /**
+     * Calculates new standard deviations This algorithm is a heuristic that creates dynamic
+     * standard deviations based on number of tags, estimation strategy, and distance from the tags.
+     *
+     * @param estimatedPose The estimated pose to guess standard deviations for.
+     * @param targets All targets in this camera frame
+     */
+    private void updateEstimationStdDevs(
+        Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
+      if (estimatedPose.isEmpty()) {
+        // No pose input. Default to single-tag std devs
         curStdDevs = VisionConstants.kSingleTagStdDevs;
+
       } else {
-        // One or more tags visible, run the full heuristic.
-        avgDist /= numTags;
-        // Decrease std devs if multiple targets are visible
-        if (numTags > 1) estStdDevs = VisionConstants.kMultiTagStdDevs;
-        // Increase std devs based on (average) distance
-        if (numTags == 1 && avgDist > 4)
-          estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
-        else estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30));
-        curStdDevs = estStdDevs;
+        // Pose present. Start running Heuristic
+        var estStdDevs = VisionConstants.kSingleTagStdDevs;
+        int numTags = 0;
+        double avgDist = 0;
+
+        // Precalculation - see how many tags we found, and calculate an average-distance metric
+        for (var tgt : targets) {
+          var tagPose = photonEstimator.getFieldTags().getTagPose(tgt.getFiducialId());
+          if (tagPose.isEmpty()) continue;
+          numTags++;
+          avgDist +=
+              tagPose
+                  .get()
+                  .toPose2d()
+                  .getTranslation()
+                  .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
+        }
+
+        if (numTags == 0) {
+          // No tags visible. Default to single-tag std devs
+          curStdDevs = VisionConstants.kSingleTagStdDevs;
+        } else {
+          // One or more tags visible, run the full heuristic.
+          avgDist /= numTags;
+          // Decrease std devs if multiple targets are visible
+          if (numTags > 1) estStdDevs = VisionConstants.kMultiTagStdDevs;
+          // Increase std devs based on (average) distance
+          if (numTags == 1 && avgDist > 4)
+            estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+          else estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30));
+          curStdDevs = estStdDevs;
+        }
       }
     }
-  }
 
-  /**
-   * Returns the latest standard deviations of the estimated pose from {@link
-   * #getEstimatedGlobalPose()}, for use with {@link
-   * edu.wpi.first.math.estimator.SwerveDrivePoseEstimator SwerveDrivePoseEstimator}. This should
-   * only be used when there are targets visible.
-   */
-  public Matrix<N3, N1> getEstimationStdDevs() {
-    return curStdDevs;
+    /**
+     * Returns the latest standard deviations of the estimated pose from {@link
+     * #getEstimatedGlobalPose()}, for use with {@link
+     * edu.wpi.first.math.estimator.SwerveDrivePoseEstimator SwerveDrivePoseEstimator}. This should
+     * only be used when there are targets visible.
+     */
+    public Matrix<N3, N1> getEstimationStdDevs() {
+      return curStdDevs;
+    }
   }
 
   // ----- Simulation
