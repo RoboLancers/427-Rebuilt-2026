@@ -49,7 +49,7 @@ public class RobotContainer {
               drivebase.getSwerveDrive(),
               () -> -m_driverController.getLeftY() * Constants.DriveConstants.MAX_SPEED,
               () -> -m_driverController.getLeftX() * Constants.DriveConstants.MAX_SPEED)
-          .withControllerRotationAxis() -> m_driverController.getRightX() * Constants.MAX_ANGULAR_SPEED() // ASDFGHJKL
+          .withControllerRotationAxis(() -> m_driverController.getRightX() * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
           .deadband(OperatorConstants.DEADBAND)
           .scaleTranslation(0.8)
           .allianceRelativeControl(true);
@@ -58,8 +58,8 @@ public class RobotContainer {
       driveAngularVelocity 
           .copy()
           .withControllerHeadingAxis(
-              () -> -m_driverController.getRightY() * Constants.MAX_ANGULAR_SPEED,
-              () -> -m_driverController.getRightX() * Constants.MAX_ANGULAR_SPEED) // ASDFGHJKL
+              () -> -m_driverController.getRightY() * Constants.DriveConstants.MAX_ANGULAR_SPEED,
+              () -> -m_driverController.getRightX() * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
           .headingWhile(true);
 
   /** Clone's the angular velocity input stream and converts it to a robotRelative input stream. */
