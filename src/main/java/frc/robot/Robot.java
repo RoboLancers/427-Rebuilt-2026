@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 @Logged
 public class Robot extends TimedRobot {
+
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
@@ -29,7 +30,6 @@ public class Robot extends TimedRobot {
 
     m_robotContainer = new RobotContainer();
   }
-  
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics

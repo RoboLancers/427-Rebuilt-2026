@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "botpos1"
+            "pathName": "topPos1"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "botpos2"
+            "pathName": "topPos2"
           }
         },
         {
@@ -35,7 +35,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "botpos3"
+                  "pathName": "topPos3"
                 }
               }
             ]
@@ -54,7 +54,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "botpos4"
+                  "pathName": "topPos4"
                 }
               }
             ]
@@ -63,7 +63,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Outtake"
           }
         },
         {
@@ -79,7 +79,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "botpos5"
+                  "pathName": "topPos5"
                 }
               }
             ]
@@ -98,7 +98,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "botpos6"
+                  "pathName": "topPos6"
                 }
               }
             ]
@@ -107,7 +107,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Outtake"
           }
         },
         {
@@ -123,7 +123,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "botpos9"
+                  "pathName": "topPos7"
                 }
               }
             ]
@@ -142,7 +142,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "botpos10"
+                  "pathName": "topPos8"
                 }
               }
             ]
@@ -151,7 +151,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Outtake"
           }
         }
       ]
