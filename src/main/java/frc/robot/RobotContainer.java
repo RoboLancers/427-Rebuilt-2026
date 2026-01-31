@@ -15,7 +15,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Feeder.Feeder;
+import frc.robot.subsystems.IntakeShooter.IntakeShooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -27,6 +30,10 @@ import swervelib.SwerveInputStream;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  // The robot's subsystems and commands are defined here...
+  private final IntakeShooter m_IntakeShooter = new IntakeShooter();
+  private final Feeder m_feeder = new Feeder();
+  // private final FuelSubsystem m_fuel = new FuelSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -94,7 +101,16 @@ public class RobotContainer {
   public RobotContainer() {
 
     // Configure the trigger bindings
+
     configureBindings();
+
+    // m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
+
+    m_feeder.setDefaultCommand(m_feeder.set(0));
+    m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
+    // m_fuel.setDefaultCommand(m_fuel.stopCommand());
+
+    DriverStation.silenceJoystickConnectionWarning(true);
 
     DriverStation.silenceJoystickConnectionWarning(true);
   }
@@ -108,7 +124,49 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
+  public Command Intake() {
+    return m_IntakeShooter
+        .set(FuelConstants.IntakingIntake)
+        .alongWith(m_feeder.set(FuelConstants.IntakingFeeder));
+  }
+
+  public Command Eject() {
+    return m_IntakeShooter
+        .set(FuelConstants.EjectingIntake)
+        .alongWith(m_feeder.set(FuelConstants.EjectingFeeder));
+  }
+
+  public Command Launch() {
+    return m_IntakeShooter
+        .set(FuelConstants.LaunchingIntake)
+        .alongWith(m_feeder.set(FuelConstants.LaunchingFeeder));
+  }
+
+  public Command Stop() {
+    return m_IntakeShooter
+        .set(FuelConstants.StoppingIntake)
+        .alongWith(m_feeder.set(FuelConstants.StoppingFeeder));
+  }
+
+  public Command SpinUp() {
+    return m_IntakeShooter.set(FuelConstants.SpinupIntake);
+  }
+
   private void configureBindings() {
+    if (IntakeShooter.FuelCounter >= 10) {
+      Stop();
+    } else {
+      m_driverController.leftBumper().whileTrue(Intake());
+    }
+
+    m_driverController
+        .rightBumper()
+        .whileTrue(
+            SpinUp()
+                .withTimeout(FuelConstants.SpinUpTime)
+                .andThen(Launch())
+                .finallyDo(() -> Stop()));
+    m_driverController.a().whileTrue(Eject());
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
