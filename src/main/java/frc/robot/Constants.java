@@ -28,6 +28,16 @@ public final class Constants {
     public static final double LEFT_Y_DEADBAND = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT = 6;
+
+    // Motor controller IDs for drivetrain motors
+    public static final int LEFT_LEADER_ID = 10;
+    public static final int LEFT_FOLLOWER_ID = 20;
+    public static final int RIGHT_LEADER_ID = 30;
+    public static final int RIGHT_FOLLOWER_ID = 40;
+
+    // Current limit for drivetrain motors. 60A is a reasonable maximum to reduce
+    // likelihood of tripping breakers or damaging CIM motors
+    public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;
   }
 
   public static class OperatorConstants {
@@ -37,8 +47,12 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
     public static final String drivebase = "drivebase";
     // this used to be 6 if turning speed is stupid make it six
+
+    public static final int DRIVE_SCALING = 7;
+    public static final int ROTATION_SCALING = 6;
   }
-   public static class IntakeConstants {
+
+  public static class IntakeConstants {
 
     public static final int Intake_SparkMax_ID = 14;
     public static final int IntakenumMotors = 1;
