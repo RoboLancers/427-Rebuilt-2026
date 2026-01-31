@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.GoalEndState;
@@ -42,7 +43,7 @@ public class RobotContainer {
 
   boolean isCompetition = true;
 
-  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+  private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -93,7 +94,6 @@ public class RobotContainer {
           .translationHeadingOffset(Rotation2d.fromDegrees(0));
 
   public RobotContainer() {
-    SmartDashboard.putData("Auto Chooser", autoChooser);
 
     // private Swerve swerve = new Swerve();
     final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
@@ -258,6 +258,12 @@ public class RobotContainer {
           .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       m_driverController.rightBumper().onTrue(Commands.none());
     }
+    autoChooser = AutoBuilder.buildAutoChooser();
+    // AutoBuilder.buildAutoChooserWithOptionsModifier(
+    //     (stream) ->
+    //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) :
+    // stream);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 }
 
