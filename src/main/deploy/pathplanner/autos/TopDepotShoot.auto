@@ -98,7 +98,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "topPos4"
+                  "pathName": "topshootpos1"
                 }
               }
             ]
@@ -107,7 +107,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Outtake"
+            "name": "Shoot"
           }
         },
         {
@@ -123,7 +123,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "topPos5"
+                  "pathName": "topshootpos2"
                 }
               }
             ]
