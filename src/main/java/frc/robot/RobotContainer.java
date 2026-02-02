@@ -27,12 +27,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Feeder.Feeder;
 import frc.robot.subsystems.IntakeShooter.IntakeShooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
-import java.io.File;
+
 import java.io.IOException;
 import java.util.List;
 import org.json.simple.parser.ParseException;
@@ -62,7 +63,7 @@ public class RobotContainer {
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final Field2d field = new Field2d();
 
@@ -128,8 +129,8 @@ public class RobotContainer {
   public RobotContainer() {
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
-    private Swerve swerve = new Swerve();
-    final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
+    private SwerveSubsystem swerve = new SwerveSubsystem();
+    //final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 
     NamedCommands.registerCommand("Shoot", new SomeOtherCommand());
     NamedCommands.registerCommand("Intake", drivebase.autoBalanceCommand());
@@ -377,3 +378,4 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+  

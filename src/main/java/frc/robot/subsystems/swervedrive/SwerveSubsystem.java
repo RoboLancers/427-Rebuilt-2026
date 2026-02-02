@@ -226,8 +226,6 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public SwerveDriveConfiguration getSwerveDriveConfiguration() {
-
-  public SwerveDriveConfiguration getSwerveDriveConfiguration() {
     return swerveDrive.swerveDriveConfiguration;
   }
 
