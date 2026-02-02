@@ -70,6 +70,7 @@ public class SwerveSubsystem extends SubsystemBase {
           this::getPose,
           this::resetPose,
           this::getSpeeds,
+          // TODO: Change to use driveFieldOriented
           (speeds, feedforwards) -> driveRobotRelative(speeds),
           new PPHolonomicDriveController(
               new PIDConstants(0.0, 0.0, 1.2), new PIDConstants(0.01, 0.0, 0.1)),
@@ -224,8 +225,6 @@ public class SwerveSubsystem extends SubsystemBase {
   public ChassisSpeeds getFieldVelocity() {
     return swerveDrive.getFieldVelocity();
   }
-
-  public SwerveDriveConfiguration getSwerveDriveConfiguration() {
 
   public SwerveDriveConfiguration getSwerveDriveConfiguration() {
     return swerveDrive.swerveDriveConfiguration;
