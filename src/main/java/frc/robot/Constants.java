@@ -38,7 +38,8 @@ public final class Constants {
     public static final String drivebase = "drivebase";
     // this used to be 6 if turning speed is stupid make it six
   }
-   public static class IntakeConstants {
+
+  public static class IntakeConstants {
 
     public static final int Intake_SparkMax_ID = 14;
     public static final int IntakenumMotors = 1;
@@ -88,8 +89,8 @@ public final class Constants {
     public static final int kI = 0;
     public static final int kD = 0;
 
-    public static final int DegPerSecmagnitude = 90;
-    public static final int DegPerSecPerSecmagnitude = 45;
+    public static final int MaxVelocity = 90;
+    public static final int MaxAcceleration = 45;
     public static final int controllerAmagnitude = 60;
     public static final int controllerBmagnitude = 300;
 
@@ -98,6 +99,7 @@ public final class Constants {
 
     public static final int kv = 0;
     public static final int ka = 0;
+
     public static final int reductionStages = 12;
     public static final int StatorLimit = 40;
 

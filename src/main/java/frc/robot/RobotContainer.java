@@ -153,14 +153,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    if (IntakeShooter.FuelCounter >= 10) {
-      Stop();
-    } else {
-      m_driverController.leftBumper().whileTrue(Intake());
-    }
-
-    m_driverController
-        .rightBumper()
+    m_driverController.leftBumper().whileTrue(Intake());
+    m_driverController.rightBumper()
         .whileTrue(
             SpinUp()
                 .withTimeout(FuelConstants.SpinUpTime)

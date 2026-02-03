@@ -29,10 +29,26 @@ import yams.motorcontrollers.local.SparkWrapper;
 import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 public class IntakeShooter extends SubsystemBase {
+
   public static int FuelCounter = 0;
 
   protected void execute() {
-    SmartDashboard.putNumber("Fuel Number", FuelCounter);
+    SmartDashboard.putNumber("FuelNumber", FuelCounter);
+
+    SmartDashboard.putNumber("IntakeShooterKP", IntakeConstants.KP);
+    SmartDashboard.putNumber("IntakeShooterKI", IntakeConstants.KI);
+    SmartDashboard.putNumber("IntakeShooterKD", IntakeConstants.KD);
+    SmartDashboard.putNumber("IntakeShooterks", IntakeConstants.ks);
+    SmartDashboard.putNumber("IntakeShooterkv", IntakeConstants.kv);
+    SmartDashboard.putNumber("IntakeShooterka", IntakeConstants.ka);
+
+    SmartDashboard.putNumber("IntakeShooterUpperSoftLimit", IntakeConstants.SoftLimit);
+    SmartDashboard.putNumber("IntakeShooterCurrentLimit", IntakeConstants.CurrentLimit);
+    SmartDashboard.putNumber("IntakeShooterMaxVelocity", IntakeConstants.MaxVelocity);
+    SmartDashboard.putNumber("IntakeShooterMaxAcceleration", IntakeConstants.MaxAcceleration);
+
+    SmartDashboard.putNumber("IntakeShooterxdutycycle", IntakeConstants.x_DutyCycle);
+    SmartDashboard.putNumber("IntakeShooterydutycycle", IntakeConstants.y_DutyCycle);
   }
 
   /** Creates a new intake. */
