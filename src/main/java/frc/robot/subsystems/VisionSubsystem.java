@@ -37,7 +37,7 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-// import org.photonvision.PhotonUtils;
+import org.photonvision.PhotonUtils;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
@@ -51,7 +51,8 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 public class VisionSubsystem extends SubsystemBase {
 
   private final PhotonCamera camera;
-  private final PhotonPoseEstimator photonEstimator;
+  public final PhotonPoseEstimator  photonEstimator  =
+        new PhotonPoseEstimator(VisionConstants.kTagLayout, VisionConstants.kRobotToCam);
   private Supplier<Pose2d> currentPose;
   private Field2d field2d;
   public PhotonCameraSim cameraSim;
@@ -74,13 +75,10 @@ public class VisionSubsystem extends SubsystemBase {
     this.field2d = new Field2d();
 
     Matrix<N3, N1> curStdDevs;
-    Constants constants = new Constants();
     // onstants.visionConstants vision = new Constants.visionConstants();
 
     camera = new PhotonCamera(VisionConstants.kCameraName);
-    photonEstimator =
-        new PhotonPoseEstimator(VisionConstants.kTagLayout, VisionConstants.kRobotToCam);
-
+   
     // ----- Simulation
     if (Robot.isSimulation()) {
       // Create the vision system simulation which handles cameras and targets on the field.
@@ -143,29 +141,28 @@ public class VisionSubsystem extends SubsystemBase {
     }
   }
 
-  // @Override
-  //   public void periodic() {
-  //     Optional<EstimatedRobotPose> visionEst = Optional.empty();
-  //     for (PhotonPipelineResult cameraResult : camera.getAllUnreadResults()) {
-  //       visionEst = photonEstimator.estimateCoprocMultiTagPose(cameraResult);
-  //       if (visionEst.isEmpty()) {
-  //         visionEst = photonEstimator.estimateLowestAmbiguityPose(cameraResult);
-  //       }
-  //       updateEstimationStdDevs(visionEst, cameraResult.getTargets());
+   @Override
+    public void periodic() {
+        Optional<EstimatedRobotPose> visionEst = Optional.empty();
+          for (PhotonPipelineResult cameraResult : camera.getAllUnreadResults()) {
+            visionEst = photonEstimator.estimateCoprocMultiTagPose(cameraResult);
+            if (visionEst.isEmpty()) {
+           visionEst = photonEstimator.estimateLowestAmbiguityPose(cameraResult);
+            updateEstimationStdDevs(visionEst, cameraResult.getTargets());
 
-  //       if (Robot.isSimulation()) {
-  //         visionEst.ifPresentOrElse(
-  //             est ->
-  //                 getSimDebugField()
-  //                     .getObject("VisionEstimation")
-  //                     .setPose(est.estimatedPose.toPose2d()),
-  //             () -> {
-  //               getSimDebugField().getObject("VisionEstimation").setPoses();
-  //             });
-  //       }
-  //     }
-  //   }
-
+            if (Robot.isSimulation()) {
+            visionEst.ifPresentOrElse(
+              est ->
+                    getSimDebugField()
+                   .getObject("VisionEstimation")
+                   .setPose(est.estimatedPose.toPose2d()),
+                    () -> {
+                    getSimDebugField().getObject("VisionEstimation").setPoses();
+                    });
+            }
+            }
+          }
+    
   enum Cameras {
     /** Left Camera */
     LEFT_CAM(
@@ -195,39 +192,7 @@ public class VisionSubsystem extends SubsystemBase {
             Units.inchesToMeters(16.129)),
         VecBuilder.fill(4, 4, 8),
         VecBuilder.fill(0.5, 0.5, 1));
-
-    /** Latency alert to use when high latency is detected. */
-    public final Alert latencyAlert;
-
-    /** Camera instance for comms. */
-    public final PhotonCamera camera;
-
-    /** Pose estimator for camera. */
-    public final PhotonPoseEstimator poseEstimator;
-
-    /** Standard Deviation for single tag readings for pose estimation. */
-    private final Matrix<N3, N1> singleTagStdDevs;
-
-    /** Standard deviation for multi-tag readings for pose estimation. */
-    private final Matrix<N3, N1> multiTagStdDevs;
-
-    /** Transform of the camera rotation and translation relative to the center of the robot */
-    private final Transform3d robotToCamTransform;
-
-    /** Current standard deviations used. */
-    public Matrix<N3, N1> curStdDevs;
-
-    /** Estimated robot pose. */
-    public Optional<EstimatedRobotPose> estimatedRobotPose = Optional.empty();
-
-    /** Simulated camera instance which only exists during simulations. */
-    public PhotonCameraSim cameraSim;
-
-    /** Results list to be updated periodically and cached to avoid unnecessary queries. */
-    public List<PhotonPipelineResult> resultsList = new ArrayList<>();
-
-    /** Last read from the camera timestamp to prevent lag due to slow data fetches. */
-    private double lastReadTimestamp = Microseconds.of(NetworkTablesJNI.now()).in(Seconds);
+  }
 
     /**
      * Construct a Photon Camera class with help. Standard deviations are fake values, experiment
@@ -241,14 +206,14 @@ public class VisionSubsystem extends SubsystemBase {
      * @param multiTagStdDevsMatrix Multi AprilTag standard deviations of estimated poses from the
      *     camera.
      */
-    Cameras(
+    private void Cameras(
         String name,
         Rotation3d robotToCamRotation,
         Translation3d robotToCamTranslation,
         Matrix<N3, N1> singleTagStdDevs,
-        Matrix<N3, N1> multiTagStdDevsMatrix) {
-      latencyAlert =
-          new Alert("'" + name + "' Camera is experiencing high latency.", AlertType.kWarning);
+        Matrix<N3, N1> multiTagStdDevsMatrix)
+        {
+      latencyAlert = new Alert("'" + name + "' Camera is experiencing high latency.", AlertType.kWarning);
 
       camera = new PhotonCamera(name);
 
@@ -316,7 +281,8 @@ public class VisionSubsystem extends SubsystemBase {
       }
     }
 
-    private void updateEstimatedGlobalPose() {
+private void updateEstimatedGlobalPose() {
+
       Optional<EstimatedRobotPose> visionEst = Optional.empty();
       for (var change : resultsList) {
         visionEst = photonEstimator.update(change);
@@ -325,6 +291,7 @@ public class VisionSubsystem extends SubsystemBase {
       estimatedRobotPose = visionEst;
     }
 
+
     /**
      * Calculates new standard deviations This algorithm is a heuristic that creates dynamic
      * standard deviations based on number of tags, estimation strategy, and distance from the tags.
@@ -332,7 +299,7 @@ public class VisionSubsystem extends SubsystemBase {
      * @param estimatedPose The estimated pose to guess standard deviations for.
      * @param targets All targets in this camera frame
      */
-    private void updateEstimationStdDevs(
+    public void updateEstimationStdDevs(
         Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
       if (estimatedPose.isEmpty()) {
         // No pose input. Default to single-tag std devs
@@ -373,6 +340,7 @@ public class VisionSubsystem extends SubsystemBase {
         }
       }
     }
+
 
     /**
      * Returns the latest standard deviations of the estimated pose from {@link

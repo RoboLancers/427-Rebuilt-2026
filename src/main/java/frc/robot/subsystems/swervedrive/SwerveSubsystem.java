@@ -29,7 +29,7 @@ import swervelib.parser.SwerveParser;
 public class SwerveSubsystem extends SubsystemBase {
   public static final String getSimPose = null;
   private final SwerveDrive swerveDrive;
-  public VisionSubsystem vision;
+  public VisionSubsystem Vision;
 
   /* Creates a new SwerveSubsystem. */
   public SwerveSubsystem(File directory) {
@@ -46,12 +46,12 @@ public class SwerveSubsystem extends SubsystemBase {
       throw new RuntimeException(e);
     }
     // This method will be called once per scheduler run during simulation
-    vision = new VisionSubsystem(() -> getPose());
+    Vision = new VisionSubsystem(() -> getPose());
   }
 
   @Override
   public void simulationPeriodic() {
-    vision.visionSim.update(getPose());
+    Vision.visionSim.update(getPose());
   }
 
   public void periodic() {
