@@ -7,19 +7,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "SHOOT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "cenposclimb"
+            "pathName": "CEN_POS_1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Climb Rung 1"
+            "name": "CLIMB"
           }
         }
       ]

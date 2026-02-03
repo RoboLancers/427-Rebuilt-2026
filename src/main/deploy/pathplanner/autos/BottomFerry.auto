@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "botpos1"
+            "pathName": "BOT_POS_1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "SHOOT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "botpos2"
+            "pathName": "BOT_POS_2"
           }
         },
         {
@@ -29,13 +29,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "INTAKE"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "botpos3"
+                  "pathName": "BOT_POS_3"
                 }
               }
             ]
@@ -48,57 +48,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "End Intake"
+                  "name": "END_INTAKE"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "botpos4"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Outtake"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "botpos5"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "End Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "botpos6"
+                  "pathName": "BOT_POS_4"
                 }
               }
             ]
@@ -107,7 +63,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Outtake"
+            "name": "OUTTAKE"
           }
         },
         {
@@ -117,13 +73,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "INTAKE"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "botpos7"
+                  "pathName": "BOT_POS_5"
                 }
               }
             ]
@@ -136,13 +92,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "End Intake"
+                  "name": "END_INTAKE"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "botpos8"
+                  "pathName": "BOT_POS_6"
                 }
               }
             ]
@@ -151,7 +107,51 @@
         {
           "type": "named",
           "data": {
-            "name": "Outtake"
+            "name": "OUTTAKE"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "INTAKE"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "BOT_POS_7"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "END_INTAKE"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "BOT_POS_8"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "OUTTAKE"
           }
         }
       ]

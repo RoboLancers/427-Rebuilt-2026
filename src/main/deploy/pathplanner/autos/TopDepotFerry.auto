@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "topPos1"
+            "pathName": "TOP_POS_1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "SHOOT"
           }
         },
         {
@@ -23,13 +23,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "INTAKE"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "topdepot1"
+                  "pathName": "TOP_DEPOT_POS_1"
                 }
               }
             ]
@@ -42,13 +42,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "End Intake"
+                  "name": "END_INTAKE"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "topdepot2"
+                  "pathName": "TOP_DEPOT_POS_2"
                 }
               }
             ]
@@ -57,13 +57,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "SHOOT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "topPos2"
+            "pathName": "TOP_POS_2"
           }
         },
         {
@@ -73,13 +73,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "INTAKE"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "topPos3"
+                  "pathName": "TOP_POS_3"
                 }
               }
             ]
@@ -92,57 +92,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "End Intake"
+                  "name": "END_INTAKE"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "topPos4"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Outtake"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "topPos5"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "End Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "topPos6"
+                  "pathName": "TOP_POS_4"
                 }
               }
             ]
@@ -151,7 +107,51 @@
         {
           "type": "named",
           "data": {
-            "name": "Outtake"
+            "name": "OUTTAKE"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "INTAKE"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "TOP_POS_5"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "END_INTAKE"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "TOP_POS_6"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "OUTTAKE"
           }
         }
       ]

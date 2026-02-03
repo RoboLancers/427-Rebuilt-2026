@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "botpos1"
+            "pathName": "BOT_POS_1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "SHOOT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "botpos2"
+            "pathName": "BOT_POS_2"
           }
         },
         {
@@ -29,13 +29,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "INTAKE"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "botpos3"
+                  "pathName": "BOT_POS_3"
                 }
               }
             ]
@@ -48,57 +48,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "End Intake"
+                  "name": "END_INTAKE"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "botshootpos1"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "botshootpos2"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "End Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "botshootpos3"
+                  "pathName": "BOT_SHOOT_POS_1"
                 }
               }
             ]
@@ -107,7 +63,51 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "SHOOT"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "INTAKE"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "BOT_SHOOT_POS_2"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "END_INTAKE"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "BOT_SHOOT_POS_3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SHOOT"
           }
         }
       ]

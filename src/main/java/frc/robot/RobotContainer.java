@@ -2,13 +2,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.path.GoalEndState;
-import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.path.Waypoint;
-import com.pathplanner.lib.util.FileVersionException;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -33,9 +26,6 @@ import frc.robot.subsystems.Feeder.Feeder;
 import frc.robot.subsystems.IntakeShooter.IntakeShooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import org.json.simple.parser.ParseException;
 import swervelib.SwerveInputStream;
 
 /**
@@ -117,13 +107,11 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     SmartDashboard.putData("Auto Chooser", autoChooser);
-    // TODO: Change to use  actual intake/shoot commands defined above to named commands.
-    NamedCommands.registerCommand("Shoot", new SomeOtherCommand());
-    NamedCommands.registerCommand("Intake", drivebase.autoBalanceCommand());
-    NamedCommands.registerCommand("Outtake", exampleSubsystem.exampleCommand());
-    NamedCommands.registerCommand("End Intake", new SomeOtherCommand());
-    NamedCommands.registerCommand("Climb Rung 1", new SomeOtherCommand());
-    // TODO: Add any missing named commands.
+    NamedCommands.registerCommand("SHOOT", timedCommand(Launch(), 1));
+    NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 1));
+    NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 1));
+    NamedCommands.registerCommand("END_INTAKE", Stop());
+    // NamedCommands.registerCommand("CLIMB", );
 
     configureBindings();
 
@@ -145,73 +133,9 @@ public class RobotContainer {
         (poses) -> {
           field.getObject("path").setPoses(poses);
         });
-    // TODO: Remove this.
-    List<Waypoint> waypoints =
-        PathPlannerPath.waypointsFromPoses(
-            new Pose2d(1.0, 1.0, Rotation2d.fromDegrees(0)),
-            new Pose2d(3.0, 1.0, Rotation2d.fromDegrees(0)),
-            new Pose2d(5.0, 3.0, Rotation2d.fromDegrees(90)));
-
-    // TODO: Remove this.
-
-    PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI);
-    // TODO: Remove this.
-    PathPlannerPath path =
-        new PathPlannerPath(
-            waypoints, constraints, null, new GoalEndState(0.0, Rotation2d.fromDegrees(-90)));
-
-    // path.preventFlipping = true;
-    // TODO: Remove this try/catch block.
-    try {
-      List<PathPlannerPath> pathGroup = PathPlannerAuto.getPathGroupFromAutoFile("Example Auto");
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (ParseException e) {
-      e.printStackTrace();
-    }
-    // TODO: Remove all PPHHolonomic sections below.
-    PPHolonomicDriveController.overrideXFeedback(
-        () -> {
-          return 0.0;
-        });
-    PPHolonomicDriveController.clearXFeedbackOverride();
-
-    PPHolonomicDriveController.overrideYFeedback(
-        () -> {
-          return 0.0;
-        });
-    PPHolonomicDriveController.clearYFeedbackOverride();
-
-    PPHolonomicDriveController.overrideRotationFeedback(
-        () -> {
-          return 0.0;
-        });
-    PPHolonomicDriveController.clearRotationFeedbackOverride();
-
-    PPHolonomicDriveController.clearFeedbackOverrides();
-    // :TODO: Remove the two try/catch block below.
-    try {
-      PathPlannerPath exampleChoreoTraj =
-          PathPlannerPath.fromChoreoTrajectory("Example Choreo Traj");
-    } catch (FileVersionException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (ParseException e) {
-      e.printStackTrace();
-    }
-    try {
-      PathPlannerPath exampleChoreoTrajSplit =
-          PathPlannerPath.fromChoreoTrajectory("Example Choreo Traj", 1);
-    } catch (FileVersionException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (ParseException e) {
-      e.printStackTrace();
-    }
   }
 
+  // path.preventFlipping = true;
   public Command Intake() {
     return m_IntakeShooter
         .set(FuelConstants.IntakingIntake)
@@ -238,6 +162,10 @@ public class RobotContainer {
 
   public Command SpinUp() {
     return m_IntakeShooter.set(FuelConstants.SpinupIntake);
+  }
+
+  public Command timedCommand(Command command, double time) {
+    return command.withTimeout(time);
   }
 
   private void configureBindings() {
