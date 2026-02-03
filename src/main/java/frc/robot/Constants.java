@@ -2,6 +2,8 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import swervelib.math.Matter;
 
 /**
@@ -29,7 +31,13 @@ public final class Constants {
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT = 6;
   }
-
+  /*
+  * public static class LedConstants {
+  *  private static final int kPort = 9;
+  *  private static final int kLength = 60;
+  * Moved the varibles to Led.java temporarily
+  * }
+  */
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final String drivebase = "drivebase";
