@@ -108,7 +108,7 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Cameras camera) {
-    Optional<EstimatedRobotPose> poseEst = camera.getEstimatedGlobalPose();
+    Optional<EstimatedRobotPose> poseEst = camera.getEstimatedGlobalPose(Cameras);
     if (Robot.isSimulation()) {
       Field2d debugField = visionSim.getDebugField();
       // Uncomment to enable outputting of vision targets in sim.
@@ -213,7 +213,8 @@ public class VisionSubsystem extends SubsystemBase {
         Matrix<N3, N1> singleTagStdDevs,
         Matrix<N3, N1> multiTagStdDevsMatrix)
         {
-      latencyAlert = new Alert("'" + name + "' Camera is experiencing high latency.", AlertType.kWarning);
+      latencyAlert =
+          new Alert("'" + name + "' Camera is experiencing high latency.", AlertType.kWarning);
 
       camera = new PhotonCamera(name);
 
