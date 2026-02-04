@@ -64,24 +64,24 @@ public class IntakeShooter extends SubsystemBase {
           .withControlMode(ControlMode.CLOSED_LOOP)
           // Feedback Constants (PID Constants)
           .withClosedLoopController(
-              IntakeConstants.KP,
-              IntakeConstants.KI,
-              IntakeConstants.KD,
+              SmartDashboard.getNumber("IntakeShooterKP", IntakeConstants.KP),
+              SmartDashboard.getNumber("IntakeShooterKI", IntakeConstants.KI),
+              SmartDashboard.getNumber("IntakeShooterKD", IntakeConstants.KD),
               DegreesPerSecond.of(IntakeConstants.MaxVelocity),
               DegreesPerSecondPerSecond.of(IntakeConstants.MaxAcceleration))
           .withSimClosedLoopController(
-              IntakeConstants.KP,
-              IntakeConstants.KI,
-              IntakeConstants.KD,
+              SmartDashboard.getNumber("IntakeShooterKP", IntakeConstants.KP),
+              SmartDashboard.getNumber("IntakeShooterKI", IntakeConstants.KI),
+              SmartDashboard.getNumber("IntakeShooterKD", IntakeConstants.KD),
               DegreesPerSecond.of(IntakeConstants.MaxVelocity),
               DegreesPerSecondPerSecond.of(IntakeConstants.MaxAcceleration))
           // FeedForward Constants
           .withFeedforward(
               new SimpleMotorFeedforward(
-                  IntakeConstants.ks, IntakeConstants.kv, IntakeConstants.ka))
+                  SmartDashboard.getNumber("IntakeShooterks", IntakeConstants.ks), SmartDashboard.getNumber("IntakeShooterkv", IntakeConstants.kv), SmartDashboard.getNumber("IntakeShooterka", IntakeConstants.ka)))
           .withSimFeedforward(
               new SimpleMotorFeedforward(
-                  IntakeConstants.ks, IntakeConstants.kv, IntakeConstants.ka))
+                  SmartDashboard.getNumber("IntakeShooterks", IntakeConstants.ks), SmartDashboard.getNumber("IntakeShooterkv", IntakeConstants.kv), SmartDashboard.getNumber("IntakeShooterka", IntakeConstants.ka)))
           // Telemtry name and verbosity level
           .withTelemetry("IntakeMotor", motorTelemetryConfig)
           // Gearing from the motor rotor to final shaft
@@ -107,6 +107,7 @@ public class IntakeShooter extends SubsystemBase {
             .getStatorCurrent()
             .gte(Amps.of(IntakeConstants.DebounceMagnitude)));
   }
+
 
   private FlyWheelConfig intakeConfig =
       new FlyWheelConfig(sparkSmartMotorController)

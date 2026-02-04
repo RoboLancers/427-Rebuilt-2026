@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -30,6 +31,20 @@ import swervelib.SwerveInputStream;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+    
+  protected void execute() {
+  SmartDashboard.putNumber("IntakingFeeder", FuelConstants.IntakingFeeder);
+  SmartDashboard.putNumber("IntakingIntake", FuelConstants.IntakingIntake);
+
+  SmartDashboard.putNumber("EjectingFeeder", FuelConstants.EjectingFeeder);
+  SmartDashboard.putNumber("EjectingIntake", FuelConstants.EjectingIntake);
+
+  SmartDashboard.putNumber("LaunchingFeeder", FuelConstants.LaunchingFeeder);
+  SmartDashboard.putNumber("LaunchingIntake", FuelConstants.LaunchingIntake);
+
+  SmartDashboard.putNumber("SpinupIntake", FuelConstants.SpinupIntake); 
+}
+
   // The robot's subsystems and commands are defined here...
   private final IntakeShooter m_IntakeShooter = new IntakeShooter();
   private final Feeder m_feeder = new Feeder();
