@@ -48,12 +48,16 @@ public class Led extends SubsystemBase {
   }
 
   @Override
+  public void simulationPeriodic() {
+    m_led.setData(m_buffer);
+  }
+  
   public void periodic() {
     // Periodically send the latest LED color data to the LED strip for it to display
     m_led.setData(m_buffer);
   }
 
   public Command runPattern(LEDPattern pattern) {
-    return run(() -> pattern.applyTo(m_buffer));
+    return run(() -> LEDPattern.rainbow(255, 128).applyTo(m_buffer));
   }
 }

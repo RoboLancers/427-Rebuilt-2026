@@ -38,9 +38,7 @@ public class RobotContainer {
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   private final Field2d field = new Field2d();
-
-  private Led leds = Led.getInstance();
-  private AddressableLEDSim ledSim = new AddressableLEDSim(Led.getStrip());
+  private final Led led = new Led();
 
   private final SwerveSubsystem drivebase =
       new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
