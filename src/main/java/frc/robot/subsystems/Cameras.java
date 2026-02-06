@@ -1,5 +1,3 @@
 package frc.robot.subsystems;
 
-public class Cameras {
-
-}
+public class Cameras {}
