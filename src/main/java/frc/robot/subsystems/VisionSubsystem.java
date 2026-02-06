@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Robot;
 import java.awt.Desktop;
@@ -37,7 +36,6 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.PhotonUtils;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
@@ -50,18 +48,19 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 
 public class VisionSubsystem extends SubsystemBase {
 
-  private final PhotonCamera camera;
-  public final PhotonPoseEstimator  photonEstimator  =
-        new PhotonPoseEstimator(VisionConstants.kTagLayout, VisionConstants.kRobotToCam);
+  private static PhotonCamera camera;
+  public static final PhotonPoseEstimator photonEstimator =
+      new PhotonPoseEstimator(VisionConstants.kTagLayout, VisionConstants.kRobotToCam);
   private Supplier<Pose2d> currentPose;
   private Field2d field2d;
-  public PhotonCameraSim cameraSim;
+  public static PhotonCameraSim cameraSim;
   public VisionSystemSim visionSim;
-  public Matrix<N3, N1> curStdDevs;
-  private Transform3d robotToCamTransform;
-  public Optional<EstimatedRobotPose> estimatedRobotPose = Optional.empty();
-  private double lastReadTimestamp = Microseconds.of(NetworkTablesJNI.now()).in(Seconds);
-  public List<PhotonPipelineResult> resultsList = new ArrayList<>();
+  public static Matrix<N3, N1> curStdDevs;
+  public static Alert latencyAlert;
+  private static Transform3d robotToCamTransform;
+  public static Optional<EstimatedRobotPose> estimatedRobotPose = Optional.empty();
+  private static double lastReadTimestamp = Microseconds.of(NetworkTablesJNI.now()).in(Seconds);
+  public static List<PhotonPipelineResult> resultsList = new ArrayList<>();
   public static final AprilTagFieldLayout fieldLayout =
       AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
 
@@ -78,7 +77,7 @@ public class VisionSubsystem extends SubsystemBase {
     // onstants.visionConstants vision = new Constants.visionConstants();
 
     camera = new PhotonCamera(VisionConstants.kCameraName);
-   
+
     // ----- Simulation
     if (Robot.isSimulation()) {
       // Create the vision system simulation which handles cameras and targets on the field.
@@ -108,7 +107,7 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Cameras camera) {
-    Optional<EstimatedRobotPose> poseEst = camera.getEstimatedGlobalPose(Cameras);
+    Optional<EstimatedRobotPose> poseEst = camera.getEstimatedGlobalPose();
     if (Robot.isSimulation()) {
       Field2d debugField = visionSim.getDebugField();
       // Uncomment to enable outputting of vision targets in sim.
@@ -141,28 +140,57 @@ public class VisionSubsystem extends SubsystemBase {
     }
   }
 
-   @Override
-    public void periodic() {
-        Optional<EstimatedRobotPose> visionEst = Optional.empty();
-          for (PhotonPipelineResult cameraResult : camera.getAllUnreadResults()) {
-            visionEst = photonEstimator.estimateCoprocMultiTagPose(cameraResult);
-            if (visionEst.isEmpty()) {
-           visionEst = photonEstimator.estimateLowestAmbiguityPose(cameraResult);
-            updateEstimationStdDevs(visionEst, cameraResult.getTargets());
+  @Override
+  public void periodic() {
+    Optional<EstimatedRobotPose> visionEst = Optional.empty();
+    for (PhotonPipelineResult cameraResult : camera.getAllUnreadResults()) {
+      visionEst = photonEstimator.estimateCoprocMultiTagPose(cameraResult);
+      if (visionEst.isEmpty()) {
+        visionEst = photonEstimator.estimateLowestAmbiguityPose(cameraResult);
+        Cameras.updateEstimationStdDevs(visionEst, cameraResult.getTargets());
 
-            if (Robot.isSimulation()) {
-            visionEst.ifPresentOrElse(
+        if (Robot.isSimulation()) {
+          visionEst.ifPresentOrElse(
               est ->
-                    getSimDebugField()
-                   .getObject("VisionEstimation")
-                   .setPose(est.estimatedPose.toPose2d()),
-                    () -> {
-                    getSimDebugField().getObject("VisionEstimation").setPoses();
-                    });
-            }
-            }
-          }
-    
+                  getSimDebugField()
+                      .getObject("VisionEstimation")
+                      .setPose(est.estimatedPose.toPose2d()),
+              () -> {
+                getSimDebugField().getObject("VisionEstimation").setPoses();
+              });
+        }
+      }
+    }
+
+    /**
+     * Returns the latest standard deviations of the estimated pose from {@link
+     * #getEstimatedGlobalPose()}, for use with {@link
+     * edu.wpi.first.math.estimator.SwerveDrivePoseEstimator SwerveDrivePoseEstimator}. This should
+     * only be used when there are targets visible.
+     */
+  }
+
+  public Matrix<N3, N1> getEstimationStdDevs() {
+    return curStdDevs;
+  }
+
+  // ----- Simulation
+
+  public void updateSimPose(Pose2d robotSimPose) {
+    visionSim.update(robotSimPose);
+  }
+
+  /** Reset pose history of the robot in the vision system simulation. */
+  public void resetSimPose(Pose2d pose) {
+    if (Robot.isSimulation()) visionSim.resetRobotPose(pose);
+  }
+
+  /** A Field2d for visualizing our robot and objects on the field. */
+  public Field2d getSimDebugField() {
+    if (!Robot.isSimulation()) return null;
+    return visionSim.getDebugField();
+  }
+
   enum Cameras {
     /** Left Camera */
     LEFT_CAM(
@@ -192,7 +220,6 @@ public class VisionSubsystem extends SubsystemBase {
             Units.inchesToMeters(16.129)),
         VecBuilder.fill(4, 4, 8),
         VecBuilder.fill(0.5, 0.5, 1));
-  }
 
     /**
      * Construct a Photon Camera class with help. Standard deviations are fake values, experiment
@@ -206,30 +233,29 @@ public class VisionSubsystem extends SubsystemBase {
      * @param multiTagStdDevsMatrix Multi AprilTag standard deviations of estimated poses from the
      *     camera.
      */
-    private void Cameras(
+    Cameras(
         String name,
         Rotation3d robotToCamRotation,
         Translation3d robotToCamTranslation,
         Matrix<N3, N1> singleTagStdDevs,
-        Matrix<N3, N1> multiTagStdDevsMatrix)
-        {
+        Matrix<N3, N1> multiTagStdDevsMatrix) {
       latencyAlert =
           new Alert("'" + name + "' Camera is experiencing high latency.", AlertType.kWarning);
 
-      camera = new PhotonCamera(name);
+      PhotonCamera camera = new PhotonCamera(name);
 
       // https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html
       robotToCamTransform = new Transform3d(robotToCamTranslation, robotToCamRotation);
 
-      poseEstimator =
+      photonEstimator =
           new PhotonPoseEstimator(
               VisionSubsystem.fieldLayout,
               PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
               robotToCamTransform);
-      poseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+      photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
       this.singleTagStdDevs = singleTagStdDevs;
-      this.multiTagStdDevs = multiTagStdDevsMatrix;
+      this.multiTagStdDevsMatrix = multiTagStdDevsMatrix;
 
       if (Robot.isSimulation()) {
         SimCameraProperties cameraProp = new SimCameraProperties();
@@ -282,7 +308,7 @@ public class VisionSubsystem extends SubsystemBase {
       }
     }
 
-private void updateEstimatedGlobalPose() {
+    private void updateEstimatedGlobalPose() {
 
       Optional<EstimatedRobotPose> visionEst = Optional.empty();
       for (var change : resultsList) {
@@ -292,7 +318,6 @@ private void updateEstimatedGlobalPose() {
       estimatedRobotPose = visionEst;
     }
 
-
     /**
      * Calculates new standard deviations This algorithm is a heuristic that creates dynamic
      * standard deviations based on number of tags, estimation strategy, and distance from the tags.
@@ -300,7 +325,7 @@ private void updateEstimatedGlobalPose() {
      * @param estimatedPose The estimated pose to guess standard deviations for.
      * @param targets All targets in this camera frame
      */
-    public void updateEstimationStdDevs(
+    public static void updateEstimationStdDevs(
         Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
       if (estimatedPose.isEmpty()) {
         // No pose input. Default to single-tag std devs
@@ -341,33 +366,5 @@ private void updateEstimatedGlobalPose() {
         }
       }
     }
-
-
-    /**
-     * Returns the latest standard deviations of the estimated pose from {@link
-     * #getEstimatedGlobalPose()}, for use with {@link
-     * edu.wpi.first.math.estimator.SwerveDrivePoseEstimator SwerveDrivePoseEstimator}. This should
-     * only be used when there are targets visible.
-     */
-    public Matrix<N3, N1> getEstimationStdDevs() {
-      return curStdDevs;
-    }
-  }
-
-  // ----- Simulation
-
-  public void updateSimPose(Pose2d robotSimPose) {
-    visionSim.update(robotSimPose);
-  }
-
-  /** Reset pose history of the robot in the vision system simulation. */
-  public void resetSimPose(Pose2d pose) {
-    if (Robot.isSimulation()) visionSim.resetRobotPose(pose);
-  }
-
-  /** A Field2d for visualizing our robot and objects on the field. */
-  public Field2d getSimDebugField() {
-    if (!Robot.isSimulation()) return null;
-    return visionSim.getDebugField();
   }
 }
