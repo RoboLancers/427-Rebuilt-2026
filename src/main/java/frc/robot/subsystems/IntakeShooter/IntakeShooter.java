@@ -32,7 +32,7 @@ public class IntakeShooter extends SubsystemBase {
 
   public static int FuelCounter = 0;
 
-  protected void execute() {
+  public IntakeShooter() {
     SmartDashboard.putNumber("FuelNumber", FuelCounter);
 
     SmartDashboard.putNumber("IntakeShooterKP", IntakeConstants.KP);
@@ -47,8 +47,7 @@ public class IntakeShooter extends SubsystemBase {
     SmartDashboard.putNumber("IntakeShooterMaxVelocity", IntakeConstants.MaxVelocity);
     SmartDashboard.putNumber("IntakeShooterMaxAcceleration", IntakeConstants.MaxAcceleration);
 
-    SmartDashboard.putNumber("IntakeShooterxdutycycle", IntakeConstants.x_DutyCycle);
-    SmartDashboard.putNumber("IntakeShooterydutycycle", IntakeConstants.y_DutyCycle);
+
   }
 
   /** Creates a new intake. */
@@ -67,14 +66,14 @@ public class IntakeShooter extends SubsystemBase {
               SmartDashboard.getNumber("IntakeShooterKP", IntakeConstants.KP),
               SmartDashboard.getNumber("IntakeShooterKI", IntakeConstants.KI),
               SmartDashboard.getNumber("IntakeShooterKD", IntakeConstants.KD),
-              DegreesPerSecond.of(IntakeConstants.MaxVelocity),
-              DegreesPerSecondPerSecond.of(IntakeConstants.MaxAcceleration))
+              DegreesPerSecond.of(SmartDashboard.getNumber("IntakeShooterMaxVelocity", IntakeConstants.MaxVelocity)),
+              DegreesPerSecondPerSecond.of(SmartDashboard.getNumber("IntakeShooterMaxAcceleration", IntakeConstants.MaxAcceleration)))
           .withSimClosedLoopController(
               SmartDashboard.getNumber("IntakeShooterKP", IntakeConstants.KP),
               SmartDashboard.getNumber("IntakeShooterKI", IntakeConstants.KI),
               SmartDashboard.getNumber("IntakeShooterKD", IntakeConstants.KD),
-              DegreesPerSecond.of(IntakeConstants.MaxVelocity),
-              DegreesPerSecondPerSecond.of(IntakeConstants.MaxAcceleration))
+              DegreesPerSecond.of(SmartDashboard.getNumber("IntakeShooIerMaxVelocity", IntakeConstants.MaxVelocity)),
+              DegreesPerSecondPerSecond.of(SmartDashboard.getNumber("IntakeShooterMaxAcceleration", IntakeConstants.MaxAcceleration)))
           // FeedForward Constants
           .withFeedforward(
               new SimpleMotorFeedforward(
@@ -89,7 +88,7 @@ public class IntakeShooter extends SubsystemBase {
           // Motor Properties to prevent over currenting
           .withMotorInverted(false)
           .withIdleMode(MotorMode.BRAKE)
-          .withStatorCurrentLimit(Amps.of(IntakeConstants.CurrentLimit))
+          .withStatorCurrentLimit(Amps.of(SmartDashboard.getNumber("IntakeShooterCurrentLimit", IntakeConstants.CurrentLimit)))
           .withClosedLoopRampRate(Seconds.of(IntakeConstants.ClosedLoopRampRate))
           .withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate));
 
@@ -107,7 +106,20 @@ public class IntakeShooter extends SubsystemBase {
             .getStatorCurrent()
             .gte(Amps.of(IntakeConstants.DebounceMagnitude)));
   }
-
+  public boolean isStorageFull(){
+    if(FuelCounter >= 10){
+      return true;
+    }else{
+      return false;
+    }
+  }
+    public boolean isStorageEmpty(){
+    if(FuelCounter < 0){
+      return true;
+    }else{
+      return false;
+    }
+  }
 
   private FlyWheelConfig intakeConfig =
       new FlyWheelConfig(sparkSmartMotorController)
@@ -115,13 +127,11 @@ public class IntakeShooter extends SubsystemBase {
           // Mass of the flywheel
           .withMass(Pounds.of(IntakeConstants.FlyWheel_Mass))
           // Maximmum speed of the intake
-          .withUpperSoftLimit(RPM.of(IntakeConstants.SoftLimit))
+          .withUpperSoftLimit(RPM.of(SmartDashboard.getNumber("IntakeShooterUpperSoftLimit", IntakeConstants.SoftLimit)))
           // Telemetry name and verbosity for the arm
           .withTelemetry("IntakeMech", TelemetryVerbosity.HIGH);
 
   private FlyWheel intake = new FlyWheel(intakeConfig);
-
-  public IntakeShooter() {}
 
   public Command intakeMethodCommand() {
     return runOnce(() -> {});
@@ -140,6 +150,7 @@ public class IntakeShooter extends SubsystemBase {
     if (GamePiece == true) {
       FuelCounter += 1;
     }
+
   }
 
   @Override

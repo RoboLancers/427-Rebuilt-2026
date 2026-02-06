@@ -31,19 +31,6 @@ import swervelib.SwerveInputStream;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-    
-  protected void execute() {
-  SmartDashboard.putNumber("IntakingFeeder", FuelConstants.IntakingFeeder);
-  SmartDashboard.putNumber("IntakingIntake", FuelConstants.IntakingIntake);
-
-  SmartDashboard.putNumber("EjectingFeeder", FuelConstants.EjectingFeeder);
-  SmartDashboard.putNumber("EjectingIntake", FuelConstants.EjectingIntake);
-
-  SmartDashboard.putNumber("LaunchingFeeder", FuelConstants.LaunchingFeeder);
-  SmartDashboard.putNumber("LaunchingIntake", FuelConstants.LaunchingIntake);
-
-  SmartDashboard.putNumber("SpinupIntake", FuelConstants.SpinupIntake); 
-}
 
   // The robot's subsystems and commands are defined here...
   private final IntakeShooter m_IntakeShooter = new IntakeShooter();
@@ -114,7 +101,16 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    SmartDashboard.putNumber("IntakingFeeder", FuelConstants.IntakingFeeder);
+    SmartDashboard.putNumber("IntakingIntake", FuelConstants.IntakingIntake);
 
+    SmartDashboard.putNumber("EjectingFeeder", FuelConstants.EjectingFeeder);
+    SmartDashboard.putNumber("EjectingIntake", FuelConstants.EjectingIntake);
+
+    SmartDashboard.putNumber("LaunchingFeeder", FuelConstants.LaunchingFeeder);
+    SmartDashboard.putNumber("LaunchingIntake", FuelConstants.LaunchingIntake);
+
+    SmartDashboard.putNumber("SpinupIntake", FuelConstants.SpinupIntake);
     // Configure the trigger bindings
 
     configureBindings();
@@ -139,37 +135,61 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  public Command Intake() {
-    return m_IntakeShooter
-        .set(FuelConstants.IntakingIntake)
-        .alongWith(m_feeder.set(FuelConstants.IntakingFeeder));
-  }
-
-  public Command Eject() {
-    return m_IntakeShooter
-        .set(FuelConstants.EjectingIntake)
-        .alongWith(m_feeder.set(FuelConstants.EjectingFeeder));
-  }
-
-  public Command Launch() {
-    return m_IntakeShooter
-        .set(FuelConstants.LaunchingIntake)
-        .alongWith(m_feeder.set(FuelConstants.LaunchingFeeder));
-  }
-
   public Command Stop() {
     return m_IntakeShooter
         .set(FuelConstants.StoppingIntake)
         .alongWith(m_feeder.set(FuelConstants.StoppingFeeder));
   }
 
+  public Command Intake() {
+    return m_IntakeShooter
+        .set(SmartDashboard.getNumber("IntakingIntake", FuelConstants.IntakingIntake))
+        .alongWith(m_feeder.set(SmartDashboard.getNumber("IntakingFeeder", FuelConstants.IntakingFeeder)));
+  }
+
+  public Command Eject() {
+    return m_IntakeShooter
+        .set(SmartDashboard.getNumber("EjectingIntake", FuelConstants.EjectingIntake))
+        .alongWith(m_feeder.set(SmartDashboard.getNumber("EjectingFeeder", FuelConstants.EjectingFeeder)));
+  }
+
+  public Command Launch() {
+    return m_IntakeShooter
+        .set(SmartDashboard.getNumber("LaunchingIntake", FuelConstants.LaunchingIntake))
+        .alongWith(m_feeder.set(SmartDashboard.getNumber("LaunchingFeeder", FuelConstants.LaunchingFeeder)));
+  }
+    public Command IntakeUntilFull() {
+    return m_IntakeShooter
+        .set(SmartDashboard.getNumber("IntakingIntake", FuelConstants.IntakingIntake))
+        .alongWith(m_feeder.set(SmartDashboard.getNumber("IntakingFeeder", FuelConstants.IntakingFeeder)))
+        .until(()->m_IntakeShooter.isStorageFull())
+        .andThen(Stop());
+  }
+
+  public Command EjectUntilEmpty() {
+    return m_IntakeShooter
+        .set(SmartDashboard.getNumber("EjectingIntake", FuelConstants.EjectingIntake))
+        .alongWith(m_feeder.set(SmartDashboard.getNumber("EjectingFeeder", FuelConstants.EjectingFeeder)))
+        .until(()->m_IntakeShooter.isStorageEmpty())
+        .andThen(Stop());
+  }
+
+  public Command LaunchUntilEmpty() {
+    return m_IntakeShooter
+        .set(SmartDashboard.getNumber("LaunchingIntake", FuelConstants.LaunchingIntake))
+        .alongWith(m_feeder.set(SmartDashboard.getNumber("LaunchingFeeder", FuelConstants.LaunchingFeeder)))
+        .until(()->m_IntakeShooter.isStorageEmpty())
+        .andThen(Stop());
+  }
+
   public Command SpinUp() {
-    return m_IntakeShooter.set(FuelConstants.SpinupIntake);
+    return m_IntakeShooter.set(SmartDashboard.getNumber("SpinupIntake", FuelConstants.SpinupIntake));
   }
 
   private void configureBindings() {
     m_driverController.leftBumper().whileTrue(Intake());
-    m_driverController.rightBumper()
+    m_driverController
+        .rightBumper()
         .whileTrue(
             SpinUp()
                 .withTimeout(FuelConstants.SpinUpTime)

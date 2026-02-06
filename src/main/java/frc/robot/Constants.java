@@ -57,7 +57,7 @@ public final class Constants {
     public static final int ka = 0;
 
     public static final int CurrentLimit = 40;
-    public static final int MaxVelocity = 90;
+    public static final double MaxVelocity = 90;
     public static final int MaxAcceleration = 45;
     public static final double Intake_GearRatio = 12;
     public static final double x_DutyCycle = 0.3;
