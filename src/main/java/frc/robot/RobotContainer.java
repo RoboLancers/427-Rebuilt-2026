@@ -105,8 +105,8 @@ public class RobotContainer {
 
     // m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
 
-    m_feeder.setDefaultCommand(m_feeder.set(0));
-    m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
+    m_feeder.setDefaultCommand(Stop());
+    m_IntakeShooter.setDefaultCommand(Stop());
     // m_fuel.setDefaultCommand(m_fuel.stopCommand());
 
     DriverStation.silenceJoystickConnectionWarning(true);
