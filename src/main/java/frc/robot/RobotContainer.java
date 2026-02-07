@@ -16,7 +16,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.FuelConstants;
+import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Feeder.Feeder;
+import frc.robot.subsystems.IntakeShooter.IntakeShooter;
 import frc.robot.subsystems.Feeder.Feeder;
 import frc.robot.subsystems.IntakeShooter.IntakeShooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -105,11 +108,9 @@ public class RobotContainer {
 
     // m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
 
-    m_feeder.setDefaultCommand(Stop());
-    m_IntakeShooter.setDefaultCommand(Stop());
+    m_feeder.setDefaultCommand(m_feeder.set(0));
+    m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
     // m_fuel.setDefaultCommand(m_fuel.stopCommand());
-
-    DriverStation.silenceJoystickConnectionWarning(true);
 
     DriverStation.silenceJoystickConnectionWarning(true);
   }

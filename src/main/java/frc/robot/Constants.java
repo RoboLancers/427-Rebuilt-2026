@@ -42,6 +42,9 @@ public final class Constants {
 
     // Joystick Deadbband
 
+
+    // Joystick Deadbband
+
     public static final int kDriverControllerPort = 0;
     public static final String drivebase = "drivebase";
     public static final double DEADBAND = 0.3;
@@ -50,7 +53,6 @@ public final class Constants {
     public static final double TURN_CONSTANT = 6;
     // this used to be 6 if turning speed is stupid make it six
   }
-
   public static class VisionConstants {
     public static final String kCameraName = "YOUR CAMERA NAME";
     // Cam mounted facing forward, half a meter forward of center, half a meter up from cen
@@ -67,8 +69,7 @@ public final class Constants {
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
   }
-
-  public static class IntakeConstants {
+   public static class IntakeConstants {
 
     public static final int Intake_SparkMax_ID = 14;
     public static final int IntakenumMotors = 1;
