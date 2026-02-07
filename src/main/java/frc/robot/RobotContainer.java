@@ -144,46 +144,58 @@ public class RobotContainer {
   public Command Intake() {
     return m_IntakeShooter
         .set(SmartDashboard.getNumber("IntakingIntake", FuelConstants.IntakingIntake))
-        .alongWith(m_feeder.set(SmartDashboard.getNumber("IntakingFeeder", FuelConstants.IntakingFeeder)));
+        .alongWith(
+            m_feeder.set(SmartDashboard.getNumber("IntakingFeeder", FuelConstants.IntakingFeeder)));
   }
 
   public Command Eject() {
     return m_IntakeShooter
         .set(SmartDashboard.getNumber("EjectingIntake", FuelConstants.EjectingIntake))
-        .alongWith(m_feeder.set(SmartDashboard.getNumber("EjectingFeeder", FuelConstants.EjectingFeeder)));
+        .alongWith(
+            m_feeder.set(SmartDashboard.getNumber("EjectingFeeder", FuelConstants.EjectingFeeder)));
   }
 
   public Command Launch() {
+    double setSpeed = SmartDashboard.getNumber("LaunchingIntake", 0);
+    SmartDashboard.putNumber("LaunchingIntakeSetSpeed", setSpeed);
     return m_IntakeShooter
-        .set(SmartDashboard.getNumber("LaunchingIntake", FuelConstants.LaunchingIntake))
-        .alongWith(m_feeder.set(SmartDashboard.getNumber("LaunchingFeeder", FuelConstants.LaunchingFeeder)));
+        .Launch()
+        .alongWith(
+            m_feeder.set(
+                SmartDashboard.getNumber("LaunchingFeeder", 0)));
   }
-    public Command IntakeUntilFull() {
+
+  public Command IntakeUntilFull() {
     return m_IntakeShooter
         .set(SmartDashboard.getNumber("IntakingIntake", FuelConstants.IntakingIntake))
-        .alongWith(m_feeder.set(SmartDashboard.getNumber("IntakingFeeder", FuelConstants.IntakingFeeder)))
-        .until(()->m_IntakeShooter.isStorageFull())
+        .alongWith(
+            m_feeder.set(SmartDashboard.getNumber("IntakingFeeder", FuelConstants.IntakingFeeder)))
+        .until(() -> m_IntakeShooter.isStorageFull())
         .andThen(Stop());
   }
 
   public Command EjectUntilEmpty() {
     return m_IntakeShooter
         .set(SmartDashboard.getNumber("EjectingIntake", FuelConstants.EjectingIntake))
-        .alongWith(m_feeder.set(SmartDashboard.getNumber("EjectingFeeder", FuelConstants.EjectingFeeder)))
-        .until(()->m_IntakeShooter.isStorageEmpty())
+        .alongWith(
+            m_feeder.set(SmartDashboard.getNumber("EjectingFeeder", FuelConstants.EjectingFeeder)))
+        .until(() -> m_IntakeShooter.isStorageEmpty())
         .andThen(Stop());
   }
 
   public Command LaunchUntilEmpty() {
     return m_IntakeShooter
         .set(SmartDashboard.getNumber("LaunchingIntake", FuelConstants.LaunchingIntake))
-        .alongWith(m_feeder.set(SmartDashboard.getNumber("LaunchingFeeder", FuelConstants.LaunchingFeeder)))
-        .until(()->m_IntakeShooter.isStorageEmpty())
+        .alongWith(
+            m_feeder.set(
+                SmartDashboard.getNumber("LaunchingFeeder", FuelConstants.LaunchingFeeder)))
+        .until(() -> m_IntakeShooter.isStorageEmpty())
         .andThen(Stop());
   }
 
   public Command SpinUp() {
-    return m_IntakeShooter.set(SmartDashboard.getNumber("SpinupIntake", FuelConstants.SpinupIntake));
+    return m_IntakeShooter.set(
+        SmartDashboard.getNumber("SpinupIntake", FuelConstants.SpinupIntake));
   }
 
   private void configureBindings() {
@@ -195,7 +207,7 @@ public class RobotContainer {
                 .withTimeout(FuelConstants.SpinUpTime)
                 .andThen(Launch())
                 .finallyDo(() -> Stop()));
-    m_driverController.a().whileTrue(Eject());
+    m_driverController.rightTrigger().whileTrue(Eject());
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 

@@ -17,6 +17,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.IntakeConstants;
 import yams.mechanisms.config.FlyWheelConfig;
 import yams.mechanisms.velocity.FlyWheel;
@@ -46,8 +47,6 @@ public class IntakeShooter extends SubsystemBase {
     SmartDashboard.putNumber("IntakeShooterCurrentLimit", IntakeConstants.CurrentLimit);
     SmartDashboard.putNumber("IntakeShooterMaxVelocity", IntakeConstants.MaxVelocity);
     SmartDashboard.putNumber("IntakeShooterMaxAcceleration", IntakeConstants.MaxAcceleration);
-
-
   }
 
   /** Creates a new intake. */
@@ -66,21 +65,33 @@ public class IntakeShooter extends SubsystemBase {
               SmartDashboard.getNumber("IntakeShooterKP", IntakeConstants.KP),
               SmartDashboard.getNumber("IntakeShooterKI", IntakeConstants.KI),
               SmartDashboard.getNumber("IntakeShooterKD", IntakeConstants.KD),
-              DegreesPerSecond.of(SmartDashboard.getNumber("IntakeShooterMaxVelocity", IntakeConstants.MaxVelocity)),
-              DegreesPerSecondPerSecond.of(SmartDashboard.getNumber("IntakeShooterMaxAcceleration", IntakeConstants.MaxAcceleration)))
+              DegreesPerSecond.of(
+                  SmartDashboard.getNumber(
+                      "IntakeShooterMaxVelocity", IntakeConstants.MaxVelocity)),
+              DegreesPerSecondPerSecond.of(
+                  SmartDashboard.getNumber(
+                      "IntakeShooterMaxAcceleration", IntakeConstants.MaxAcceleration)))
           .withSimClosedLoopController(
               SmartDashboard.getNumber("IntakeShooterKP", IntakeConstants.KP),
               SmartDashboard.getNumber("IntakeShooterKI", IntakeConstants.KI),
               SmartDashboard.getNumber("IntakeShooterKD", IntakeConstants.KD),
-              DegreesPerSecond.of(SmartDashboard.getNumber("IntakeShooIerMaxVelocity", IntakeConstants.MaxVelocity)),
-              DegreesPerSecondPerSecond.of(SmartDashboard.getNumber("IntakeShooterMaxAcceleration", IntakeConstants.MaxAcceleration)))
+              DegreesPerSecond.of(
+                  SmartDashboard.getNumber(
+                      "IntakeShooIerMaxVelocity", IntakeConstants.MaxVelocity)),
+              DegreesPerSecondPerSecond.of(
+                  SmartDashboard.getNumber(
+                      "IntakeShooterMaxAcceleration", IntakeConstants.MaxAcceleration)))
           // FeedForward Constants
           .withFeedforward(
               new SimpleMotorFeedforward(
-                  SmartDashboard.getNumber("IntakeShooterks", IntakeConstants.ks), SmartDashboard.getNumber("IntakeShooterkv", IntakeConstants.kv), SmartDashboard.getNumber("IntakeShooterka", IntakeConstants.ka)))
+                  SmartDashboard.getNumber("IntakeShooterks", IntakeConstants.ks),
+                  SmartDashboard.getNumber("IntakeShooterkv", IntakeConstants.kv),
+                  SmartDashboard.getNumber("IntakeShooterka", IntakeConstants.ka)))
           .withSimFeedforward(
               new SimpleMotorFeedforward(
-                  SmartDashboard.getNumber("IntakeShooterks", IntakeConstants.ks), SmartDashboard.getNumber("IntakeShooterkv", IntakeConstants.kv), SmartDashboard.getNumber("IntakeShooterka", IntakeConstants.ka)))
+                  SmartDashboard.getNumber("IntakeShooterks", IntakeConstants.ks),
+                  SmartDashboard.getNumber("IntakeShooterkv", IntakeConstants.kv),
+                  SmartDashboard.getNumber("IntakeShooterka", IntakeConstants.ka)))
           // Telemtry name and verbosity level
           .withTelemetry("IntakeMotor", motorTelemetryConfig)
           // Gearing from the motor rotor to final shaft
@@ -88,7 +99,10 @@ public class IntakeShooter extends SubsystemBase {
           // Motor Properties to prevent over currenting
           .withMotorInverted(false)
           .withIdleMode(MotorMode.BRAKE)
-          .withStatorCurrentLimit(Amps.of(SmartDashboard.getNumber("IntakeShooterCurrentLimit", IntakeConstants.CurrentLimit)))
+          .withStatorCurrentLimit(
+              Amps.of(
+                  SmartDashboard.getNumber(
+                      "IntakeShooterCurrentLimit", IntakeConstants.CurrentLimit)))
           .withClosedLoopRampRate(Seconds.of(IntakeConstants.ClosedLoopRampRate))
           .withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate));
 
@@ -106,17 +120,19 @@ public class IntakeShooter extends SubsystemBase {
             .getStatorCurrent()
             .gte(Amps.of(IntakeConstants.DebounceMagnitude)));
   }
-  public boolean isStorageFull(){
-    if(FuelCounter >= 10){
+
+  public boolean isStorageFull() {
+    if (FuelCounter >= 10) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
-    public boolean isStorageEmpty(){
-    if(FuelCounter < 0){
+
+  public boolean isStorageEmpty() {
+    if (FuelCounter < 0) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
@@ -127,7 +143,10 @@ public class IntakeShooter extends SubsystemBase {
           // Mass of the flywheel
           .withMass(Pounds.of(IntakeConstants.FlyWheel_Mass))
           // Maximmum speed of the intake
-          .withUpperSoftLimit(RPM.of(SmartDashboard.getNumber("IntakeShooterUpperSoftLimit", IntakeConstants.SoftLimit)))
+          .withUpperSoftLimit(
+              RPM.of(
+                  SmartDashboard.getNumber(
+                      "IntakeShooterUpperSoftLimit", IntakeConstants.SoftLimit)))
           // Telemetry name and verbosity for the arm
           .withTelemetry("IntakeMech", TelemetryVerbosity.HIGH);
 
@@ -150,7 +169,6 @@ public class IntakeShooter extends SubsystemBase {
     if (GamePiece == true) {
       FuelCounter += 1;
     }
-
   }
 
   @Override
@@ -168,5 +186,9 @@ public class IntakeShooter extends SubsystemBase {
 
   public Command set(double dutyCycle) {
     return intake.set(dutyCycle);
+  }
+
+  public Command Launch() {
+    return intake.set(SmartDashboard.getNumber("LaunchingIntake", FuelConstants.LaunchingIntake));
   }
 }

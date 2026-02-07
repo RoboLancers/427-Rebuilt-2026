@@ -1,10 +1,10 @@
 // Copyright (c) FIRST and other WPILib contributors.
+
 // Open Source Software; you can modify and/or share it under the terms of
+
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-
-import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.FuelConstants;
@@ -15,9 +15,10 @@ import frc.robot.subsystems.IntakeShooter.IntakeShooter;
 public class IntakeShooterCommands {
   private Feeder m_feeder;
   private IntakeShooter m_IntakeShooter;
+
   public IntakeShooterCommands(Feeder m_feeder, IntakeShooter m_IntakeShooter) {
-      this.m_feeder = m_feeder;
-      this.m_IntakeShooter = m_IntakeShooter;
+    this.m_feeder = m_feeder;
+    this.m_IntakeShooter = m_IntakeShooter;
   }
 
   public Command Stop() {
@@ -25,10 +26,11 @@ public class IntakeShooterCommands {
         .set(FuelConstants.StoppingIntake)
         .alongWith(m_feeder.set(FuelConstants.StoppingFeeder));
   }
-  public boolean fullStorage(){
+
+  public boolean fullStorage() {
     return IntakeShooter.FuelCounter >= 10;
   }
-  
+
   public Command Intake() {
     return m_IntakeShooter
         .set(FuelConstants.IntakingIntake)
@@ -50,6 +52,4 @@ public class IntakeShooterCommands {
   public Command SpinUp() {
     return m_IntakeShooter.set(FuelConstants.SpinupIntake);
   }
-
-
 }

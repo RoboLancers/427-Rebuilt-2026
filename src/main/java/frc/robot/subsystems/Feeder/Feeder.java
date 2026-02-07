@@ -32,7 +32,7 @@ import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 public class Feeder extends SubsystemBase {
 
-    public Feeder() {
+  public Feeder() {
     SmartDashboard.putNumber("FeederKP", FeederConstants.kP);
     SmartDashboard.putNumber("FeederKI", FeederConstants.kI);
     SmartDashboard.putNumber("FeederKD", FeederConstants.kD);
@@ -44,7 +44,6 @@ public class Feeder extends SubsystemBase {
     SmartDashboard.putNumber("FeederCurrentLimit", FeederConstants.StatorLimit);
     SmartDashboard.putNumber("FeederMaxVelocity", FeederConstants.MaxVelocity);
     SmartDashboard.putNumber("FeederMaxAcceleration", FeederConstants.MaxAcceleration);
-
   }
 
   // public int FuelCounter;
@@ -65,7 +64,9 @@ public class Feeder extends SubsystemBase {
               DegreesPerSecond.of(FeederConstants.ClosedLoopControllerDegreesPerSec),
               DegreesPerSecondPerSecond.of(FeederConstants.ClosedLoopControllerDegreesPerSecPerSec))
           .withSoftLimit(
-              Degrees.of(SmartDashboard.getNumber("FeederUpperSoftLimit", FeederConstants.SoftLimitDegree)),
+              Degrees.of(
+                  SmartDashboard.getNumber(
+                      "FeederUpperSoftLimit", FeederConstants.SoftLimitDegree)),
               Degrees.of(FeederConstants.SoftLimitDegreeMagnitude))
           .withGearing(FeederConstants.GearingreductionStages)
           .withIdleMode(MotorMode.BRAKE)
@@ -78,26 +79,37 @@ public class Feeder extends SubsystemBase {
               SmartDashboard.getNumber("FeederKP", FeederConstants.kP),
               SmartDashboard.getNumber("FeederKI", FeederConstants.kI),
               SmartDashboard.getNumber("FeederKD", FeederConstants.kD),
-              DegreesPerSecond.of(SmartDashboard.getNumber("FeederMaxVelocity", FeederConstants.MaxVelocity)),
-              DegreesPerSecondPerSecond.of(SmartDashboard.getNumber("FeederMaxAcceleration", FeederConstants.MaxAcceleration)))
+              DegreesPerSecond.of(
+                  SmartDashboard.getNumber("FeederMaxVelocity", FeederConstants.MaxVelocity)),
+              DegreesPerSecondPerSecond.of(
+                  SmartDashboard.getNumber(
+                      "FeederMaxAcceleration", FeederConstants.MaxAcceleration)))
           .withSimClosedLoopController(
               SmartDashboard.getNumber("FeederKP", FeederConstants.kP),
               SmartDashboard.getNumber("FeederKI", FeederConstants.kI),
               SmartDashboard.getNumber("FeederKD", FeederConstants.kD),
-              DegreesPerSecond.of(SmartDashboard.getNumber("FeederMaxVelocity", FeederConstants.MaxVelocity)),
-              DegreesPerSecondPerSecond.of(SmartDashboard.getNumber("FeederMaxAcceleration", FeederConstants.MaxAcceleration)))
-          .withFeedforward(                                  
+              DegreesPerSecond.of(
+                  SmartDashboard.getNumber("FeederMaxVelocity", FeederConstants.MaxVelocity)),
+              DegreesPerSecondPerSecond.of(
+                  SmartDashboard.getNumber(
+                      "FeederMaxAcceleration", FeederConstants.MaxAcceleration)))
+          .withFeedforward(
               new SimpleMotorFeedforward(
-                  SmartDashboard.getNumber("Feederks", FeederConstants.ks), SmartDashboard.getNumber("Feederkv", FeederConstants.kv), SmartDashboard.getNumber("Feederka", FeederConstants.ka)))
+                  SmartDashboard.getNumber("Feederks", FeederConstants.ks),
+                  SmartDashboard.getNumber("Feederkv", FeederConstants.kv),
+                  SmartDashboard.getNumber("Feederka", FeederConstants.ka)))
           .withSimFeedforward(
               new SimpleMotorFeedforward(
-                  SmartDashboard.getNumber("Feederks", FeederConstants.ks), SmartDashboard.getNumber("Feederkv", FeederConstants.kv), SmartDashboard.getNumber("Feederka", FeederConstants.ka)))
+                  SmartDashboard.getNumber("Feederks", FeederConstants.ks),
+                  SmartDashboard.getNumber("Feederkv", FeederConstants.kv),
+                  SmartDashboard.getNumber("Feederka", FeederConstants.ka)))
           .withTelemetry("FeederMotor", TelemetryVerbosity.HIGH)
           .withGearing(
               new MechanismGearing(GearBox.fromReductionStages(FeederConstants.reductionStages)))
           .withMotorInverted(false)
           .withIdleMode(MotorMode.BRAKE)
-          .withStatorCurrentLimit (Amps.of(SmartDashboard.getNumber("FeederCurrentLimit", FeederConstants.StatorLimit)))
+          .withStatorCurrentLimit(
+              Amps.of(SmartDashboard.getNumber("FeederCurrentLimit", FeederConstants.StatorLimit)))
           .withClosedLoopRampRate(Seconds.of(FeederConstants.ClosedLoopRampRate))
           .withOpenLoopRampRate(Seconds.of(FeederConstants.OpenLoopRampRate));
 
@@ -117,7 +129,9 @@ public class Feeder extends SubsystemBase {
       new FlyWheelConfig(sparkSmartMotorController)
           .withDiameter(Inches.of(FeederConstants.Diameter))
           .withMass(Pounds.of(FeederConstants.Mass))
-          .withUpperSoftLimit(RPM.of(SmartDashboard.getNumber("FeederUpperSoftLimit", FeederConstants.UpperSoftLimit)))
+          .withUpperSoftLimit(
+              RPM.of(
+                  SmartDashboard.getNumber("FeederUpperSoftLimit", FeederConstants.UpperSoftLimit)))
           .withTelemetry("FeederMech", TelemetryVerbosity.HIGH);
 
   private FlyWheel Feeder = new FlyWheel(FeederConfig);
