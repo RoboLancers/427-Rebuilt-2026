@@ -54,8 +54,6 @@ public class SwerveSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     Vision.updatePoseEstimation(swerveDrive);
     swerveDrive.updateOdometry();
-    double bluehubDistance= Vision.getDistanceFromAprilTag(25);
-    SmartDashboard.putNumber(" tag 25 Distance", bluehubDistance);
   }
 
   public void periodic() {
