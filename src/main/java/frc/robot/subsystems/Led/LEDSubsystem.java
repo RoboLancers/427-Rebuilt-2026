@@ -4,6 +4,13 @@
 
 package frc.robot.subsystems.Led;
 
+import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Centimeters;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Percent;
+
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
@@ -11,11 +18,12 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import swervelib.parser.SwerveParser;
+import java.util.Map;
+import edu.wpi.first.math.geometry.Translation2d;
 
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import edu.wpi.first.units.measure.Distance;
+
+
+
 
 public class LEDSubsystem extends SubsystemBase {
 
@@ -25,14 +33,30 @@ public class LEDSubsystem extends SubsystemBase {
   private final AddressableLED m_led;
   private final AddressableLEDBuffer m_buffer;
 
-  
-  //final LEDPattern m_rainbow = LEDPattern.rainbow(255, 128);
+    final Distance kLedSpacing = Meters.of(1 / 120);
+
+  //Rainbow pattern (Kinda broken)
+   LEDPattern m_rainbow = LEDPattern.rainbow(255, 128);
+  //LEDPattern brighten = base.atBrightness(Percent.of(170));
+  //LEDPattern breathe = brighten.breathe(Seconds.of(3));
+  //LEDPattern m_rainbow = breathe.scrollAtAbsoluteSpeed(Centimeters.per(Seconds).of(12.5), kLedSpacing);
+
+
+  //Solid Red pattern
   final LEDPattern m_red = LEDPattern.solid(Color.kRed);
 
-  final Distance kLedSpacing = Meters.of(1 / 120);
+  //Gradient pattern
+  final LEDPattern m_gradientBase = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, Color.kGreen, Color.kBlack, Color.kGainsboro);
+  LEDPattern m_gradientScroll =  m_gradientBase.scrollAtRelativeSpeed(Percent.per(Seconds).of(25));
+  LEDPattern m_gradient = m_gradientScroll.atBrightness(Percent.of(100));
 
-  //final LEDPattern m_scrollingRainbow =
-  //  m_rainbow.scrollAtAbsoluteSpeed(MetersPerSecond.of(1), kLedSpacing);
+
+ // final LEDPattern xSpeed = LEDPattern.progressMaskLayer(() -> scaledInputs.getX() / Constants.DriveConstants.MAX_SPEED);
+
+
+  //Scrolling rainbow pattern (also broken)
+   LEDPattern m_scrollingRainbow =
+    m_rainbow.scrollAtAbsoluteSpeed(MetersPerSecond.of(1), kLedSpacing);
 
   public LEDSubsystem() {
     m_led = new AddressableLED(kPort);
@@ -42,6 +66,7 @@ public class LEDSubsystem extends SubsystemBase {
 
     m_led.setData(m_buffer);
     m_led.start();
+    
     // Set the default command to turn the strip off, otherwise the last colors written by
     // the last command to run will continue to be displayed.
     // Note: Other default patterns could be used instead!
@@ -50,9 +75,8 @@ public class LEDSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // Update the buffer with the rainbow animation
-    //m_scrollingRainbow.applyTo(m_buffer);
-    m_red.applyTo(m_buffer);
+
+    m_gradient.applyTo(m_buffer); //Change the value here to change the pattern!!!!!!!! XD
     // Set the LEDs
     m_led.setData(m_buffer);
   }
