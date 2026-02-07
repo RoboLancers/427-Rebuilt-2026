@@ -16,12 +16,12 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.CameraConstants;
 import frc.robot.Robot;
 import java.util.ArrayList;
 import java.util.List;
@@ -218,6 +218,12 @@ public class VisionSubsystem extends SubsystemBase {
         .orElse(-1.0);
   }
 
+  public double GetAngleToTarget(int id) {
+    Optional<Pose3d> tag = fieldLayout.getTagPose(id);
+    return tag.map(pose3d -> PhotonUtils.getYawToPose(currentPose.get(), pose3d.toPose2d()))
+        .orElse(-1.0);
+  }
+
   /**
    * Get tracked target from a camera of AprilTagID
    *
@@ -253,17 +259,17 @@ public class VisionSubsystem extends SubsystemBase {
    * localhost.
    */
   private void openSimCameraViews() {
+    // uncoment the following;
+
     // if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE))
     // {
-    //  try
-    //  {
-    //    Desktop.getDesktop().browse(new URI("http://localhost:1182/"));
-    //    Desktop.getDesktop().browse(new URI("http://localhost:1184/"));
-    //    Desktop.getDesktop().browse(new URI("http://localhost:1186/"));
-    //  } catch (IOException | URISyntaxException e)
-    //  {
-    //    e.printStackTrace();
-    //  }
+    //   try {
+    //     Desktop.getDesktop().browse(new URI("http://localhost:1182/"));
+    //     Desktop.getDesktop().browse(new URI("http://localhost:1184/"));
+    //     Desktop.getDesktop().browse(new URI("http://localhost:1186/"));
+    //   } catch (IOException | URISyntaxException e) {
+    //     e.printStackTrace();
+    //   }
     // }
   }
 
@@ -293,32 +299,32 @@ public class VisionSubsystem extends SubsystemBase {
 
   /** Camera Enum to select each camera */
   enum Cameras {
-    /** Left Camera */
-    LEFT_CAM(
-        "left",
-        new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
-        new Translation3d(
-            Units.inchesToMeters(12.056), Units.inchesToMeters(10.981), Units.inchesToMeters(8.44)),
+    /** Front Left Camera */
+    FRONT_LEFT_CAM(
+        "front_left",
+        CameraConstants.FRONT_LEFT_ROTATION,
+        CameraConstants.FRONT_LEFT_TRANSLATION,
         VecBuilder.fill(4, 4, 8),
         VecBuilder.fill(0.5, 0.5, 1)),
-    /** Right Camera */
-    RIGHT_CAM(
-        "right",
-        new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(-30)),
-        new Translation3d(
-            Units.inchesToMeters(12.056),
-            Units.inchesToMeters(-10.981),
-            Units.inchesToMeters(8.44)),
+    /** Front Right Camera */
+    FRONT_RIGHT_CAM(
+        "front_right",
+        CameraConstants.FRONT_RIGHT_ROTATION,
+        CameraConstants.FRONT_RIGHT_TRANSLATION,
         VecBuilder.fill(4, 4, 8),
         VecBuilder.fill(0.5, 0.5, 1)),
-    /** Center Camera */
-    CENTER_CAM(
-        "center",
-        new Rotation3d(0, Units.degreesToRadians(18), 0),
-        new Translation3d(
-            Units.inchesToMeters(-4.628),
-            Units.inchesToMeters(-10.687),
-            Units.inchesToMeters(16.129)),
+    /** Back Left Camera */
+    BACK_LEFT_CAM(
+        "back_left",
+        CameraConstants.BACK_LEFT_ROTATION,
+        CameraConstants.BACK_LEFT_TRANSLATION,
+        VecBuilder.fill(4, 4, 8),
+        VecBuilder.fill(0.5, 0.5, 1)),
+    /** Back Right Camera */
+    BACK_RIGHT_CAM(
+        "back_right",
+        CameraConstants.BACK_RIGHT_ROTATION,
+        CameraConstants.BACK_RIGHT_TRANSLATION,
         VecBuilder.fill(4, 4, 8),
         VecBuilder.fill(0.5, 0.5, 1));
 
@@ -383,7 +389,9 @@ public class VisionSubsystem extends SubsystemBase {
 
       poseEstimator =
           new PhotonPoseEstimator(
-              VisionSubsystem.fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamTransform);
+              VisionSubsystem.fieldLayout,
+              PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+              robotToCamTransform);
       poseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
       this.singleTagStdDevs = singleTagStdDevs;

@@ -58,6 +58,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public void periodic() {
     // This method will be called once per scheduler run
+    double distanceToHub = Vision.getDistanceFromAprilTag(26);
+    SmartDashboard.putNumber("Distance To Hub", distanceToHub);
   }
 
   public Command sysIdDriveMotorCommand() {

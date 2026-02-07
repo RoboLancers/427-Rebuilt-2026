@@ -42,7 +42,6 @@ public final class Constants {
 
     // Joystick Deadbband
 
-
     // Joystick Deadbband
 
     public static final int kDriverControllerPort = 0;
@@ -53,6 +52,7 @@ public final class Constants {
     public static final double TURN_CONSTANT = 6;
     // this used to be 6 if turning speed is stupid make it six
   }
+
   public static class VisionConstants {
     public static final String kCameraName = "YOUR CAMERA NAME";
     // Cam mounted facing forward, half a meter forward of center, half a meter up from cen
@@ -64,12 +64,14 @@ public final class Constants {
     public static final AprilTagFieldLayout kTagLayout =
         AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
     ;
+
     // The standard deviations of our vision estimated poses, which affect correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
   }
-   public static class IntakeConstants {
+
+  public static class IntakeConstants {
 
     public static final int Intake_SparkMax_ID = 14;
     public static final int IntakenumMotors = 1;
@@ -170,5 +172,37 @@ public final class Constants {
     public static final int StoppingIntake = 0;
 
     public static final double SpinupIntake = 0.4;
+  }
+
+  public static class CameraConstants {
+    public static final Rotation3d FRONT_LEFT_ROTATION =
+        new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30));
+    public static final Translation3d FRONT_LEFT_TRANSLATION =
+        new Translation3d(
+            Units.inchesToMeters(12.056), Units.inchesToMeters(10.981), Units.inchesToMeters(8.44));
+
+    public static final Rotation3d FRONT_RIGHT_ROTATION =
+        new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(-30));
+    public static final Translation3d FRONT_RIGHT_TRANSLATION =
+        new Translation3d(
+            Units.inchesToMeters(12.056),
+            Units.inchesToMeters(-10.981),
+            Units.inchesToMeters(8.44));
+
+    public static final Rotation3d BACK_LEFT_ROTATION =
+        new Rotation3d(0, Units.degreesToRadians(-24.094), Math.toRadians(150));
+    public static final Translation3d BACK_LEFT_TRANSLATION =
+        new Translation3d(
+            Units.inchesToMeters(-12.628),
+            Units.inchesToMeters(10.687),
+            Units.inchesToMeters(16.129));
+
+    public static final Rotation3d BACK_RIGHT_ROTATION =
+        new Rotation3d(0, Units.degreesToRadians(-24.094), Math.toRadians(-150));
+    public static final Translation3d BACK_RIGHT_TRANSLATION =
+        new Translation3d(
+            Units.inchesToMeters(-12.628),
+            Units.inchesToMeters(-10.687),
+            Units.inchesToMeters(16.129));
   }
 }
