@@ -218,12 +218,6 @@ public class VisionSubsystem extends SubsystemBase {
         .orElse(-1.0);
   }
 
-  public double GetAngleToTarget(int id) {
-    Optional<Pose3d> tag = fieldLayout.getTagPose(id);
-    return tag.map(pose3d -> PhotonUtils.getYawToPose(currentPose.get(), pose3d.toPose2d()))
-        .orElse(-1.0);
-  }
-
   /**
    * Get tracked target from a camera of AprilTagID
    *
