@@ -4,9 +4,9 @@
 
 package frc.robot.commands.Led;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-//import 
+
+// import
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class LEDCommand extends Command {
@@ -22,7 +22,7 @@ public class LEDCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //SmartDashboard.putData("DATA", );
+    // SmartDashboard.putData("DATA", );
   }
 
   // Called once the command ends or is interrupted.
