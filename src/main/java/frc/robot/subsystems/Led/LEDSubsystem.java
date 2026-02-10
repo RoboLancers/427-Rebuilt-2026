@@ -4,6 +4,12 @@
 
 package frc.robot.subsystems.Led;
 
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Percent;
+import static edu.wpi.first.units.Units.Seconds;
+
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
@@ -61,7 +67,12 @@ public class LEDSubsystem extends SubsystemBase {
   Purple punk blue white */
 
 
-  final Distance kLedSpacing = Meters.of(1 / 120);
+  // Gradient pattern
+  final LEDPattern m_gradientBase =
+      LEDPattern.gradient(
+          LEDPattern.GradientType.kContinuous, Color.kGreen, Color.kBlack, Color.kGainsboro);
+  LEDPattern m_gradientScroll = m_gradientBase.scrollAtRelativeSpeed(Percent.per(Seconds).of(25));
+  LEDPattern m_gradient = m_gradientScroll.atBrightness(Percent.of(100));
 
 
   public LEDSubsystem() {
@@ -72,7 +83,6 @@ public class LEDSubsystem extends SubsystemBase {
 
     m_led.setData(m_buffer);
     m_led.start();
-    
     // Set the default command to turn the strip off, otherwise the last colors written by
     setDefaultCommand(runPattern(LEDPattern.solid(Color.kBlack)).withName("Off"));
   }
