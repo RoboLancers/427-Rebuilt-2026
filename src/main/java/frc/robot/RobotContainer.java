@@ -1,5 +1,7 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Degrees;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -19,9 +21,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.ClimbConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Climb.ClimbSubsystem;
 import frc.robot.subsystems.Feeder.Feeder;
 import frc.robot.subsystems.IntakeShooter.IntakeShooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -38,18 +42,15 @@ import swervelib.SwerveInputStream;
 public class RobotContainer {
   private final IntakeShooter m_IntakeShooter = new IntakeShooter();
   private final Feeder m_feeder = new Feeder();
-
-  public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
-  }
+  private final ClimbSubsystem m_ClimbSubsystem = new ClimbSubsystem();
 
   boolean isCompetition = true;
+
+  private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
-
-  private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   // The robot's subsystems and commands are defined here...
 
@@ -133,6 +134,10 @@ public class RobotContainer {
         (poses) -> {
           field.getObject("path").setPoses(poses);
         });
+
+    // Set the default command to force the arm to go to 0.
+    m_ClimbSubsystem.setDefaultCommand(
+        m_ClimbSubsystem.setAngle(Degrees.of(ClimbConstants.DefaultAngle)));
   }
 
   // path.preventFlipping = true;
@@ -169,7 +174,6 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-
     if (RobotBase.isSimulation()) {
       drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
     }
@@ -256,13 +260,36 @@ public class RobotContainer {
             .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
         m_driverController.rightBumper().onTrue(Commands.none());
       }
-      autoChooser = AutoBuilder.buildAutoChooser();
+      autoChooser = AutoBuilder.buildAutoChooser("Center");
       // AutoBuilder.buildAutoChooserWithOptionsModifier(
       //     (stream) ->
       //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) :
       // stream);
       SmartDashboard.putData("Auto Chooser", autoChooser);
     }
+
+    // Schedule `setAngle` when the Xbox controller's B button is pressed,
+    // cancelling on release.
+    m_driverController.a().whileTrue(m_ClimbSubsystem.setAngle(Degrees.of(ClimbConstants.A_Angle)));
+    m_driverController.b().whileTrue(m_ClimbSubsystem.setAngle(Degrees.of(ClimbConstants.B_Angle)));
+    // Schedule `set` when the Xbox controller's B button is pressed,
+    // cancelling on release.
+    m_driverController
+        .x()
+        .whileTrue(
+            m_ClimbSubsystem
+                .setAngleAndStop(Degrees.of(ClimbConstants.A_Angle))
+                .andThen(m_ClimbSubsystem.set(ClimbConstants.X_DutyCycle)));
+    m_driverController
+        .y()
+        .whileTrue(
+            m_ClimbSubsystem
+                .setAngleAndStop(Degrees.of(ClimbConstants.B_Angle))
+                .andThen(m_ClimbSubsystem.set(ClimbConstants.Y_DutyCycle)));
+  }
+
+  public Command getAutonomousCommand() {
+    return autoChooser.getSelected();
   }
 }
 

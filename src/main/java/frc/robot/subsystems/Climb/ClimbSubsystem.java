@@ -17,8 +17,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import yams.gearing.GearBox;
-import yams.gearing.MechanismGearing;
+import frc.robot.Constants.ClimbConstants;
 import yams.mechanisms.config.ArmConfig;
 import yams.mechanisms.positional.Arm;
 import yams.motorcontrollers.SmartMotorController;
@@ -33,30 +32,47 @@ public class ClimbSubsystem extends SubsystemBase {
       new SmartMotorControllerConfig(this)
           .withControlMode(ControlMode.CLOSED_LOOP)
           .withClosedLoopController(
-              50, 0, 0, DegreesPerSecond.of(90), DegreesPerSecondPerSecond.of(45))
+              ClimbConstants.kP,
+              ClimbConstants.kI,
+              ClimbConstants.kD,
+              DegreesPerSecond.of(ClimbConstants.MaxVelocity),
+              DegreesPerSecondPerSecond.of(ClimbConstants.MaxAcceleration))
           .withSimClosedLoopController(
-              50, 0, 0, DegreesPerSecond.of(90), DegreesPerSecondPerSecond.of(45))
-          .withFeedforward(new ArmFeedforward(0, 0, 0))
-          .withSimFeedforward(new ArmFeedforward(0, 0, 0))
+              ClimbConstants.kP,
+              ClimbConstants.kI,
+              ClimbConstants.kD,
+              DegreesPerSecond.of(ClimbConstants.MaxVelocity),
+              DegreesPerSecondPerSecond.of(ClimbConstants.MaxAcceleration))
+          .withFeedforward(
+              new ArmFeedforward(ClimbConstants.ks, ClimbConstants.kg, ClimbConstants.kv))
+          .withSimFeedforward(
+              new ArmFeedforward(ClimbConstants.ks, ClimbConstants.kg, ClimbConstants.kv))
           .withTelemetry("ArmMotor", TelemetryVerbosity.HIGH)
-          .withGearing(new MechanismGearing(GearBox.fromReductionStages(3, 4)))
-          .withMotorInverted(false)
+          .withGearing(ClimbConstants.GearRatio)
+          .withMotorInverted(ClimbConstants.MotorInverted)
           .withIdleMode(MotorMode.BRAKE)
-          .withStatorCurrentLimit(Amps.of(40))
-          .withClosedLoopRampRate(Seconds.of(0.25))
-          .withOpenLoopRampRate(Seconds.of(0.25));
-  private SparkMax spark = new SparkMax(4, MotorType.kBrushless);
+          .withStatorCurrentLimit(Amps.of(ClimbConstants.StatorCurrentLimit))
+          .withClosedLoopRampRate(Seconds.of(ClimbConstants.LoopRampRate))
+          .withOpenLoopRampRate(Seconds.of(ClimbConstants.LoopRampRate));
+
+  private SparkMax spark = new SparkMax(ClimbConstants.SparkMaxDeviceID, MotorType.kBrushless);
+
   private SmartMotorController sparkSmartMotorController =
-      new SparkWrapper(spark, DCMotor.getNEO(1), smcConfig);
+      new SparkWrapper(spark, DCMotor.getNEO(ClimbConstants.NumMotors), smcConfig);
+
   private ArmConfig armCfg =
       new ArmConfig(sparkSmartMotorController)
-          .withSoftLimits(Degrees.of(-20), Degrees.of(10))
-          .withHardLimit(Degrees.of(-30), Degrees.of(40))
-          .withStartingPosition(Degrees.of(-5))
-          .withLength(Feet.of(3))
-          .withMass(Pounds.of(1))
+          .withSoftLimits(
+              Degrees.of(ClimbConstants.SoftLowerLimit), Degrees.of(ClimbConstants.SoftUpperLimit))
+          .withHardLimit(Degrees.of(ClimbConstants.HardMin), Degrees.of(ClimbConstants.HardMax))
+          .withStartingPosition(Degrees.of(ClimbConstants.StartingPosition))
+          .withLength(Feet.of(ClimbConstants.Length))
+          .withMass(Pounds.of(ClimbConstants.Mass))
           .withTelemetry("Arm", TelemetryVerbosity.HIGH);
+
   private Arm arm = new Arm(armCfg);
+
+  public ClimbSubsystem() {}
 
   /**
    * Set the angle of the arm, does not stop when the arm reaches the setpoint.
@@ -76,7 +92,7 @@ public class ClimbSubsystem extends SubsystemBase {
    * @return A Command
    */
   public Command setAngleAndStop(Angle angle) {
-    return arm.runTo(angle, Degrees.of(0));
+    return arm.runTo(angle, Degrees.of(ClimbConstants.ToleranceAngle));
   }
 
   /**
@@ -99,15 +115,10 @@ public class ClimbSubsystem extends SubsystemBase {
 
   /** Run sysId on the {@link Arm} */
   public Command sysId() {
-    return arm.sysId(Volts.of(7), Volts.of(2).per(Second), Seconds.of(4));
-  }
-
-  public ClimbSubsystem() {
-    /**
-     * Example command factory method.
-     *
-     * @return a command
-     */
+    return arm.sysId(
+        Volts.of(ClimbConstants.MaximumVoltage),
+        Volts.of(ClimbConstants.StepVoltage).per(Second),
+        Seconds.of(ClimbConstants.Duration));
   }
 
   @Override

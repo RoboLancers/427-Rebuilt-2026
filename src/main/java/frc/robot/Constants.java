@@ -141,4 +141,51 @@ public final class Constants {
 
     public static final double SpinupIntake = 0.4;
   }
+
+  public static class ClimbConstants {
+    // ClimbSubsystem
+    public static final int kP = 50;
+    public static final int kI = 0;
+    public static final int kD = 0;
+
+    public static final int MaxVelocity = 90;
+    public static final int MaxAcceleration = 45;
+
+    public static final int ks = 0;
+    public static final int kg = 0;
+    public static final int kv = 0;
+
+    public static final int GearRatio = 100;
+
+    public static final boolean MotorInverted = false;
+
+    public static final int StatorCurrentLimit = 40;
+    public static final double LoopRampRate = 0.25;
+
+    public static final int SparkMaxDeviceID = 16;
+
+    public static final int NumMotors = 1;
+
+    public static final int SoftLowerLimit = -20;
+    public static final int SoftUpperLimit = 10;
+    public static final int HardMin = -30;
+    public static final int HardMax = 40;
+    public static final int StartingPosition = -5;
+
+    public static final int Length = 3;
+    public static final int Mass = 1;
+
+    public static final int ToleranceAngle = 0;
+
+    public static final int MaximumVoltage = 7;
+    public static final int StepVoltage = 2;
+    public static final int Duration = 4;
+
+    // RobotContainer
+    public static final int DefaultAngle = 0;
+    public static final int A_Angle = -5;
+    public static final int B_Angle = 15;
+    public static final double X_DutyCycle = 0.3;
+    public static final double Y_DutyCycle = -0.3;
+  }
 }
