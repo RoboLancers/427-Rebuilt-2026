@@ -13,6 +13,7 @@ import static edu.wpi.first.units.Units.Volts;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -59,6 +60,14 @@ public class ClimbSubsystem extends SubsystemBase {
 
   private SmartMotorController sparkSmartMotorController =
       new SparkWrapper(spark, DCMotor.getNEO(ClimbConstants.NumMotors), smcConfig);
+
+  private Debouncer statorDebounce =
+      new Debouncer(0.1); // Debouncer to prevent rapid changes in 0.1s
+
+  // Game piece is detected if you're using over 40A current for more than 0.1s
+  public boolean isGamePieceIn() {
+    return statorDebounce.calculate(sparkSmartMotorController.getStatorCurrent().gte(Amps.of(40)));
+  }
 
   private ArmConfig armCfg =
       new ArmConfig(sparkSmartMotorController)
