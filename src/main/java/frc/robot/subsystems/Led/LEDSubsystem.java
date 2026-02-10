@@ -18,6 +18,8 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Percent;
 import static edu.wpi.first.units.Units.Seconds;
 
+import java.util.Map;
+
 import edu.wpi.first.units.measure.Distance;
 
 
@@ -30,10 +32,10 @@ public class LEDSubsystem extends SubsystemBase {
   
   final LEDPattern m_rainbow = LEDPattern.rainbow(255, 128);
 
-  LEDPattern redBlueGradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, Color.kRed, Color.kBlue);
-  LEDPattern redBlueBreathe = redBlueGradient.breathe(Seconds.of(2));
-  LEDPattern redBlueScroll = redBlueGradient.scrollAtRelativeSpeed(Percent.per(Seconds).of(25));
-
+/* Color code?
+-Scrolling Gradient = task in progress
+-Scrolling steps = error
+*/
 
   LEDPattern oliveGreenGradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, Color.kGreen, Color.kDarkOliveGreen);
   LEDPattern oliveGreenBreathe = oliveGreenGradient.breathe(Seconds.of(2));
@@ -41,7 +43,17 @@ public class LEDSubsystem extends SubsystemBase {
 
   LEDPattern bluePinkYellowWhiteGradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, Color.kCornflowerBlue, Color.kPink, Color.kYellow, Color.kFloralWhite);
   LEDPattern bluePinkYellowWhiteBreathe = bluePinkYellowWhiteGradient.breathe(Seconds.of(2));
-  LEDPattern bluePinkYellowWhiteScroll = bluePinkYellowWhiteGradient.scrollAtRelativeSpeed(Percent.per(Seconds).of(25));
+  LEDPattern bluePinkYellowWhiteScroll = bluePinkYellowWhiteGradient.scrollAtRelativeSpeed(Percent.per(Seconds).of(15));
+
+  LEDPattern purplePinkBlueWhiteGradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous,Color.kMediumPurple, Color.kPink, Color.kCornflowerBlue, Color.kFloralWhite);
+  LEDPattern purplePinkBlueWhiteBreathe = purplePinkBlueWhiteGradient.breathe(Seconds.of(2));
+  LEDPattern purplePinkBlueWhiteScroll = purplePinkBlueWhiteGradient.scrollAtRelativeSpeed(Percent.per(Seconds).of(15));
+
+  LEDPattern yellowRedSteps = LEDPattern.steps(Map.of(0, Color.kRed, 0.25, Color.kYellow,0.5, Color.kRed, 0.75, Color.kYellow));
+  LEDPattern yellowRedScroll = yellowRedSteps.scrollAtRelativeSpeed(Percent.per(Seconds).of(25));
+
+
+
 
 
 
@@ -69,7 +81,7 @@ public class LEDSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the buffer with the rainbow animation
     //m_scrollingRainbow.applyTo(m_buffer);
-    oliveGreenScroll.applyTo(m_buffer);
+    yellowRedScroll.applyTo(m_buffer);
     // Set the LEDs
     m_led.setData(m_buffer);
   }
