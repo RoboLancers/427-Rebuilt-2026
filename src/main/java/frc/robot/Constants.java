@@ -30,16 +30,16 @@ public final class Constants {
     public static final double TURN_CONSTANT = 6;
   }
 
-  /*
-   * public static class LedConstants {
-   *  private static final int kPort = 9;
-   *  private static final int kLength = 60;
-   * Moved the varibles to Led.java temporarily
-   * }
-   */
+  
+    public static class LedConstants {
+     public static final int kPort = 9;
+     public static final int kLength = 60;
+    }
+   
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final String drivebase = "drivebase";
     // this used to be 6 if turning speed is stupid make it six
   }
+
 }

@@ -15,44 +15,61 @@ import swervelib.parser.SwerveParser;
 
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Percent;
+import static edu.wpi.first.units.Units.Seconds;
+
 import edu.wpi.first.units.measure.Distance;
+
 
 public class LEDSubsystem extends SubsystemBase {
 
-  private static final int kPort = 9;
-  private static final int kLength = 60;
 
   private final AddressableLED m_led;
   private final AddressableLEDBuffer m_buffer;
 
   
-  //final LEDPattern m_rainbow = LEDPattern.rainbow(255, 128);
-  final LEDPattern m_red = LEDPattern.solid(Color.kRed);
+  final LEDPattern m_rainbow = LEDPattern.rainbow(255, 128);
+
+  LEDPattern redBlueGradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, Color.kRed, Color.kBlue);
+  LEDPattern redBlueBreathe = redBlueGradient.breathe(Seconds.of(2));
+  LEDPattern redBlueScroll = redBlueGradient.scrollAtRelativeSpeed(Percent.per(Seconds).of(25));
+
+
+  LEDPattern oliveGreenGradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, Color.kGreen, Color.kDarkOliveGreen);
+  LEDPattern oliveGreenBreathe = oliveGreenGradient.breathe(Seconds.of(2));
+  LEDPattern oliveGreenScroll = oliveGreenGradient.scrollAtRelativeSpeed(Percent.per(Seconds).of(25));
+
+  LEDPattern bluePinkYellowWhiteGradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, Color.kCornflowerBlue, Color.kPink, Color.kYellow, Color.kFloralWhite);
+  LEDPattern bluePinkYellowWhiteBreathe = bluePinkYellowWhiteGradient.breathe(Seconds.of(2));
+  LEDPattern bluePinkYellowWhiteScroll = bluePinkYellowWhiteGradient.scrollAtRelativeSpeed(Percent.per(Seconds).of(25));
+
+
+
+  /* Blue Pink Yellow White
+  Purple punk blue white */
+
 
   final Distance kLedSpacing = Meters.of(1 / 120);
 
-  //final LEDPattern m_scrollingRainbow =
-  //  m_rainbow.scrollAtAbsoluteSpeed(MetersPerSecond.of(1), kLedSpacing);
 
   public LEDSubsystem() {
-    m_led = new AddressableLED(kPort);
+    m_led = new AddressableLED(Constants.LedConstants.kPort);
 
-    m_buffer = new AddressableLEDBuffer(kLength);
+    m_buffer = new AddressableLEDBuffer(Constants.LedConstants.kLength);
     m_led.setLength(m_buffer.getLength());
 
     m_led.setData(m_buffer);
     m_led.start();
+    
     // Set the default command to turn the strip off, otherwise the last colors written by
-    // the last command to run will continue to be displayed.
-    // Note: Other default patterns could be used instead!
-    // setDefaultCommand(runPattern(LEDPattern.solid(Color.kBlack)).withName("Off"));
+    setDefaultCommand(runPattern(LEDPattern.solid(Color.kBlack)).withName("Off"));
   }
 
   @Override
   public void periodic() {
     // Update the buffer with the rainbow animation
     //m_scrollingRainbow.applyTo(m_buffer);
-    m_red.applyTo(m_buffer);
+    oliveGreenScroll.applyTo(m_buffer);
     // Set the LEDs
     m_led.setData(m_buffer);
   }
