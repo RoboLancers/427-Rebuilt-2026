@@ -8,12 +8,18 @@ import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Volts;
+
+import org.littletonrobotics.junction.AutoLog;
+import org.littletonrobotics.junction.Logger;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FeederConstants;
@@ -32,6 +38,15 @@ import yams.telemetry.SmartMotorControllerTelemetryConfig;
 public class Feeder extends SubsystemBase {
 
   // public int FuelCounter;
+  @AutoLog
+  public static class FeederInputs {
+    public AngularVelocity velocity = DegreesPerSecond.of(0);
+    public AngularVelocity setpoint = DegreesPerSecond.of(0);
+    public Voltage volts = Volts.of(0);
+    public Current current = Amps.of(0);
+    }
+
+  private final FeederInputsAutoLogged feederInputs = new FeederInputsAutoLogged();
 
   SmartMotorControllerTelemetryConfig motorTelemetryConfig =
       new SmartMotorControllerTelemetryConfig()
@@ -61,15 +76,11 @@ public class Feeder extends SubsystemBase {
           .withClosedLoopController(
               FeederConstants.kP,
               FeederConstants.kI,
-              FeederConstants.kD,
-              DegreesPerSecond.of(FeederConstants.DegPerSecmagnitude),
-              DegreesPerSecondPerSecond.of(FeederConstants.DegPerSecPerSecmagnitude))
+              FeederConstants.kD)
           .withSimClosedLoopController(
               FeederConstants.kP,
               FeederConstants.kI,
-              FeederConstants.kD,
-              DegreesPerSecond.of(FeederConstants.DegPerSecmagnitude),
-              DegreesPerSecondPerSecond.of(FeederConstants.DegPerSecPerSecmagnitude))
+              FeederConstants.kD)
           .withFeedforward(
               new SimpleMotorFeedforward(
                   FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
@@ -111,15 +122,25 @@ public class Feeder extends SubsystemBase {
    *
    * @return Feeder velocity.
    */
+
+private void updateInputs() {
+    feederInputs.velocity = Feeder.getSpeed();
+    feederInputs.velocity =  sparkSmartMotorController.getMechanismSetpointVelocity().orElse(RPM.of(0));
+    feederInputs.volts = sparkSmartMotorController.getVoltage();
+    feederInputs.current = sparkSmartMotorController.getStatorCurrent();
+}  
+
   public AngularVelocity getVelocity() {
     return Feeder.getSpeed();
   }
 
   public Command setVelocity(AngularVelocity speed) {
+    Logger.recordOutput("Feeder/Setpoint", speed);
     return Feeder.setSpeed(speed);
   }
 
   public Command set(double dutyCycle) {
+    Logger.recordOutput("Feeder/DutyCycle", dutyCycle);
     return Feeder.set(dutyCycle);
   }
 
@@ -133,6 +154,8 @@ public class Feeder extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    updateInputs();
+    Logger.processInputs("Feeder", feederInputs);
     Feeder.updateTelemetry();
 
     // boolean Fuel = isGamePieceIn();
@@ -146,5 +169,6 @@ public class Feeder extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
     Feeder.simIterate();
+
   }
 }

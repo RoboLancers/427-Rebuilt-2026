@@ -7,6 +7,10 @@ import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Volts;
+
+import org.littletonrobotics.junction.AutoLog;
+import org.littletonrobotics.junction.Logger;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -14,6 +18,8 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,6 +35,19 @@ import yams.motorcontrollers.local.SparkWrapper;
 import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 public class IntakeShooter extends SubsystemBase {
+
+  @AutoLog
+  public static class IntakeShooterInputs {
+
+    public AngularVelocity velocity = DegreesPerSecond.of(0);
+    public AngularVelocity setpoint = DegreesPerSecond.of(0);
+    public Voltage volts = Volts.of(0);
+    public Current current = Amps.of(0);
+
+  }
+
+  private final IntakeShooterInputsAutoLogged intakeShooterInputs = new IntakeShooterInputsAutoLogged();
+
   public static int FuelCounter = 0;
 
   protected void execute() {
@@ -50,15 +69,11 @@ public class IntakeShooter extends SubsystemBase {
           .withClosedLoopController(
               IntakeConstants.KP,
               IntakeConstants.KI,
-              IntakeConstants.KD,
-              DegreesPerSecond.of(IntakeConstants.MaxVelocity),
-              DegreesPerSecondPerSecond.of(IntakeConstants.MaxAcceleration))
+              IntakeConstants.KD)
           .withSimClosedLoopController(
               IntakeConstants.KP,
               IntakeConstants.KI,
-              IntakeConstants.KD,
-              DegreesPerSecond.of(IntakeConstants.MaxVelocity),
-              DegreesPerSecondPerSecond.of(IntakeConstants.MaxAcceleration))
+              IntakeConstants.KD)
           // FeedForward Constants
           .withFeedforward(
               new SimpleMotorFeedforward(
@@ -67,7 +82,7 @@ public class IntakeShooter extends SubsystemBase {
               new SimpleMotorFeedforward(
                   IntakeConstants.ks, IntakeConstants.kv, IntakeConstants.ka))
           // Telemtry name and verbosity level
-          .withTelemetry("IntakeMotor", motorTelemetryConfig)
+          .withTelemetry("IntakeMotor", TelemetryVerbosity.HIGH)
           // Gearing from the motor rotor to final shaft
           .withGearing(IntakeConstants.Intake_GearRatio)
           // Motor Properties to prevent over currenting
@@ -114,15 +129,26 @@ public class IntakeShooter extends SubsystemBase {
     return false;
   }
 
+  private void updateInputs() {
+    intakeShooterInputs.velocity = IntakeShooter.getSpeed();
+    intakeShooterInputs.setpoint = sparkSmartMotorController.getMechanismSetpointVelocity().orElse(RPM.of(0));
+    intakeshooterInputs.volts = sparkSmartMotorController.getVoltage();
+    intakeshooterInputs.current = sparkSmartMotorController.getStatorCurrent();
+  }
+
+  
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Fuel Number", FuelCounter);
+    // SmartDashboard.putNumber("Fuel Number", FuelCounter);
     intake.updateTelemetry();
     boolean GamePiece = isGamePieceIn();
     if (GamePiece == true) {
       FuelCounter += 1;
     }
+    updateInputs();
+    Logger.processInputs("IntakeShooter", intakeshooterInputs);
   }
 
   @Override
