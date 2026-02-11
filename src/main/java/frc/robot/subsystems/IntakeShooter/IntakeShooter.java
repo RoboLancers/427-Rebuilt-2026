@@ -50,15 +50,11 @@ public class IntakeShooter extends SubsystemBase {
           .withClosedLoopController(
               IntakeConstants.KP,
               IntakeConstants.KI,
-              IntakeConstants.KD,
-              DegreesPerSecond.of(IntakeConstants.MaxVelocity),
-              DegreesPerSecondPerSecond.of(IntakeConstants.MaxAcceleration))
+              IntakeConstants.KD)
           .withSimClosedLoopController(
               IntakeConstants.KP,
               IntakeConstants.KI,
-              IntakeConstants.KD,
-              DegreesPerSecond.of(IntakeConstants.MaxVelocity),
-              DegreesPerSecondPerSecond.of(IntakeConstants.MaxAcceleration))
+              IntakeConstants.KD)
           // FeedForward Constants
           .withFeedforward(
               new SimpleMotorFeedforward(
@@ -73,9 +69,9 @@ public class IntakeShooter extends SubsystemBase {
           // Motor Properties to prevent over currenting
           .withMotorInverted(false)
           .withIdleMode(MotorMode.BRAKE)
-          .withStatorCurrentLimit(Amps.of(IntakeConstants.CurrentLimit))
-          .withClosedLoopRampRate(Seconds.of(IntakeConstants.ClosedLoopRampRate))
-          .withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate));
+          .withStatorCurrentLimit(Amps.of(IntakeConstants.CurrentLimit));
+          //.withClosedLoopRampRate(Seconds.of(IntakeConstants.ClosedLoopRampRate))
+          //.withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate));
 
   // Vendor motor controller object
   private SparkMax spark = new SparkMax(IntakeConstants.Intake_SparkMax_ID, MotorType.kBrushless);
