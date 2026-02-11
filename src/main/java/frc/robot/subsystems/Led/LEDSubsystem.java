@@ -19,14 +19,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import swervelib.parser.SwerveParser;
 
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.Percent;
-import static edu.wpi.first.units.Units.Seconds;
-
 import java.util.Map;
 
-import edu.wpi.first.units.measure.Distance;
 
 
 public class LEDSubsystem extends SubsystemBase {
@@ -38,10 +32,7 @@ public class LEDSubsystem extends SubsystemBase {
   
   final LEDPattern m_rainbow = LEDPattern.rainbow(255, 128);
 
-/* Color code?
--Scrolling Gradient = task in progress
--Scrolling steps = error
-*/
+
 
   LEDPattern oliveGreenGradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, Color.kGreen, Color.kDarkOliveGreen);
   LEDPattern oliveGreenBreathe = oliveGreenGradient.breathe(Seconds.of(2));
@@ -63,8 +54,6 @@ public class LEDSubsystem extends SubsystemBase {
 
 
 
-  /* Blue Pink Yellow White
-  Purple punk blue white */
 
 
   // Gradient pattern
@@ -91,7 +80,7 @@ public class LEDSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the buffer with the rainbow animation
     //m_scrollingRainbow.applyTo(m_buffer);
-    yellowRedScroll.applyTo(m_buffer);
+    bluePinkYellowWhiteScroll.applyTo(m_buffer);
     // Set the LEDs
     m_led.setData(m_buffer);
   }
