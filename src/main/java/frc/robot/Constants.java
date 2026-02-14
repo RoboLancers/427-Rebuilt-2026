@@ -183,9 +183,9 @@ public final class Constants {
 
     // RobotContainer
     public static final int DefaultAngle = 0;
-    public static final int A_Angle = -5;
-    public static final int B_Angle = 15;
-    public static final double X_DutyCycle = 0.3;
+    public static final int A_Angle = 20;
+    public static final int B_Angle = -20;
+    public static final double X_DutyCycle = 0;
     public static final double Y_DutyCycle = -0.3;
   }
 }
