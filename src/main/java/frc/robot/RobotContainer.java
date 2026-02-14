@@ -22,6 +22,7 @@ import frc.robot.subsystems.IntakeShooter.IntakeShooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
+import frc.robot.Constants.apriltagConstants;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -46,6 +47,21 @@ public class RobotContainer {
 
   private final SwerveSubsystem drivebase =
       new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+
+  SwerveInputStream aimWhileDriving =
+      SwerveInputStream.of(
+              drivebase.getSwerveDrive(),
+              () -> -m_driverController.getLeftY() * Constants.DriveConstants.MAX_SPEED,
+              () -> -m_driverController.getLeftX() * Constants.DriveConstants.MAX_SPEED)
+          .withControllerRotationAxis(
+              () -> m_driverController.getRightX() * Constants.DriveConstants.MAX_ANGULAR_SPEED)
+          .deadband(OperatorConstants.DEADBAND)
+          .scaleTranslation(0.8)
+          .allianceRelativeControl(true);
+
+  public SwerveInputStream aim(Pose2d aimTarget) {
+      aimTarget = 
+  }
 
   SwerveInputStream driveAngularVelocity =
       SwerveInputStream.of(

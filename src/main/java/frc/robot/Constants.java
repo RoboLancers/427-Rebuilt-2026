@@ -4,6 +4,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -204,5 +205,20 @@ public final class Constants {
             Units.inchesToMeters(-12.628),
             Units.inchesToMeters(-10.687),
             Units.inchesToMeters(16.129));
+  }
+
+  public static class apriltagConstants {
+
+    static class redHub {
+        private double x;
+        private double y;
+
+        public Point(double x, double y) {
+            this.x = x;
+            this.y = y;
+            public void setX(double x){this.x = x;}
+            public void sety(double y){this.y = y;}
+        }
+
   }
 }
