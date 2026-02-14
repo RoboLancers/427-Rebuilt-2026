@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2025.3.1"
+    id "edu.wpi.first.GradleRIO" version "2026.2.1"
     id "com.diffplug.spotless" version "7.0.0.BETA2"
 }
 
@@ -48,7 +48,7 @@ def deployArtifact = deploy.targets.roborio.artifacts.frcJava
 wpi.java.debugJni = false
 
 // Set this to true to enable desktop support.
-def includeDesktopSupport = false
+def includeDesktopSupport = true
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 5.
@@ -127,7 +127,7 @@ spotless {
 
 // Configure git hooks path
 task applyHooks(type: Exec) {
-    commandLine 'git', 'config', 'core.hooksPath', '.githooks'
+    commandLine 'C:/Program Files/Git/bin/git', 'config', 'core.hooksPath', '.githooks'
 }
 
 build.dependsOn(applyHooks)
