@@ -1,6 +1,7 @@
 package frc.robot;
 
 import static frc.robot.Constants.OperatorConstants.*;
+import static edu.wpi.first.units.Units.RPM;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -48,7 +49,7 @@ public class RobotContainer {
     // m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
 
     m_feeder.setDefaultCommand(m_feeder.set(0));
-    m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
+    m_IntakeShooter.setDefaultCommand(m_IntakeShooter.ManualSpeedControl());
     // m_fuel.setDefaultCommand(m_fuel.stopCommand());
 
     DriverStation.silenceJoystickConnectionWarning(true);
@@ -94,16 +95,9 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    if (IntakeShooter.FuelCounter >= 10) {
-      Stop();
-    } else {
-      m_driverController.leftBumper().whileTrue(Intake());
-    }
-
-    m_driverController
-        .rightBumper()
-        .whileTrue(
-            SpinUp()
+    m_driverController.leftBumper().whileTrue(m_IntakeShooter.ManualSpeedControl());
+    m_driverController.rightBumper()
+                .whileTrue(SpinUp()
                 .withTimeout(FuelConstants.SpinUpTime)
                 .andThen(Launch())
                 .finallyDo(() -> Stop()));

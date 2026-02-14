@@ -1,15 +1,13 @@
 package frc.robot.subsystems.IntakeShooter;
 
 import static edu.wpi.first.units.Units.Amps;
-import static edu.wpi.first.units.Units.DegreesPerSecond;
-import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.RPM;
-import static edu.wpi.first.units.Units.Seconds;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -30,9 +28,15 @@ import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 public class IntakeShooter extends SubsystemBase {
   public static int FuelCounter = 0;
+  public static double ShootSpeed;
+
 
   protected void execute() {
     SmartDashboard.putNumber("Fuel Number", FuelCounter);
+  }
+
+  public IntakeShooter() {
+    SmartDashboard.putNumber("ShooterSpeed", ShootSpeed);
   }
 
   /** Creates a new intake. */
@@ -63,7 +67,7 @@ public class IntakeShooter extends SubsystemBase {
               new SimpleMotorFeedforward(
                   IntakeConstants.ks, IntakeConstants.kv, IntakeConstants.ka))
           // Telemtry name and verbosity level
-          .withTelemetry("IntakeMotor", motorTelemetryConfig)
+          .withTelemetry("IntakeMotor", TelemetryVerbosity.HIGH)
           // Gearing from the motor rotor to final shaft
           .withGearing(IntakeConstants.Intake_GearRatio)
           // Motor Properties to prevent over currenting
@@ -100,8 +104,6 @@ public class IntakeShooter extends SubsystemBase {
 
   private FlyWheel intake = new FlyWheel(intakeConfig);
 
-  public IntakeShooter() {}
-
   public Command intakeMethodCommand() {
     return runOnce(() -> {});
   }
@@ -119,6 +121,8 @@ public class IntakeShooter extends SubsystemBase {
     if (GamePiece == true) {
       FuelCounter += 1;
     }
+    ShootSpeed = SmartDashboard.getNumber("ShooterSpeed", ShootSpeed);
+    SmartDashboard.putNumber("ShooterRPM", ShootSpeed);
   }
 
   @Override
@@ -132,6 +136,10 @@ public class IntakeShooter extends SubsystemBase {
 
   public Command setVelocity(AngularVelocity speed) {
     return intake.setSpeed(speed);
+  }
+  
+  public Command ManualSpeedControl() {
+    return intake.setSpeed(() -> RPM.of(IntakeShooter.ShootSpeed));
   }
 
   public Command set(double dutyCycle) {
