@@ -27,7 +27,6 @@ public class RobotContainer {
   private final IntakeShooter m_IntakeShooter = new IntakeShooter();
   private final Feeder m_feeder = new Feeder();
   private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
-  // private final FuelSubsystem m_fuel = new FuelSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -95,7 +94,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    m_driverController.leftBumper().whileTrue(m_IntakeShooter.ManualSpeedControl());
+    m_driverController.leftBumper().whileTrue(Intake());
     m_driverController.rightBumper()
                 .whileTrue(SpinUp()
                 .withTimeout(FuelConstants.SpinUpTime)

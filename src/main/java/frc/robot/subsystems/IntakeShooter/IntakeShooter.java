@@ -1,6 +1,7 @@
 package frc.robot.subsystems.IntakeShooter;
 
 import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.RPM;
@@ -94,12 +95,9 @@ public class IntakeShooter extends SubsystemBase {
 
   private FlyWheelConfig intakeConfig =
       new FlyWheelConfig(sparkSmartMotorController)
-          .withDiameter(Inches.of(IntakeConstants.FlyWheel_Diameter))
-          // Mass of the flywheel
+          .withDiameter(Inches.of(IntakeConstants.FlyWheel_Diameter))          
           .withMass(Pounds.of(IntakeConstants.FlyWheel_Mass))
-          // Maximmum speed of the intake
           .withUpperSoftLimit(RPM.of(IntakeConstants.SoftLimit))
-          // Telemetry name and verbosity for the arm
           .withTelemetry("IntakeMech", TelemetryVerbosity.HIGH);
 
   private FlyWheel intake = new FlyWheel(intakeConfig);

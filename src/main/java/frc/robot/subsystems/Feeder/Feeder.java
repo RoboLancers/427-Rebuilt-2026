@@ -31,7 +31,6 @@ import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 public class Feeder extends SubsystemBase {
 
-  // public int FuelCounter;
 
   SmartMotorControllerTelemetryConfig motorTelemetryConfig =
       new SmartMotorControllerTelemetryConfig()
@@ -61,21 +60,17 @@ public class Feeder extends SubsystemBase {
           .withClosedLoopController(
               FeederConstants.kP,
               FeederConstants.kI,
-              FeederConstants.kD,
-              DegreesPerSecond.of(FeederConstants.DegPerSecmagnitude),
-              DegreesPerSecondPerSecond.of(FeederConstants.DegPerSecPerSecmagnitude))
+              FeederConstants.kD)
           .withSimClosedLoopController(
               FeederConstants.kP,
               FeederConstants.kI,
-              FeederConstants.kD,
-              DegreesPerSecond.of(FeederConstants.DegPerSecmagnitude),
-              DegreesPerSecondPerSecond.of(FeederConstants.DegPerSecPerSecmagnitude))
-          .withFeedforward(
-              new SimpleMotorFeedforward(
-                  FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
-          .withSimFeedforward(
-              new SimpleMotorFeedforward(
-                  FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
+              FeederConstants.kD)
+          // .withFeedforward(
+          //     new SimpleMotorFeedforward(
+          //         FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
+          // .withSimFeedforward(
+          //     new SimpleMotorFeedforward(
+          //         FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
           .withTelemetry("FeederMotor", TelemetryVerbosity.HIGH)
           .withGearing(
               new MechanismGearing(GearBox.fromReductionStages(FeederConstants.reductionStages)))
@@ -89,13 +84,6 @@ public class Feeder extends SubsystemBase {
 
   private SmartMotorController sparkSmartMotorController =
       new SparkWrapper(spark, DCMotor.getNEO(FeederConstants.FeedernumMotors), smcConfig);
-
-  // private Debouncer statorDebounce = new Debouncer(FeederConstants.debouncerTime);
-
-  // public boolean isGamePieceIn() {
-  //   return
-  // statorDebounce.calculate(sparkSmartMotorController.getStatorCurrent().gte(Amps.of(FeederConstants.StatorAmps)));
-  // }
 
   private final FlyWheelConfig FeederConfig =
       new FlyWheelConfig(sparkSmartMotorController)
@@ -134,11 +122,6 @@ public class Feeder extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     Feeder.updateTelemetry();
-
-    // boolean Fuel = isGamePieceIn();
-    // if (Fuel) {
-    //   FuelCounter -= 1;
-    // }
 
   }
 

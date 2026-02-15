@@ -62,7 +62,7 @@ public final class Constants {
     public static final double FlyWheel_Mass = 0.029;
     public static final int SoftLimit = 1000;
 
-    public static final double KP = 0.03;
+    public static final double KP = 0.1;
     public static final int KI = 0;
     public static final int KD = 0;
     public static final double ks = 0;
@@ -98,7 +98,7 @@ public final class Constants {
 
     public static final double GearingreductionStages = 8.4;
 
-    public static final int kP = 50;
+    public static final int kP = 1;
     public static final int kI = 0;
     public static final int kD = 0;
 
@@ -108,9 +108,9 @@ public final class Constants {
     public static final int controllerBmagnitude = 300;
 
     /** Need info for below */
-    public static final double ks = 0.38;
-    public static final double kv = 0.38;
-    public static final double ka = 0;
+    public static final double ks = 1;
+    public static final double kv = 1;
+    public static final double ka = 1;
     public static final int reductionStages = 12;
     public static final int StatorLimit = 40;
 
