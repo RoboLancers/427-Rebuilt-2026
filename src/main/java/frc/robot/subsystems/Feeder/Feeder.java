@@ -65,12 +65,12 @@ public class Feeder extends SubsystemBase {
               FeederConstants.kP,
               FeederConstants.kI,
               FeederConstants.kD)
-          // .withFeedforward(
-          //     new SimpleMotorFeedforward(
-          //         FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
-          // .withSimFeedforward(
-          //     new SimpleMotorFeedforward(
-          //         FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
+          .withFeedforward(
+              new SimpleMotorFeedforward(
+                  FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
+          .withSimFeedforward(
+              new SimpleMotorFeedforward(
+                  FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
           .withTelemetry("FeederMotor", TelemetryVerbosity.HIGH)
           .withGearing(
               new MechanismGearing(GearBox.fromReductionStages(FeederConstants.reductionStages)))

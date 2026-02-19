@@ -139,14 +139,14 @@ public final class Constants {
 
     public static final int FuelLimit = 8;
 
-    public static final double IntakingFeeder = 1.0;
-    public static final double IntakingIntake = 1.0;
+    public static final double IntakingFeeder = 0.7;
+    public static final double IntakingIntake = 0.7;
 
-    public static final double EjectingFeeder = -0.9;
-    public static final double EjectingIntake = -0.9;
+    public static final double EjectingFeeder = -0.7;
+    public static final double EjectingIntake = -0.7;
 
-    public static final double LaunchingFeeder = -0.9;
-    public static final double LaunchingIntake = 0.8;
+    public static final double LaunchingFeeder = -0.7;
+    public static final double LaunchingIntake = 0.7;
 
     public static final int StoppingFeeder = 0;
     public static final int StoppingIntake = 0;
