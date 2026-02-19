@@ -144,16 +144,16 @@ public final class Constants {
 
   public static class ClimbConstants {
     // ClimbSubsystem
-    public static final int kP = 50;
+    public static final double kP = 0.4;
     public static final int kI = 0;
     public static final int kD = 0;
 
     public static final int MaxVelocity = 90;
     public static final int MaxAcceleration = 45;
 
-    public static final int ks = 0;
-    public static final int kg = 0;
-    public static final int kv = 0;
+    public static final double ks = 0;
+    public static final double kg = 0;
+    public static final double kv = 0;
 
     public static final int GearRatio = 100;
 
@@ -165,7 +165,8 @@ public final class Constants {
     public static final int SparkMaxDeviceID = 16;
 
     public static final int NumMotors = 1;
-
+    // NumMotors and SoftLowerLimit will have to be adjusted based on the actual climb arm's freedom
+    // of movement.
     public static final int SoftLowerLimit = -20;
     public static final int SoftUpperLimit = 10;
     public static final int HardMin = -30;
@@ -177,7 +178,7 @@ public final class Constants {
 
     public static final int ToleranceAngle = 0;
 
-    public static final int MaximumVoltage = 7;
+    public static final int MaximumVoltage = 12;
     public static final int StepVoltage = 2;
     public static final int Duration = 4;
 

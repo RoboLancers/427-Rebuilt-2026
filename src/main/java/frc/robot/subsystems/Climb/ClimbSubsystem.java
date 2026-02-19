@@ -41,10 +41,12 @@ public class ClimbSubsystem extends SubsystemBase {
           .withSimClosedLoopController(
               ClimbConstants.kP,
               ClimbConstants.kI,
-              ClimbConstants.kD,
-              DegreesPerSecond.of(ClimbConstants.MaxVelocity),
-              DegreesPerSecondPerSecond.of(ClimbConstants.MaxAcceleration))
-          .withFeedforward(
+              /*
+                ClimbConstants.kD,
+                DegreesPerSecond.of(ClimbConstants.MaxVelocity),
+                DegreesPerSecondPerSecond.of(ClimbConstants.MaxAcceleration))
+                .withFeedforward(
+              */
               new ArmFeedforward(ClimbConstants.ks, ClimbConstants.kg, ClimbConstants.kv))
           .withSimFeedforward(
               new ArmFeedforward(ClimbConstants.ks, ClimbConstants.kg, ClimbConstants.kv))
