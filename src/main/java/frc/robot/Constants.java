@@ -5,6 +5,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -207,18 +208,61 @@ public final class Constants {
             Units.inchesToMeters(16.129));
   }
 
-  public static class apriltagConstants {
+  public static class FieldConstants {
 
-    static class redHub {
-        private double x;
-        private double y;
+    public static final Pose2d BLUE_HUB =
+        new Pose2d(
+            Units.inchesToMeters(182.11),
+            Units.inchesToMeters(158.84),
+            Rotation2d.fromDegrees(180));
+    public static final double BLUE_HUB_X = BLUE_HUB.getX();
+    public static final double BLUE_HUB_Y = BLUE_HUB.getY();
 
-        public Point(double x, double y) {
-            this.x = x;
-            this.y = y;
-            public void setX(double x){this.x = x;}
-            public void sety(double y){this.y = y;}
-        }
+    public static final Pose2d BLUE_TOWER =
+        new Pose2d(
+            Units.inchesToMeters(27.00), Units.inchesToMeters(147.47), Rotation2d.fromDegrees(180));
+    public static final double BLUE_TOWER_X = BLUE_TOWER.getX();
+    public static final double BLUE_TOWER_Y = BLUE_TOWER.getY();
 
+    public static final Pose2d BLUE_DEPOT =
+        new Pose2d(
+            Units.inchesToMeters(13.5), Units.inchesToMeters(234.78), Rotation2d.fromDegrees(180));
+    public static final double BLUE_DEPOT_X = BLUE_DEPOT.getX();
+    public static final double BLUE_DEPOT_Y = BLUE_DEPOT.getY();
+
+    public static final Pose2d BLUE_CHUTE =
+        new Pose2d(0, Units.inchesToMeters(26.22), Rotation2d.fromDegrees(180));
+    public static final double BLUE_CHUTE_X = BLUE_CHUTE.getX();
+    public static final double BLUE_CHUTE_Y = BLUE_CHUTE.getY();
+
+    public static final Pose2d RED_HUB =
+        new Pose2d(
+            Units.inchesToMeters(469.11),
+            Units.inchesToMeters(158.84),
+            Rotation2d.fromDegrees(180));
+    public static final double RED_HUB_X = RED_HUB.getX();
+    public static final double RED_HUB_Y = RED_HUB.getY();
+
+    public static final Pose2d RED_TOWER =
+        new Pose2d(
+            Units.inchesToMeters(635.72),
+            Units.inchesToMeters(170.22),
+            Rotation2d.fromDegrees(180));
+    public static final double RED_TOWER_X = RED_TOWER.getX();
+    public static final double RED_TOWER_Y = RED_TOWER.getY();
+
+    public static final Pose2d RED_DEPOT =
+        new Pose2d(
+            Units.inchesToMeters(637.72), Units.inchesToMeters(82.84), Rotation2d.fromDegrees(180));
+    public static final double RED_DEPOT_X = RED_DEPOT.getX();
+    public static final double RED_DEPOT_Y = RED_DEPOT.getY();
+
+    public static final Pose2d RED_CHUTE =
+        new Pose2d(
+            Units.inchesToMeters(651.22),
+            Units.inchesToMeters(291.47),
+            Rotation2d.fromDegrees(180));
+    public static final double RED_CHUTE_X = RED_CHUTE.getX();
+    public static final double RED_CHUTE_Y = RED_CHUTE.getY();
   }
 }
