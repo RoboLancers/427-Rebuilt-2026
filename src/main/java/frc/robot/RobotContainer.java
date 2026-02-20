@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Feeder.Feeder;
@@ -36,14 +37,10 @@ import swervelib.SwerveInputStream;
  */
 @Logged
 public class RobotContainer {
+  // The robot's subsystems and commands are defined here...
   private final IntakeShooter m_IntakeShooter = new IntakeShooter();
   private final Feeder m_feeder = new Feeder();
-
-  public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
-  }
-
-  boolean isCompetition = true;
+  // private final FuelSubsystem m_fuel = new FuelSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -115,6 +112,14 @@ public class RobotContainer {
 
     configureBindings();
 
+    // m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
+
+    m_feeder.setDefaultCommand(m_feeder.set(0));
+    m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
+    // m_fuel.setDefaultCommand(m_fuel.stopCommand());
+
+    DriverStation.silenceJoystickConnectionWarning(true);
+
     DriverStation.silenceJoystickConnectionWarning(true);
 
     SmartDashboard.putData("Field", field);
@@ -168,7 +173,58 @@ public class RobotContainer {
     return command.withTimeout(time);
   }
 
+  /**
+   * Use this method to define your trigger->command mappings. Triggers can be created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+   * predicate, or via the named factories in {@link
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
+   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * joysticks}.
+   */
+  public Command Intake() {
+    return m_IntakeShooter
+        .set(FuelConstants.IntakingIntake)
+        .alongWith(m_feeder.set(FuelConstants.IntakingFeeder));
+  }
+
+  public Command Eject() {
+    return m_IntakeShooter
+        .set(FuelConstants.EjectingIntake)
+        .alongWith(m_feeder.set(FuelConstants.EjectingFeeder));
+  }
+
+  public Command Launch() {
+    return m_IntakeShooter
+        .set(FuelConstants.LaunchingIntake)
+        .alongWith(m_feeder.set(FuelConstants.LaunchingFeeder));
+  }
+
+  public Command Stop() {
+    return m_IntakeShooter
+        .set(FuelConstants.StoppingIntake)
+        .alongWith(m_feeder.set(FuelConstants.StoppingFeeder));
+  }
+
+  public Command SpinUp() {
+    return m_IntakeShooter.set(FuelConstants.SpinupIntake);
+  }
+
   private void configureBindings() {
+    if (IntakeShooter.FuelCounter >= 10) {
+      Stop();
+    } else {
+      m_driverController.leftBumper().whileTrue(Intake());
+    }
+
+    m_driverController
+        .rightBumper()
+        .whileTrue(
+            SpinUp()
+                .withTimeout(FuelConstants.SpinUpTime)
+                .andThen(Launch())
+                .finallyDo(() -> Stop()));
+    m_driverController.a().whileTrue(Eject());
 
     if (RobotBase.isSimulation()) {
       drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
