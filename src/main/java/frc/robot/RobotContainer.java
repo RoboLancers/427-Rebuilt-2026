@@ -62,7 +62,7 @@ public class RobotContainer {
               () -> -m_driverController.getLeftX() * Constants.DriveConstants.MAX_SPEED)
           .withControllerRotationAxis(
               () ->
-                  m_driverController.getRightX()
+                  -m_driverController.getRightX()
                       * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
           .deadband(Constants.DriveConstants.DEADBAND)
           .scaleTranslation(0.8)
@@ -74,7 +74,7 @@ public class RobotContainer {
           .withControllerHeadingAxis(
               () -> -m_driverController.getRightY() * Constants.DriveConstants.MAX_ANGULAR_SPEED,
               () ->
-                  -m_driverController.getRightX()
+                  m_driverController.getRightX()
                       * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
           .headingWhile(true);
 
@@ -170,13 +170,17 @@ public class RobotContainer {
                 .withTimeout(FuelConstants.SpinUpTime)
                 .andThen(Launch())
                 .finallyDo(() -> Stop()));
-    m_driverController.a().whileTrue(Eject());
-    driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController));
+    m_driverController.rightTrigger().whileTrue(Eject());
+
+    if (Constants.OperatorConstants.IsSwerve == false) {
+      driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController));
+    }
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed, cancelling on
     // release
   }
+  
   Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
   Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
   Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
@@ -186,7 +190,8 @@ public class RobotContainer {
       drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
 
   {
-    if (RobotBase.isSimulation()) {
+    if (Constants.OperatorConstants.IsSwerve == true) {
+      if (RobotBase.isSimulation()) {
       drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Change this one
     } else {
@@ -220,16 +225,17 @@ public class RobotContainer {
       m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       m_driverController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       m_driverController.back().whileTrue(drivebase.centerModulesCommand());
-      m_driverController.leftBumper().onTrue(Commands.none());
-      m_driverController.rightBumper().onTrue(Commands.none());
+      //m_driverController.leftBumper().onTrue(Commands.none());
+      //m_driverController.rightBumper().onTrue(Commands.none());
     } else {
       m_driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       m_driverController.start().whileTrue(Commands.none());
       m_driverController.back().whileTrue(Commands.none());
       m_driverController
-          .leftBumper()
+          .leftTrigger()
           .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       m_driverController.rightBumper().onTrue(Commands.none());
+    }
     }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

@@ -30,10 +30,10 @@ public final class Constants {
     public static final double TURN_CONSTANT = 6;
 
     // Motor controller IDs for drivetrain motors
-    public static final int LEFT_LEADER_ID = 3;
-    public static final int LEFT_FOLLOWER_ID = 4;
-    public static final int RIGHT_LEADER_ID = 2;
-    public static final int RIGHT_FOLLOWER_ID = 1;
+    public static final int LEFT_LEADER_ID = 30;
+    public static final int LEFT_FOLLOWER_ID = 40;
+    public static final int RIGHT_LEADER_ID = 20;
+    public static final int RIGHT_FOLLOWER_ID = 100;
 
     // Current limit for drivetrain motors. 60A is a reasonable maximum to reduce
     // likelihood of tripping breakers or damaging CIM motors
@@ -50,11 +50,13 @@ public final class Constants {
 
     public static final int DRIVE_SCALING = 7;
     public static final int ROTATION_SCALING = 6;
+
+    public static final boolean IsSwerve = true;
   }
 
   public static class IntakeConstants {
 
-    public static final int Intake_SparkMax_ID = 6;
+    public static final int Intake_SparkMax_ID = 60;
     public static final int IntakenumMotors = 1;
 
     public static final int Intake_RPM = 60;
@@ -84,7 +86,7 @@ public final class Constants {
 
   public static class FeederConstants {
 
-    public static final int FeederdeviceId = 5;
+    public static final int FeederdeviceId = 50;
     public static final int FeedernumMotors = 1;
 
     public static final int ClosedLoopControllerkP = 4;
