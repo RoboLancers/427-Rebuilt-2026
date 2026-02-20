@@ -152,8 +152,8 @@ public final class Constants {
     public static final int MaxAcceleration = 45;
 
     public static final double ks = 0;
-    public static final double kg = 0;
-    public static final double kv = 0;
+    public static final double kg = 0.06;
+    public static final double kv = 12.19;
 
     public static final int GearRatio = 100;
 
@@ -174,7 +174,7 @@ public final class Constants {
     public static final int StartingPosition = -5;
 
     public static final int Length = 3;
-    public static final int Mass = 1;
+    public static final int Mass = 3;
 
     public static final int ToleranceAngle = 0;
 
@@ -186,7 +186,7 @@ public final class Constants {
     public static final int DefaultAngle = 0;
     public static final int A_Angle = 20;
     public static final int B_Angle = -20;
-    public static final double X_DutyCycle = 0;
+    public static final double X_DutyCycle = 0.3;
     public static final double Y_DutyCycle = -0.3;
   }
 }

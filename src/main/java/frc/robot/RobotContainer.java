@@ -190,7 +190,7 @@ public class RobotContainer {
                 .withTimeout(FuelConstants.SpinUpTime)
                 .andThen(Launch())
                 .finallyDo(() -> Stop()));
-    m_driverController.a().whileTrue(Eject());
+    // m_driverController.a().whileTrue(Eject());
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
@@ -231,13 +231,13 @@ public class RobotContainer {
           .start()
           .onTrue(
               Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
-      m_driverController.a().whileTrue(drivebase.sysIdDriveMotorCommand());
-      m_driverController
-          .b()
-          .whileTrue(
-              Commands.runEnd(
-                  () -> driveDirectAngle.driveToPoseEnabled(true), // And this one
-                  () -> driveDirectAngle.driveToPoseEnabled(false))); // And this one
+      // m_driverController.a().whileTrue(drivebase.sysIdDriveMotorCommand());
+      // m_driverController
+      //     .b()
+      //     .whileTrue(
+      //         Commands.runEnd(
+      //             () -> driveDirectAngle.driveToPoseEnabled(true), // And this one
+      //             () -> driveDirectAngle.driveToPoseEnabled(false))); // And this one
     }
     if (DriverStation.isTest()) {
       drivebase.setDefaultCommand(
@@ -252,7 +252,7 @@ public class RobotContainer {
         m_driverController.leftBumper().onTrue(Commands.none());
         m_driverController.rightBumper().onTrue(Commands.none());
       } else {
-        m_driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+        // m_driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
         m_driverController.start().whileTrue(Commands.none());
         m_driverController.back().whileTrue(Commands.none());
         m_driverController
