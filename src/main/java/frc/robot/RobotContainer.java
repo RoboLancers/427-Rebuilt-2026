@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.FuelConstants;
@@ -235,9 +236,11 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+
+}
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
     // Configure to run auto
   }
 }
-}
+
