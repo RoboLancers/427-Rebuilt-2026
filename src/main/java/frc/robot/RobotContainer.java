@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Feeder.Feeder;
@@ -58,7 +59,9 @@ public class RobotContainer {
               () -> m_driverController.getRightX() * Constants.DriveConstants.MAX_ANGULAR_SPEED)
           .deadband(OperatorConstants.DEADBAND)
           .scaleTranslation(0.8)
-          .allianceRelativeControl(true);
+          .allianceRelativeControl(true)
+          .aim(FieldConstants.BLUE_HUB)
+          .aimWhile(m_driverController.y());
 
   // public SwerveInputStream aim(Pose2d aimTarget) {
   //     aimTarget =

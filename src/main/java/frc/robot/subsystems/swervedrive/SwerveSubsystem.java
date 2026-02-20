@@ -98,7 +98,7 @@ public class SwerveSubsystem extends SubsystemBase {
    *
    * @param translationX Translation in the X direction
    * @param translationY Translation in the Y direction
-   * @param angularRotationX Rotation of the robot to set
+   * @param angularRotationX Rotation of the robot to t
    * @return Drive command.
    */
   public Command driveCommand(
