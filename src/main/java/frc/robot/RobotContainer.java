@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -23,6 +24,7 @@ import frc.robot.subsystems.IntakeShooter.IntakeShooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
+import frc.robot.subsystems.Led.LEDSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -143,7 +145,8 @@ public class RobotContainer {
     return m_IntakeShooter
         .set(FuelConstants.LaunchingIntake)
         .alongWith(m_feeder.set(FuelConstants.LaunchingFeeder));
-  }
+      }
+
 
   public Command Stop() {
     return m_IntakeShooter
@@ -163,7 +166,7 @@ public class RobotContainer {
     }
 
     m_driverController
-        .rightBumper()
+.rightBumper()
         .whileTrue(
             SpinUp()
                 .withTimeout(FuelConstants.SpinUpTime)
@@ -245,4 +248,5 @@ public class RobotContainer {
     // Configure to run auto
 
   }
+
 }

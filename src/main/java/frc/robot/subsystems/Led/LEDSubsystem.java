@@ -15,7 +15,9 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import frc.robot.Constants;
 import swervelib.parser.SwerveParser;
 
@@ -26,13 +28,12 @@ import java.util.Map;
 
 public class LEDSubsystem extends SubsystemBase {
 
-
   private final AddressableLED m_led;
   private final AddressableLEDBuffer m_buffer;
 
   //Declares conditions which will be changed in commands
-  public boolean isIntaking = false; 
-  public boolean isShooting = false; 
+  public static boolean isIntaking = false;
+  public static boolean isShooting = false; 
 
 
 
@@ -51,11 +52,10 @@ public class LEDSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
   LEDPattern decidedPattern = LEDPatterns.defaultPattern;
+
   //note, the higher up the condition, the lower the priority
   if(isIntaking) decidedPattern = LEDPatterns.oliveGreenScroll;
   if(isShooting) decidedPattern = LEDPatterns.bluePinkYellowWhiteScroll;
-
-
 
     decidedPattern.applyTo(m_buffer);
     // Set the LEDs
