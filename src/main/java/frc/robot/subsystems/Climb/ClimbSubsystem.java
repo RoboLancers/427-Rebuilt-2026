@@ -16,6 +16,7 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimbConstants;
@@ -106,9 +107,13 @@ public class ClimbSubsystem extends SubsystemBase {
     return arm.runTo(angle, Degrees.of(ClimbConstants.ToleranceAngle));
   }
 
-  // public Command setDeployAngle() {
-  //   return arm.run(Degrees.of(ClimbConstants.DeployAngle));
-  // }
+  public Command setDeployAngle() {
+    return arm.setAngle(Degrees.of(ClimbConstants.DeployAngle));
+  }
+
+  public Command setClimbAngle() {
+    return arm.setAngle(Degrees.of(ClimbConstants.ClimbAngle));
+  }
 
   /**
    * Set arm closed loop controller to go to the specified mechanism position.
@@ -139,6 +144,7 @@ public class ClimbSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     arm.updateTelemetry();
+    SmartDashboard.putNumber("getAngle", arm.getAngle().in(Degrees));
   }
 
   @Override

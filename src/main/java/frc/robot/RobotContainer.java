@@ -277,8 +277,8 @@ public class RobotContainer {
 
     // Schedule `setAngle` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.a().whileTrue(m_ClimbSubsystem.setAngle(Degrees.of(ClimbConstants.A_Angle)));
-    m_driverController.b().whileTrue(m_ClimbSubsystem.setAngle(Degrees.of(ClimbConstants.B_Angle)));
+    m_driverController.a().onTrue(m_ClimbSubsystem.setDeployAngle());
+    m_driverController.b().onTrue(m_ClimbSubsystem.setClimbAngle());
     // Schedule `set` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController

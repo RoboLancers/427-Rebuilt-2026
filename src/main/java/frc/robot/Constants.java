@@ -170,26 +170,25 @@ public final class Constants {
     public static final int NumMotors = 1;
     // NumMotors and SoftLowerLimit will have to be adjusted based on the actual climb arm's freedom
     // of movement.
-    public static final int SoftLowerLimit = -80;
-    public static final int SoftUpperLimit = 80;
-    public static final int HardMin = -90;
-    public static final int HardMax = 90;
-    public static final int StartingPosition = -5;
+    public static final int SoftLowerLimit = -20;
+    public static final int SoftUpperLimit = 110;
+    public static final int HardMin = -20;
+    public static final int HardMax = 110;
+    public static final int StartingPosition = 90;
 
     public static final int Length = 3;
     public static final int Mass = 3;
 
-    public static final int ToleranceAngle = 0;
-    // public static final int DeployAngle = 90;
-    // public static final int ClimbAngle = 0;
-    // public static final int ReleaseClimbAngle = 0;
+    public static final int ToleranceAngle = 5;
+    public static final int DeployAngle = 0;
+    public static final int ClimbAngle = 110;
 
     public static final int MaximumVoltage = 12;
     public static final int StepVoltage = 2;
     public static final int Duration = 4;
 
     // RobotContainer
-    public static final int DefaultAngle = 0;
+    public static final int DefaultAngle = 90;
     public static final int A_Angle = 20;
     public static final int B_Angle = -20;
     public static final double X_DutyCycle = 0.3;
