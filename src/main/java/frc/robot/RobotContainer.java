@@ -18,11 +18,14 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ClimbConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Climb.ClimbSubsystem;
@@ -38,6 +41,7 @@ import swervelib.SwerveInputStream;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
+@Logged
 @Logged
 public class RobotContainer {
   private final IntakeShooter m_IntakeShooter = new IntakeShooter();
@@ -66,8 +70,36 @@ public class RobotContainer {
               () -> -m_driverController.getLeftX() * DriveConstants.MAX_SPEED)
           .withControllerRotationAxis(m_driverController::getRightX)
           .deadband(DriveConstants.DEADBAND)
+              () -> -m_driverController.getLeftY() * DriveConstants.MAX_SPEED,
+              () -> -m_driverController.getLeftX() * DriveConstants.MAX_SPEED)
+          .withControllerRotationAxis(m_driverController::getRightX)
+          .deadband(DriveConstants.DEADBAND)
           .scaleTranslation(0.8)
           .allianceRelativeControl(true);
+
+  SwerveInputStream driveAngularVelocityKeyboard =
+      SwerveInputStream.of(
+              drivebase.getSwerveDrive(),
+              () -> -m_driverController.getLeftY(),
+              () -> -m_driverController.getLeftX())
+          .withControllerRotationAxis(() -> m_driverController.getRawAxis(2))
+          .deadband(DriveConstants.DEADBAND)
+          .scaleTranslation(0.8)
+          .allianceRelativeControl(true);
+  // Derive the heading axis with math!
+  SwerveInputStream driveDirectAngleKeyboard =
+      driveAngularVelocityKeyboard
+          .copy()
+          .withControllerHeadingAxis(
+              () -> Math.sin(m_driverController.getRawAxis(2) * Math.PI) * (Math.PI * 2),
+              () -> Math.cos(m_driverController.getRawAxis(2) * Math.PI) * (Math.PI * 2))
+          .headingWhile(true)
+          .translationHeadingOffset(true)
+          .translationHeadingOffset(Rotation2d.fromDegrees(0));
+
+  /** Clone's the angular velocity input stream and converts it to a robotRelative input stream. */
+  SwerveInputStream driveRobotOriented =
+      driveAngularVelocity.copy().robotRelative(true).allianceRelativeControl(false);
 
   SwerveInputStream driveAngularVelocityKeyboard =
       SwerveInputStream.of(
@@ -114,7 +146,22 @@ public class RobotContainer {
     NamedCommands.registerCommand("END_INTAKE", Stop());
     // NamedCommands.registerCommand("CLIMB", );
 
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+    NamedCommands.registerCommand("SHOOT", timedCommand(Launch(), 1));
+    NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 1));
+    NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 1));
+    NamedCommands.registerCommand("END_INTAKE", Stop());
+    // NamedCommands.registerCommand("CLIMB", );
+
     configureBindings();
+
+    // m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
+
+    m_feeder.setDefaultCommand(m_feeder.set(0));
+    m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
+    // m_fuel.setDefaultCommand(m_fuel.stopCommand());
+
+    DriverStation.silenceJoystickConnectionWarning(true);
 
     DriverStation.silenceJoystickConnectionWarning(true);
 

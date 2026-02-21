@@ -1,3 +1,6 @@
+Warning! Duplicate Vendordeps detected. maple-sim.json and maple-sim-0.4.0-beta.json
+have the same UUID: c39481e8-4a63-4a4c-9df6-48d91e4da37b
+Remove one of these vendordeps to avoid conflicts.
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation3d;
@@ -31,6 +34,8 @@ public final class Constants {
   }
 
   public static class OperatorConstants {
+
+    // Joystick Deadbband
 
     // Joystick Deadbband
 
