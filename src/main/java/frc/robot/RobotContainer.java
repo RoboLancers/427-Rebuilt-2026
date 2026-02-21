@@ -1,5 +1,9 @@
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.util.PathPlannerLogging;
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -11,9 +15,11 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.FuelConstants;
@@ -32,6 +38,7 @@ import swervelib.SwerveInputStream;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
+@Logged
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final IntakeShooter m_IntakeShooter = new IntakeShooter();
@@ -42,8 +49,9 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
+  private SendableChooser<Command> autoChooser = new SendableChooser<>();
+
   // The robot's subsystems and commands are defined here...
-  // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final Field2d field = new Field2d();
 
@@ -79,6 +87,30 @@ public class RobotContainer {
           .deadband(OperatorConstants.DEADBAND)
           .scaleTranslation(0.8)
           .allianceRelativeControl(true);
+
+  SwerveInputStream driveAngularVelocityKeyboard =
+      SwerveInputStream.of(
+              drivebase.getSwerveDrive(),
+              () -> -m_driverController.getLeftY(),
+              () -> -m_driverController.getLeftX())
+          .withControllerRotationAxis(() -> m_driverController.getRawAxis(2))
+          .deadband(DriveConstants.DEADBAND)
+          .scaleTranslation(0.8)
+          .allianceRelativeControl(true);
+  // Derive the heading axis with math!
+  SwerveInputStream driveDirectAngleKeyboard =
+      driveAngularVelocityKeyboard
+          .copy()
+          .withControllerHeadingAxis(
+              () -> Math.sin(m_driverController.getRawAxis(2) * Math.PI) * (Math.PI * 2),
+              () -> Math.cos(m_driverController.getRawAxis(2) * Math.PI) * (Math.PI * 2))
+          .headingWhile(true)
+          .translationHeadingOffset(true)
+          .translationHeadingOffset(Rotation2d.fromDegrees(0));
+
+  /** Clone's the angular velocity input stream and converts it to a robotRelative input stream. */
+  SwerveInputStream driveRobotOriented =
+      driveAngularVelocity.copy().robotRelative(true).allianceRelativeControl(false);
 
   SwerveInputStream driveDirectAngle =
       driveAngularVelocity
@@ -118,8 +150,12 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
-    // Configure the trigger bindings
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+    NamedCommands.registerCommand("SHOOT", timedCommand(Launch(), 1));
+    NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 1));
+    NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 1));
+    NamedCommands.registerCommand("END_INTAKE", Stop());
+    // NamedCommands.registerCommand("CLIMB", );
 
     configureBindings();
 
@@ -129,7 +165,54 @@ public class RobotContainer {
     m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
     // m_fuel.setDefaultCommand(m_fuel.stopCommand());
 
-    DriverStation.silenceJoystickConnectionWarning(true);
+    SmartDashboard.putData("Field", field);
+    PathPlannerLogging.setLogCurrentPoseCallback(
+        (pose) -> {
+          field.setRobotPose(pose);
+        });
+
+    PathPlannerLogging.setLogTargetPoseCallback(
+        (pose) -> {
+          field.getObject("target pose").setPose(pose);
+        });
+
+    PathPlannerLogging.setLogActivePathCallback(
+        (poses) -> {
+          field.getObject("path").setPoses(poses);
+        });
+  }
+
+  // path.preventFlipping = true;
+  public Command Intake() {
+    return m_IntakeShooter
+        .set(FuelConstants.IntakingIntake)
+        .alongWith(m_feeder.set(FuelConstants.IntakingFeeder));
+  }
+
+  public Command Eject() {
+    return m_IntakeShooter
+        .set(FuelConstants.EjectingIntake)
+        .alongWith(m_feeder.set(FuelConstants.EjectingFeeder));
+  }
+
+  public Command Launch() {
+    return m_IntakeShooter
+        .set(FuelConstants.LaunchingIntake)
+        .alongWith(m_feeder.set(FuelConstants.LaunchingFeeder));
+  }
+
+  public Command Stop() {
+    return m_IntakeShooter
+        .set(FuelConstants.StoppingIntake)
+        .alongWith(m_feeder.set(FuelConstants.StoppingFeeder));
+  }
+
+  public Command SpinUp() {
+    return m_IntakeShooter.set(FuelConstants.SpinupIntake);
+  }
+
+  public Command timedCommand(Command command, double time) {
+    return command.withTimeout(time);
   }
 
   /**
@@ -170,7 +253,42 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    if (IntakeShooter.FuelCounter >= 10) {
+      Stop();
+    } else {
+      m_driverController.leftBumper().whileTrue(Intake());
+    }
 
+    m_driverController
+        .rightBumper()
+        .whileTrue(
+            SpinUp()
+                .withTimeout(FuelConstants.SpinUpTime)
+                .andThen(Launch())
+                .finallyDo(() -> Stop()));
+    m_driverController.a().whileTrue(Eject());
+
+    if (RobotBase.isSimulation()) {
+      drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
+    }
+    if (IntakeShooter.FuelCounter >= 10) {
+      Stop();
+    } else {
+      m_driverController.leftBumper().whileTrue(Intake());
+    }
+
+    m_driverController
+        .rightBumper()
+        .whileTrue(
+            SpinUp()
+                .withTimeout(FuelConstants.SpinUpTime)
+                .andThen(Launch())
+                .finallyDo(() -> Stop()));
+    m_driverController.a().whileTrue(Eject());
+
+    if (RobotBase.isSimulation()) {
+      drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
+    }
     if (IntakeShooter.FuelCounter >= 10) {
       Stop();
     } else {
@@ -207,7 +325,13 @@ public class RobotContainer {
   Command driveFieldOrientedAnglularVelocityKeyboard =
       drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
 
-  {
+    if (RobotBase.isSimulation()) {
+      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Change this one
+    } else {
+      // sets default commands and other commands depending on mode
+      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+    }
+
     if (RobotBase.isSimulation()) {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Change this one
     } else {
@@ -238,21 +362,32 @@ public class RobotContainer {
       drivebase.setDefaultCommand(
           driveFieldOrientedAnglularVelocity); // Overrides drive command above!
 
-      m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      m_driverController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      m_driverController.back().whileTrue(drivebase.centerModulesCommand());
-      m_driverController.leftBumper().onTrue(Commands.none());
-      m_driverController.rightBumper().onTrue(Commands.none());
-    } else {
-      m_driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      m_driverController.start().whileTrue(Commands.none());
-      m_driverController.back().whileTrue(Commands.none());
-      m_driverController
-          .leftBumper()
-          .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      m_driverController.rightBumper().onTrue(Commands.none());
+      if (DriverStation.isTest()) {
+        drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+
+        m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+        m_driverController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+        m_driverController.back().whileTrue(drivebase.centerModulesCommand());
+        m_driverController.leftBumper().onTrue(Commands.none());
+        m_driverController.rightBumper().onTrue(Commands.none());
+      } else {
+        m_driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+        m_driverController.start().whileTrue(Commands.none());
+        m_driverController.back().whileTrue(Commands.none());
+        m_driverController
+            .leftBumper()
+            .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+        m_driverController.rightBumper().onTrue(Commands.none());
+      }
+      autoChooser = AutoBuilder.buildAutoChooser();
+      // AutoBuilder.buildAutoChooserWithOptionsModifier(
+      //     (stream) ->
+      //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) :
+      // stream);
+      SmartDashboard.putData("Auto Chooser", autoChooser);
     }
   }
+}
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
