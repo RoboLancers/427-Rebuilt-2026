@@ -257,25 +257,23 @@ public class RobotContainer {
     if (RobotBase.isSimulation()) {
       drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
     }
-  }
 
-  // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
-  // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed, cancelling on
-  // release
-  // new Trigger(m_exampleSubsystem::exampleCondition)
-  //     .onTrue(new ExampleCommand(m_exampleSubsystem));
+    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed, cancelling on
+    // release
+    // new Trigger(m_exampleSubsystem::exampleCondition)
+    //     .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-  // sets default commands and other commands depending on mode
-  Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
-  Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(aimWhileDriving);
-  Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
-  Command driveFieldOrientedDirectAngleKeyboard =
-      drivebase.driveFieldOriented(driveDirectAngleKeyboard);
-  Command driveFieldOrientedAnglularVelocityKeyboard =
-      drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
+    // sets default commands and other commands depending on mode
+    Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
+    Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(aimWhileDriving);
+    Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
+    Command driveFieldOrientedDirectAngleKeyboard =
+        drivebase.driveFieldOriented(driveDirectAngleKeyboard);
+    Command driveFieldOrientedAnglularVelocityKeyboard =
+        drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
 
-  {
     if (RobotBase.isSimulation()) {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Change this one
     } else {
