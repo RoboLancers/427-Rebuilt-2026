@@ -30,41 +30,10 @@ public class LEDSubsystem extends SubsystemBase {
   private final AddressableLED m_led;
   private final AddressableLEDBuffer m_buffer;
 
-  
-  final LEDPattern m_rainbow = LEDPattern.rainbow(255, 128);
+  //Declares conditions which will be changed in commands
+  public boolean isIntaking = false; 
+  public boolean isShooting = false; 
 
-
-
-  LEDPattern oliveGreenGradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, Color.kGreen, Color.kDarkOliveGreen);
-  LEDPattern oliveGreenBreathe = oliveGreenGradient.breathe(Seconds.of(2));
-  LEDPattern oliveGreenScroll = oliveGreenGradient.scrollAtRelativeSpeed(Percent.per(Seconds).of(25));
-
-  LEDPattern bluePinkYellowWhiteGradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, Color.kCornflowerBlue, Color.kPink, Color.kYellow, Color.kFloralWhite);
-  LEDPattern bluePinkYellowWhiteBreathe = bluePinkYellowWhiteGradient.breathe(Seconds.of(2));
-  LEDPattern bluePinkYellowWhiteScroll = bluePinkYellowWhiteGradient.scrollAtRelativeSpeed(Percent.per(Seconds).of(15));
-
-  LEDPattern purplePinkBlueWhiteGradient = LEDPattern.gradient(LEDPattern.GradientType.kContinuous,Color.kMediumPurple, Color.kPink, Color.kCornflowerBlue, Color.kFloralWhite);
-  LEDPattern purplePinkBlueWhiteBreathe = purplePinkBlueWhiteGradient.breathe(Seconds.of(2));
-  LEDPattern purplePinkBlueWhiteScroll = purplePinkBlueWhiteGradient.scrollAtRelativeSpeed(Percent.per(Seconds).of(15));
-
-  LEDPattern yellowRedSteps = LEDPattern.steps(Map.of(0, Color.kRed, 0.25, Color.kYellow,0.5, Color.kRed, 0.75, Color.kYellow));
-  LEDPattern yellowRedScroll = yellowRedSteps.scrollAtRelativeSpeed(Percent.per(Seconds).of(25));
-
-
-
-//scaledInputs.getX(), Constants.
-
-
-
-
-
-
-  // Gradient pattern
-  final LEDPattern m_gradientBase =
-      LEDPattern.gradient(
-          LEDPattern.GradientType.kContinuous, Color.kGreen, Color.kBlack, Color.kGainsboro);
-  LEDPattern m_gradientScroll = m_gradientBase.scrollAtRelativeSpeed(Percent.per(Seconds).of(25));
-  LEDPattern m_gradient = m_gradientScroll.atBrightness(Percent.of(100));
 
 
   public LEDSubsystem() {
@@ -81,9 +50,14 @@ public class LEDSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // Update the buffer with the rainbow animation
-    //m_scrollingRainbow.applyTo(m_buffer);
-    bluePinkYellowWhiteScroll.applyTo(m_buffer);
+  LEDPattern decidedPattern = LEDPatterns.defaultPattern;
+  //note, the higher up the condition, the lower the priority
+  if(isIntaking) decidedPattern = LEDPatterns.oliveGreenScroll;
+  if(isShooting) decidedPattern = LEDPatterns.bluePinkYellowWhiteScroll;
+
+
+
+    decidedPattern.applyTo(m_buffer);
     // Set the LEDs
     m_led.setData(m_buffer);
   }

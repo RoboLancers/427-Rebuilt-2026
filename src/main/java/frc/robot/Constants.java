@@ -31,10 +31,7 @@ public final class Constants {
   }
 
   
-    public static class LedConstants {
-     public static final int kPort = 9;
-     public static final int kLength = 60;
-    }
+
    
   public static class OperatorConstants {
 
@@ -145,5 +142,11 @@ public final class Constants {
     public static final int StoppingIntake = 0;
 
     public static final double SpinupIntake = 0.4;
+  }
+
+  public static final class LedConstants {
+    public static final int kPort = 9;
+    public static final int kLength = 60;
+    //will declare LED situations here ex: if(test) pattern = kTestPattern
   }
 }
