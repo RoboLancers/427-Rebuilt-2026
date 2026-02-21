@@ -104,12 +104,14 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
+    Vision.debugField.setRobotPose(getPose());
     Vision.updatePoseEstimation(swerveDrive);
     swerveDrive.updateOdometry();
   }
 
   public void periodic() {
     // This method will be called once per scheduler run
+    Vision.debugField.setRobotPose(getPose());
     double distanceToHub = Vision.getDistanceFromAprilTag(26);
     SmartDashboard.putNumber("Distance To Hub", distanceToHub);
   }
