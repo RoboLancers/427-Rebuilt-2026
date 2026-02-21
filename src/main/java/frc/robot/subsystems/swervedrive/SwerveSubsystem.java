@@ -99,7 +99,7 @@ public class SwerveSubsystem extends SubsystemBase {
     } catch (Exception e) {
       DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
       return Commands.none();
-    }    Vision = new VisionSubsystem(() -> getPose());
+    }  
   }
 
   @Override

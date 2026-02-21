@@ -71,10 +71,6 @@ public class RobotContainer {
           .aim(FieldConstants.BLUE_HUB)
           .aimWhile(m_driverController.y());
 
-  // public SwerveInputStream aim(Pose2d aimTarget) {
-  //     aimTarget =
-  // }
-
   SwerveInputStream driveAngularVelocity =
       SwerveInputStream.of(
               drivebase.getSwerveDrive(),
@@ -122,31 +118,6 @@ public class RobotContainer {
                       * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
           .headingWhile(true);
 
-  /** Clone's the angular velocity input stream and converts it to a robotRelative input stream. */
-  SwerveInputStream driveRobotOriented =
-      driveAngularVelocity.copy().robotRelative(true).allianceRelativeControl(false);
-
-  SwerveInputStream driveAngularVelocityKeyboard =
-      SwerveInputStream.of(
-              drivebase.getSwerveDrive(),
-              () -> -m_driverController.getLeftY(),
-              () -> -m_driverController.getLeftX())
-          .withControllerRotationAxis(() -> m_driverController.getRawAxis(2))
-          .deadband(OperatorConstants.DEADBAND)
-          .scaleTranslation(0.8)
-          .allianceRelativeControl(true);
-  // Derive the heading axis with math!
-  SwerveInputStream driveDirectAngleKeyboard =
-      driveAngularVelocityKeyboard
-          .copy()
-          .withControllerHeadingAxis(
-              () -> Math.sin(m_driverController.getRawAxis(2) * Math.PI) * (Math.PI * 2), // X axis
-              () -> Math.cos(m_driverController.getRawAxis(2) * Math.PI) * (Math.PI * 2)) // Y axis
-          .headingWhile(true)
-          .translationHeadingOffset(true)
-          .translationHeadingOffset(Rotation2d.fromDegrees(0));
-
-  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -182,6 +153,14 @@ public class RobotContainer {
         });
   }
 
+   public Command getAutonomousCommand() {
+    return null;
+    // Configure to run auto
+
+  }
+
+  public void updateVisionSim() {}
+  
   // path.preventFlipping = true;
   public Command Intake() {
     return m_IntakeShooter
@@ -224,33 +203,6 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  public Command Intake() {
-    return m_IntakeShooter
-        .set(FuelConstants.IntakingIntake)
-        .alongWith(m_feeder.set(FuelConstants.IntakingFeeder));
-  }
-
-  public Command Eject() {
-    return m_IntakeShooter
-        .set(FuelConstants.EjectingIntake)
-        .alongWith(m_feeder.set(FuelConstants.EjectingFeeder));
-  }
-
-  public Command Launch() {
-    return m_IntakeShooter
-        .set(FuelConstants.LaunchingIntake)
-        .alongWith(m_feeder.set(FuelConstants.LaunchingFeeder));
-  }
-
-  public Command Stop() {
-    return m_IntakeShooter
-        .set(FuelConstants.StoppingIntake)
-        .alongWith(m_feeder.set(FuelConstants.StoppingFeeder));
-  }
-
-  public Command SpinUp() {
-    return m_IntakeShooter.set(FuelConstants.SpinupIntake);
-  }
 
   private void configureBindings() {
     if (IntakeShooter.FuelCounter >= 10) {
@@ -386,19 +338,12 @@ public class RobotContainer {
       // stream);
       SmartDashboard.putData("Auto Chooser", autoChooser);
     }
-  }
-}
+  
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
-   * @return the command to run in autonomous
+   * @.return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    return null;
-    // Configure to run auto
-
-  }
-
-  public void updateVisionSim() {}
 }
