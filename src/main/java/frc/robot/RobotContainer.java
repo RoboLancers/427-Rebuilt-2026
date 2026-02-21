@@ -1,3 +1,6 @@
+Warning! Duplicate Vendordeps detected. maple-sim.json and maple-sim-0.4.0-beta.json
+have the same UUID: c39481e8-4a63-4a4c-9df6-48d91e4da37b
+Remove one of these vendordeps to avoid conflicts.
 package frc.robot;
 
 import static edu.wpi.first.units.Units.Degrees;
@@ -115,6 +118,14 @@ public class RobotContainer {
     // NamedCommands.registerCommand("CLIMB", );
 
     configureBindings();
+
+    // m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
+
+    m_feeder.setDefaultCommand(m_feeder.set(0));
+    m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
+    // m_fuel.setDefaultCommand(m_fuel.stopCommand());
+
+    DriverStation.silenceJoystickConnectionWarning(true);
 
     DriverStation.silenceJoystickConnectionWarning(true);
 
