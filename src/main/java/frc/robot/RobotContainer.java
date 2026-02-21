@@ -19,8 +19,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.OperatorConstants;
@@ -118,7 +118,6 @@ public class RobotContainer {
                       * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
           .headingWhile(true);
 
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -153,14 +152,14 @@ public class RobotContainer {
         });
   }
 
-   public Command getAutonomousCommand() {
+  public Command getAutonomousCommand() {
     return null;
     // Configure to run auto
 
   }
 
   public void updateVisionSim() {}
-  
+
   // path.preventFlipping = true;
   public Command Intake() {
     return m_IntakeShooter
@@ -203,7 +202,6 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-
   private void configureBindings() {
     if (IntakeShooter.FuelCounter >= 10) {
       Stop();
@@ -259,14 +257,14 @@ public class RobotContainer {
     if (RobotBase.isSimulation()) {
       drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
     }
-
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed, cancelling on
-    // release
-    // new Trigger(m_exampleSubsystem::exampleCondition)
-    //     .onTrue(new ExampleCommand(m_exampleSubsystem));
   }
+
+  // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+
+  // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed, cancelling on
+  // release
+  // new Trigger(m_exampleSubsystem::exampleCondition)
+  //     .onTrue(new ExampleCommand(m_exampleSubsystem));
 
   // sets default commands and other commands depending on mode
   Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
@@ -277,16 +275,11 @@ public class RobotContainer {
   Command driveFieldOrientedAnglularVelocityKeyboard =
       drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
 
+  {
     if (RobotBase.isSimulation()) {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Change this one
     } else {
       // sets default commands and other commands depending on mode
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-    }
-
-    if (RobotBase.isSimulation()) {
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Change this one
-    } else {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     }
 
@@ -338,12 +331,10 @@ public class RobotContainer {
       // stream);
       SmartDashboard.putData("Auto Chooser", autoChooser);
     }
-  
 
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @.return the command to run in autonomous
-   */
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class. @.return the command
+     * to run in autonomous
+     */
+  }
 }
