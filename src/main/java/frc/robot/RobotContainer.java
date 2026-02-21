@@ -58,10 +58,32 @@ public class RobotContainer {
 
   private final Field2d field = new Field2d();
 
-  private final SwerveSubsystem drivebase =
-      new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+  SwerveSubsystem drivebase;
 
-  SwerveInputStream driveAngularVelocity =
+  SwerveInputStream driveAngularVelocity;
+
+  SwerveInputStream driveAngularVelocityKeyboard;
+  // Derive the heading axis with math!
+  SwerveInputStream driveDirectAngleKeyboard;
+
+  /** Clone's the angular velocity input stream and converts it to a robotRelative input stream. */
+  SwerveInputStream driveRobotOriented;
+
+  SwerveInputStream driveDirectAngle;
+  
+
+  // Clone's the angular velocity input stream and converts it to a robotRelative input stream.
+
+  // Derive the heading axis with math!
+
+
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  public RobotContainer() {
+
+    if (IsSwerve == true) {
+    drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+
+    driveAngularVelocity =
       SwerveInputStream.of(
               drivebase.getSwerveDrive(),
               () -> -m_driverController.getLeftY() * Constants.DriveConstants.MAX_SPEED,
@@ -74,7 +96,7 @@ public class RobotContainer {
           .scaleTranslation(0.8)
           .allianceRelativeControl(true);
 
-  SwerveInputStream driveAngularVelocityKeyboard =
+    driveAngularVelocityKeyboard =
       SwerveInputStream.of(
               drivebase.getSwerveDrive(),
               () -> -m_driverController.getLeftY(),
@@ -83,8 +105,8 @@ public class RobotContainer {
           .deadband(DriveConstants.DEADBAND)
           .scaleTranslation(0.8)
           .allianceRelativeControl(true);
-  // Derive the heading axis with math!
-  SwerveInputStream driveDirectAngleKeyboard =
+
+    driveDirectAngleKeyboard =
       driveAngularVelocityKeyboard
           .copy()
           .withControllerHeadingAxis(
@@ -94,12 +116,11 @@ public class RobotContainer {
           .translationHeadingOffset(true)
           .translationHeadingOffset(Rotation2d.fromDegrees(0));
 
-  /** Clone's the angular velocity input stream and converts it to a robotRelative input stream. */
-  SwerveInputStream driveRobotOriented =
-      driveAngularVelocity.copy().robotRelative(true).allianceRelativeControl(false);
+      driveRobotOriented =
+        driveAngularVelocity.copy().robotRelative(true).allianceRelativeControl(false);
 
-  SwerveInputStream driveDirectAngle =
-      driveAngularVelocity
+      driveDirectAngle =
+        driveAngularVelocity
           .copy()
           .withControllerHeadingAxis(
               () -> -m_driverController.getRightY() * Constants.DriveConstants.MAX_ANGULAR_SPEED,
@@ -108,13 +129,8 @@ public class RobotContainer {
                       * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
           .headingWhile(true);
 
-  // Clone's the angular velocity input stream and converts it to a robotRelative input stream.
-
-  // Derive the heading axis with math!
-
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
+    }
+    
     SmartDashboard.putData("Auto Chooser", autoChooser);
     NamedCommands.registerCommand("SHOOT", timedCommand(Launch(), 1));
     NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 1));
@@ -122,15 +138,13 @@ public class RobotContainer {
     NamedCommands.registerCommand("END_INTAKE", Stop());
     // NamedCommands.registerCommand("CLIMB", );
 
-    configureBindings();
+    configureBindings(); 
 
     autoChooser.setDefaultOption("Do Nothing", null);
 
     // m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
-
-    m_feeder.setDefaultCommand(m_feeder.set(0));
+    m_feeder.setDefaultCommand(m_feeder.set(-0));
     m_IntakeShooter.setDefaultCommand(m_IntakeShooter.ManualSpeedControl());
-    // m_fuel.setDefaultCommand(m_fuel.stopCommand());
 
     DriverStation.silenceJoystickConnectionWarning(true);
 
@@ -214,6 +228,7 @@ public class RobotContainer {
     // release
 
   
+  if (Constants.OperatorConstants.IsSwerve == true) {
   Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
   Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
   Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
@@ -228,8 +243,7 @@ public class RobotContainer {
       // sets default commands and other commands depending on mode
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     }
-
-    if (Constants.OperatorConstants.IsSwerve == true) {
+    
       if (RobotBase.isSimulation()) {
       drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Change this one

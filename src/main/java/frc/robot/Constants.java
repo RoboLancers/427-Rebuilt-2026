@@ -23,6 +23,9 @@ public final class Constants {
     public static final double MAX_SPEED =
         Units.feetToMeters(15); // this used to be like 14 or smth
     public static final double MAX_ANGULAR_SPEED = Units.feetToMeters(15);
+
+    public static final double TANK_SPEED_MULTIPLYER =0.1;
+    public static final double TANK__TURNING_SPEED_MULTIPLYER = 0.1;
     // Joystick deadband
     public static final double DEADBAND = 0.1;
     public static final double LEFT_Y_DEADBAND = 0.1;
@@ -33,7 +36,7 @@ public final class Constants {
     public static final int LEFT_LEADER_ID = 30;
     public static final int LEFT_FOLLOWER_ID = 40;
     public static final int RIGHT_LEADER_ID = 20;
-    public static final int RIGHT_FOLLOWER_ID = 100;
+    public static final int RIGHT_FOLLOWER_ID = 62;
 
     // Current limit for drivetrain motors. 60A is a reasonable maximum to reduce
     // likelihood of tripping breakers or damaging CIM motors
@@ -51,7 +54,7 @@ public final class Constants {
     public static final int DRIVE_SCALING = 7;
     public static final int ROTATION_SCALING = 6;
 
-    public static final boolean IsSwerve = true;
+    public static final boolean IsSwerve = false;
   }
 
   public static class IntakeConstants {
@@ -60,21 +63,21 @@ public final class Constants {
     public static final int IntakenumMotors = 1;
 
     public static final int Intake_RPM = 60;
-    public static final int FlyWheel_Diameter = 2;
-    public static final double FlyWheel_Mass = 0.029;
+    public static final int FlyWheel_Diameter = 4;
+    public static final double FlyWheel_Mass = 1;
     public static final int SoftLimit = 1000;
 
-    public static final double KP = 0.1;
-    public static final int KI = 0;
-    public static final int KD = 0;
+    public static final double KP = 0.01;
+    public static final double KI = 0;
+    public static final double KD = 0;
     public static final double ks = 0;
-    public static final double kv = .4;
-    public static final double ka = .4;
+    public static final double kv = 0.1255;
+    public static final double ka = 0;
 
     public static final int CurrentLimit = 40;
     public static final int MaxVelocity = 90;
     public static final int MaxAcceleration = 45;
-    public static final double Intake_GearRatio = 12;
+    public static final double Intake_GearRatio = 1;
     public static final double x_DutyCycle = 0.3;
     public static final double y_DutyCycle = -0.3;
 
@@ -100,9 +103,9 @@ public final class Constants {
 
     public static final double GearingreductionStages = 8.4;
 
-    public static final int kP = 1;
-    public static final int kI = 0;
-    public static final int kD = 0;
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
 
     public static final int DegPerSecmagnitude = 90;
     public static final int DegPerSecPerSecmagnitude = 45;
@@ -110,9 +113,9 @@ public final class Constants {
     public static final int controllerBmagnitude = 300;
 
     /** Need info for below */
-    public static final double ks = 1;
-    public static final double kv = 1;
-    public static final double ka = 1;
+    public static final double ks = 0;
+    public static final double kv = 0;
+    public static final double ka = 0;
     public static final int reductionStages = 12;
     public static final int StatorLimit = 40;
 

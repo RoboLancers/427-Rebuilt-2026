@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.RPM;
+import static edu.wpi.first.units.Units.Seconds;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -74,9 +75,9 @@ public class IntakeShooter extends SubsystemBase {
           // Motor Properties to prevent over currenting
           .withMotorInverted(false)
           .withIdleMode(MotorMode.BRAKE)
-          .withStatorCurrentLimit(Amps.of(IntakeConstants.CurrentLimit));
-          //.withClosedLoopRampRate(Seconds.of(IntakeConstants.ClosedLoopRampRate))
-          //.withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate));
+          .withStatorCurrentLimit(Amps.of(IntakeConstants.CurrentLimit))
+          .withClosedLoopRampRate(Seconds.of(IntakeConstants.ClosedLoopRampRate))
+          .withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate));
 
   // Vendor motor controller object
   private SparkMax spark = new SparkMax(IntakeConstants.Intake_SparkMax_ID, MotorType.kBrushless);

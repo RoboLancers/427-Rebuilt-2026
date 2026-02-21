@@ -13,6 +13,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.DriveConstants;;
 
 public class CANDriveSubsystem extends SubsystemBase {
   private final SparkMax leftLeader;
@@ -71,6 +72,6 @@ public class CANDriveSubsystem extends SubsystemBase {
   public void periodic() {}
 
   public void driveArcade(double xSpeed, double zRotation) {
-    drive.arcadeDrive(xSpeed, zRotation);
+    drive.arcadeDrive(-xSpeed * TANK_SPEED_MULTIPLYER, -zRotation * TANK__TURNING_SPEED_MULTIPLYER);
   }
 }
