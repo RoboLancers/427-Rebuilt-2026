@@ -21,11 +21,13 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ClimbConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Climb.ClimbSubsystem;
@@ -65,6 +67,10 @@ public class RobotContainer {
   SwerveInputStream driveAngularVelocity =
       SwerveInputStream.of(
               drivebase.getSwerveDrive(),
+              () -> -m_driverController.getLeftY() * DriveConstants.MAX_SPEED,
+              () -> -m_driverController.getLeftX() * DriveConstants.MAX_SPEED)
+          .withControllerRotationAxis(m_driverController::getRightX)
+          .deadband(DriveConstants.DEADBAND)
               () -> -m_driverController.getLeftY() * DriveConstants.MAX_SPEED,
               () -> -m_driverController.getLeftX() * DriveConstants.MAX_SPEED)
           .withControllerRotationAxis(m_driverController::getRightX)
@@ -124,8 +130,6 @@ public class RobotContainer {
     m_feeder.setDefaultCommand(m_feeder.set(0));
     m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
     // m_fuel.setDefaultCommand(m_fuel.stopCommand());
-
-    DriverStation.silenceJoystickConnectionWarning(true);
 
     DriverStation.silenceJoystickConnectionWarning(true);
 
