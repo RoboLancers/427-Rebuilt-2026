@@ -200,7 +200,7 @@ public class RobotContainer {
 
   // sets default commands and other commands depending on mode
   Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
-  Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+  Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(aimWhileDriving);
   Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
   Command driveFieldOrientedDirectAngleKeyboard =
       drivebase.driveFieldOriented(driveDirectAngleKeyboard);
