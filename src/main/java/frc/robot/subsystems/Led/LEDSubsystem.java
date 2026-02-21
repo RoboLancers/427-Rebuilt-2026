@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import swervelib.parser.SwerveParser;
 
+
 import java.util.Map;
 
 
@@ -50,6 +51,8 @@ public class LEDSubsystem extends SubsystemBase {
   LEDPattern yellowRedScroll = yellowRedSteps.scrollAtRelativeSpeed(Percent.per(Seconds).of(25));
 
 
+
+//scaledInputs.getX(), Constants.
 
 
 
