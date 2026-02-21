@@ -4,7 +4,7 @@ import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
-import static edu.wpi.first.units.Units.Feet;
+import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
@@ -45,10 +45,12 @@ public class ClimbSubsystem extends SubsystemBase {
               DegreesPerSecond.of(ClimbConstants.MaxVelocity),
               DegreesPerSecondPerSecond.of(ClimbConstants.MaxAcceleration))
           .withFeedforward(
-              new ArmFeedforward(ClimbConstants.ks, ClimbConstants.kg, ClimbConstants.kv))
+              new ArmFeedforward(
+                  ClimbConstants.ks, ClimbConstants.kg, ClimbConstants.kv, ClimbConstants.ka))
           .withSimFeedforward(
-              new ArmFeedforward(ClimbConstants.ks, ClimbConstants.kg, ClimbConstants.kv))
-          .withTelemetry("ArmMotor", TelemetryVerbosity.HIGH)
+              new ArmFeedforward(
+                  ClimbConstants.ks, ClimbConstants.kg, ClimbConstants.kv, ClimbConstants.ka))
+          .withTelemetry("Climb Motor", TelemetryVerbosity.HIGH)
           .withGearing(ClimbConstants.GearRatio)
           .withMotorInverted(ClimbConstants.MotorInverted)
           .withIdleMode(MotorMode.BRAKE)
@@ -75,9 +77,9 @@ public class ClimbSubsystem extends SubsystemBase {
               Degrees.of(ClimbConstants.SoftLowerLimit), Degrees.of(ClimbConstants.SoftUpperLimit))
           .withHardLimit(Degrees.of(ClimbConstants.HardMin), Degrees.of(ClimbConstants.HardMax))
           .withStartingPosition(Degrees.of(ClimbConstants.StartingPosition))
-          .withLength(Feet.of(ClimbConstants.Length))
+          .withLength(Inches.of(ClimbConstants.Length))
           .withMass(Pounds.of(ClimbConstants.Mass))
-          .withTelemetry("Arm", TelemetryVerbosity.HIGH);
+          .withTelemetry("Climb", TelemetryVerbosity.HIGH);
 
   private Arm arm = new Arm(armCfg);
 
@@ -103,6 +105,10 @@ public class ClimbSubsystem extends SubsystemBase {
   public Command setAngleAndStop(Angle angle) {
     return arm.runTo(angle, Degrees.of(ClimbConstants.ToleranceAngle));
   }
+
+  // public Command setDeployAngle() {
+  //   return arm.run(Degrees.of(ClimbConstants.DeployAngle));
+  // }
 
   /**
    * Set arm closed loop controller to go to the specified mechanism position.
