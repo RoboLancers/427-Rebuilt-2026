@@ -1,6 +1,3 @@
-Warning! Duplicate Vendordeps detected. maple-sim.json and maple-sim-0.4.0-beta.json
-have the same UUID: c39481e8-4a63-4a4c-9df6-48d91e4da37b
-Remove one of these vendordeps to avoid conflicts.
 package frc.robot;
 
 import static edu.wpi.first.units.Units.Degrees;
@@ -21,13 +18,11 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ClimbConstants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Climb.ClimbSubsystem;
@@ -69,11 +64,8 @@ public class RobotContainer {
               drivebase.getSwerveDrive(),
               () -> -m_driverController.getLeftY() * DriveConstants.MAX_SPEED,
               () -> -m_driverController.getLeftX() * DriveConstants.MAX_SPEED)
-          .withControllerRotationAxis(m_driverController::getRightX)
-          .deadband(DriveConstants.DEADBAND)
-              () -> -m_driverController.getLeftY() * DriveConstants.MAX_SPEED,
-              () -> -m_driverController.getLeftX() * DriveConstants.MAX_SPEED)
-          .withControllerRotationAxis(m_driverController::getRightX)
+          .withControllerRotationAxis(
+              () -> m_driverController.getRightX() * DriveConstants.MAX_ANGULAR_SPEED)
           .deadband(DriveConstants.DEADBAND)
           .scaleTranslation(0.8)
           .allianceRelativeControl(true);
