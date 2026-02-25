@@ -181,25 +181,25 @@ public final class Constants {
         new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30));
     public static final Translation3d FRONT_LEFT_TRANSLATION =
         new Translation3d(
-            Units.inchesToMeters(12.056), Units.inchesToMeters(10.981), Units.inchesToMeters(9));
+            Units.inchesToMeters(11), Units.inchesToMeters(7.25), Units.inchesToMeters(9));
 
     public static final Rotation3d FRONT_RIGHT_ROTATION =
         new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(-30));
     public static final Translation3d FRONT_RIGHT_TRANSLATION =
         new Translation3d(
-            Units.inchesToMeters(12.056), Units.inchesToMeters(-10.981), Units.inchesToMeters(9));
+            Units.inchesToMeters(-11), Units.inchesToMeters(7.25), Units.inchesToMeters(9));
 
     public static final Rotation3d BACK_LEFT_ROTATION =
         new Rotation3d(0, Units.degreesToRadians(-24.094), Math.toRadians(150));
     public static final Translation3d BACK_LEFT_TRANSLATION =
         new Translation3d(
-            Units.inchesToMeters(-12.628), Units.inchesToMeters(10.687), Units.inchesToMeters(9));
+            Units.inchesToMeters(11), Units.inchesToMeters(-7.25), Units.inchesToMeters(9));
 
     public static final Rotation3d BACK_RIGHT_ROTATION =
         new Rotation3d(0, Units.degreesToRadians(-24.094), Math.toRadians(-150));
     public static final Translation3d BACK_RIGHT_TRANSLATION =
         new Translation3d(
-            Units.inchesToMeters(-12.628), Units.inchesToMeters(-10.687), Units.inchesToMeters(9));
+            Units.inchesToMeters(-11), Units.inchesToMeters(-7.25), Units.inchesToMeters(9));
   }
 
   public static class FieldConstants {
