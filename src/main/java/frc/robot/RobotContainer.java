@@ -19,8 +19,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Feeder.Feeder;
@@ -103,7 +103,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
     NamedCommands.registerCommand("SHOOT", timedCommand(Launch(), 1));
     NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 1));
     NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 1));
@@ -182,34 +182,6 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  public Command Intake() {
-    return m_IntakeShooter
-        .set(FuelConstants.IntakingIntake)
-        .alongWith(m_feeder.set(FuelConstants.IntakingFeeder));
-  }
-
-  public Command Eject() {
-    return m_IntakeShooter
-        .set(FuelConstants.EjectingIntake)
-        .alongWith(m_feeder.set(FuelConstants.EjectingFeeder));
-  }
-
-  public Command Launch() {
-    return m_IntakeShooter
-        .set(FuelConstants.LaunchingIntake)
-        .alongWith(m_feeder.set(FuelConstants.LaunchingFeeder));
-  }
-
-  public Command Stop() {
-    return m_IntakeShooter
-        .set(FuelConstants.StoppingIntake)
-        .alongWith(m_feeder.set(FuelConstants.StoppingFeeder));
-  }
-
-  public Command SpinUp() {
-    return m_IntakeShooter.set(FuelConstants.SpinupIntake);
-  }
-
   private void configureBindings() {
     if (IntakeShooter.FuelCounter >= 10) {
       Stop();
