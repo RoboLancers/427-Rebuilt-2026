@@ -24,7 +24,7 @@ public final class Constants {
         Units.feetToMeters(15); // this used to be like 14 or smth
     public static final double MAX_ANGULAR_SPEED = Units.feetToMeters(15);
 
-    public static final double TANK_SPEED_MULTIPLYER =0.1;
+    public static final double TANK_SPEED_MULTIPLYER = 0.1;
     public static final double TANK__TURNING_SPEED_MULTIPLYER = 0.1;
     // Joystick deadband
     public static final double DEADBAND = 0.1;
@@ -41,7 +41,7 @@ public final class Constants {
     // Current limit for drivetrain motors. 60A is a reasonable maximum to reduce
     // likelihood of tripping breakers or damaging CIM motors
     public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;
-  } 
+  }
 
   public static class OperatorConstants {
 
@@ -54,7 +54,7 @@ public final class Constants {
     public static final int DRIVE_SCALING = 7;
     public static final int ROTATION_SCALING = 6;
 
-    public static final boolean IsSwerve = false;
+    public static final boolean IsSwerve = true;
   }
 
   public static class IntakeConstants {
@@ -114,6 +114,7 @@ public final class Constants {
 
     /** Need info for below */
     public static final double ks = 0;
+
     public static final double kv = 0;
     public static final double ka = 0;
     public static final int reductionStages = 12;
