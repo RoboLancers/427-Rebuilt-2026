@@ -1,7 +1,6 @@
 package frc.robot;
 
 import static frc.robot.Constants.OperatorConstants.*;
-import static edu.wpi.first.units.Units.RPM;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -212,8 +211,10 @@ public class RobotContainer {
 
   private void configureBindings() {
     m_driverController.leftBumper().whileTrue(Intake());
-    m_driverController.rightBumper()
-                .whileTrue(SpinUp()
+    m_driverController
+        .rightBumper()
+        .whileTrue(
+            SpinUp()
                 .withTimeout(FuelConstants.SpinUpTime)
                 .andThen(Launch())
                 .finallyDo(() -> Stop()));
@@ -227,8 +228,7 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed, cancelling on
     // release
 
-  
-  if (Constants.OperatorConstants.IsSwerve == true) {
+    if (Constants.OperatorConstants.IsSwerve == true) {
   Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
   Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
   Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
@@ -300,8 +300,7 @@ public class RobotContainer {
       SmartDashboard.putData("Auto Chooser", autoChooser);
     }
   }
-    
-}
+    }
 }
 
 
@@ -310,7 +309,3 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-
-
-
-

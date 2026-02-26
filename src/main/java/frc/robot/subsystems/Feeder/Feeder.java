@@ -31,7 +31,6 @@ import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 public class Feeder extends SubsystemBase {
 
-
   SmartMotorControllerTelemetryConfig motorTelemetryConfig =
       new SmartMotorControllerTelemetryConfig()
           .withMechanismPosition()
@@ -57,14 +56,8 @@ public class Feeder extends SubsystemBase {
   private SmartMotorControllerConfig smcConfig =
       new SmartMotorControllerConfig(this)
           .withControlMode(ControlMode.CLOSED_LOOP)
-          .withClosedLoopController(
-              FeederConstants.kP,
-              FeederConstants.kI,
-              FeederConstants.kD)
-          .withSimClosedLoopController(
-              FeederConstants.kP,
-              FeederConstants.kI,
-              FeederConstants.kD)
+          .withClosedLoopController(FeederConstants.kP, FeederConstants.kI, FeederConstants.kD)
+          .withSimClosedLoopController(FeederConstants.kP, FeederConstants.kI, FeederConstants.kD)
           .withFeedforward(
               new SimpleMotorFeedforward(
                   FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
@@ -122,7 +115,6 @@ public class Feeder extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     Feeder.updateTelemetry();
-
   }
 
   @Override

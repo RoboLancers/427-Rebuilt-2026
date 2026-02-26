@@ -1,7 +1,6 @@
 package frc.robot.subsystems.IntakeShooter;
 
 import static edu.wpi.first.units.Units.Amps;
-import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.RPM;
@@ -9,7 +8,6 @@ import static edu.wpi.first.units.Units.Seconds;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -32,7 +30,6 @@ public class IntakeShooter extends SubsystemBase {
   public static int FuelCounter = 0;
   public static double ShootSpeed;
 
-
   protected void execute() {
     SmartDashboard.putNumber("Fuel Number", FuelCounter);
   }
@@ -53,14 +50,8 @@ public class IntakeShooter extends SubsystemBase {
       new SmartMotorControllerConfig(this)
           .withControlMode(ControlMode.CLOSED_LOOP)
           // Feedback Constants (PID Constants)
-          .withClosedLoopController(
-              IntakeConstants.KP,
-              IntakeConstants.KI,
-              IntakeConstants.KD)
-          .withSimClosedLoopController(
-              IntakeConstants.KP,
-              IntakeConstants.KI,
-              IntakeConstants.KD)
+          .withClosedLoopController(IntakeConstants.KP, IntakeConstants.KI, IntakeConstants.KD)
+          .withSimClosedLoopController(IntakeConstants.KP, IntakeConstants.KI, IntakeConstants.KD)
           // FeedForward Constants
           .withFeedforward(
               new SimpleMotorFeedforward(
@@ -96,7 +87,7 @@ public class IntakeShooter extends SubsystemBase {
 
   private FlyWheelConfig intakeConfig =
       new FlyWheelConfig(sparkSmartMotorController)
-          .withDiameter(Inches.of(IntakeConstants.FlyWheel_Diameter))          
+          .withDiameter(Inches.of(IntakeConstants.FlyWheel_Diameter))
           .withMass(Pounds.of(IntakeConstants.FlyWheel_Mass))
           .withUpperSoftLimit(RPM.of(IntakeConstants.SoftLimit))
           .withTelemetry("IntakeMech", TelemetryVerbosity.HIGH);
@@ -136,7 +127,7 @@ public class IntakeShooter extends SubsystemBase {
   public Command setVelocity(AngularVelocity speed) {
     return intake.setSpeed(speed);
   }
-  
+
   public Command ManualSpeedControl() {
     return intake.setSpeed(() -> RPM.of(IntakeShooter.ShootSpeed));
   }
