@@ -47,14 +47,14 @@ public final class Constants {
 
     // Joystick Deadbband
 
-    public static final int kDriverControllerPort = 0;
+    public static final int kDriverControllerPort = 0; 
     public static final String drivebase = "drivebase";
     // this used to be 6 if turning speed is stupid make it six
 
     public static final int DRIVE_SCALING = 7;
     public static final int ROTATION_SCALING = 6;
 
-    public static final boolean IsSwerve = true;
+    public static final boolean IsSwerve = false;
   }
 
   public static class IntakeConstants {
@@ -67,11 +67,11 @@ public final class Constants {
     public static final double FlyWheel_Mass = 1;
     public static final int SoftLimit = 1000;
 
-    public static final double KP = 0.01;
+    public static final double KP = 0;
     public static final double KI = 0;
     public static final double KD = 0;
     public static final double ks = 0;
-    public static final double kv = 0.1255;
+    public static final double kv = 0.18;
     public static final double ka = 0;
 
     public static final int CurrentLimit = 40;

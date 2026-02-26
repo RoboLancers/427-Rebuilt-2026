@@ -13,7 +13,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.DriveConstants;;
+import frc.robot.Constants.DriveConstants;
 
 public class CANDriveSubsystem extends SubsystemBase {
   private final SparkMax leftLeader;
