@@ -46,7 +46,7 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
-  private SendableChooser<Command> autoChooser = new SendableChooser<>();
+  private SendableChooser<Command> autoChooser;
 
   // The robot's subsystems and commands are defined here...
 
@@ -284,13 +284,17 @@ public class RobotContainer {
             .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
         m_driverController.rightBumper().onTrue(Commands.none());
       }
-      autoChooser = AutoBuilder.buildAutoChooser();
-      // AutoBuilder.buildAutoChooserWithOptionsModifier(
-      //     (stream) ->
-      //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) :
-      // stream);
-      SmartDashboard.putData("Auto Chooser", autoChooser);
     }
+    autoChooser = AutoBuilder.buildAutoChooser();
+    // AutoBuilder.buildAutoChooserWithOptionsModifier(
+    //     (stream) ->
+    //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) :
+    // stream);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+  }
+
+  public Command getAutonomousCommand() {
+    return autoChooser.getSelected();
   }
 }
 
