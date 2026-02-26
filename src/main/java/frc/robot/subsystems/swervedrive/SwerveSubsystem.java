@@ -20,7 +20,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-// import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -34,7 +34,7 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
-// import swervelib.SwerveInputStream;
+import swervelib.SwerveInputStream;
 import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
@@ -47,16 +47,17 @@ public class SwerveSubsystem extends SubsystemBase {
   private SwerveSetpointGenerator setpointGenerator;
   private SwerveSetpoint previousSetpoint;
   private SwerveDrive swerveDrive;
-  public VisionSubsystem Vision;
+  public VisionSubsystem vision;
 
   /* Creates a new SwerveSubsystem. */
-  public SwerveSubsystem(File directory) {
-    // File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
+  public SwerveSubsystem(File directory, VisionSubsystem,vision ;){
+    File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
     // Catches any errors within the code and crashes the program if there are any
 
     /* DO NOT TOUCH or everything breaks
     |
     V    */
+    this.vision = vision; 
     try {
       swerveDrive =
           new SwerveParser(directory).createSwerveDrive(Constants.DriveConstants.MAX_SPEED);
@@ -90,6 +91,7 @@ public class SwerveSubsystem extends SubsystemBase {
       DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
     }
   }
+  
 
   public Command followPathCommand(String pathName) {
     try {
@@ -104,15 +106,15 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
-    Vision.debugField.setRobotPose(getPose());
-    Vision.updatePoseEstimation(swerveDrive);
+    vision.debugField.setRobotPose(getPose());
+    vision.updatePoseEstimation(swerveDrive);
     swerveDrive.updateOdometry();
   }
 
   public void periodic() {
     // This method will be called once per scheduler run
-    Vision.debugField.setRobotPose(getPose());
-    double distanceToHub = Vision.getDistanceFromAprilTag(26);
+    vision.debugField.setRobotPose(getPose());
+    double distanceToHub = vision.getDistanceFromAprilTag(26);
     SmartDashboard.putNumber("Distance To Hub", distanceToHub);
   }
 

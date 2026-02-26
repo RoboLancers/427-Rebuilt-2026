@@ -23,6 +23,10 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CameraConstants;
 import frc.robot.Robot;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -255,16 +259,16 @@ public class VisionSubsystem extends SubsystemBase {
   private void openSimCameraViews() {
     // uncoment the following;
 
-    // if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE))
-    // {
-    //   try {
-    //     Desktop.getDesktop().browse(new URI("http://localhost:1182/"));
-    //     Desktop.getDesktop().browse(new URI("http://localhost:1184/"));
-    //     Desktop.getDesktop().browse(new URI("http://localhost:1186/"));
-    //   } catch (IOException | URISyntaxException e) {
-    //     e.printStackTrace();
-    //   }
-    // }
+    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE))
+    {
+      try {
+        Desktop.getDesktop().browse(new URI("http://localhost:1182/"));
+        Desktop.getDesktop().browse(new URI("http://localhost:1184/"));
+        Desktop.getDesktop().browse(new URI("http://localhost:1186/"));
+      } catch (IOException | URISyntaxException e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   /** Update the {@link Field2d} to include tracked targets/ */
