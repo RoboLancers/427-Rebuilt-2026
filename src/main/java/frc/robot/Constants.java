@@ -54,7 +54,7 @@ public final class Constants {
     public static final int DRIVE_SCALING = 7;
     public static final int ROTATION_SCALING = 6;
 
-    public static final boolean IsSwerve = false;
+    public static final boolean IsSwerve = true;
   }
 
   public static class IntakeConstants {
@@ -113,6 +113,7 @@ public final class Constants {
     public static final int controllerBmagnitude = 300;
 
     public static final double ks = 0;
+
     public static final double kv = 0;
     public static final double ka = 0;
     public static final int reductionStages = 12;
