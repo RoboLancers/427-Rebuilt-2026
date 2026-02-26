@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Percent;
 import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.RPM;
 
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.AddressableLED;
@@ -21,10 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import frc.robot.Constants;
 import swervelib.parser.SwerveParser;
 
-
 import java.util.Map;
-
-
 
 public class LEDSubsystem extends SubsystemBase {
 
@@ -37,6 +35,7 @@ public class LEDSubsystem extends SubsystemBase {
 
 
 
+//Camera isConnected 
   public LEDSubsystem() {
     m_led = new AddressableLED(Constants.LedConstants.kPort);
 
@@ -52,16 +51,16 @@ public class LEDSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
   LEDPattern decidedPattern = LEDPatterns.defaultPattern;
+  
+  
+   //note, the higher up the condition, the lower the priority
+   //if(isIntaking) decidedPattern = LEDPatterns.oliveGreenScroll;
+   //if(isShooting) decidedPattern = LEDPatterns.bluePinkYellowWhiteScroll;
 
-  //note, the higher up the condition, the lower the priority
-  if(isIntaking) decidedPattern = LEDPatterns.oliveGreenScroll;
-  if(isShooting) decidedPattern = LEDPatterns.bluePinkYellowWhiteScroll;
-
-    decidedPattern.applyTo(m_buffer);
+  decidedPattern.applyTo(m_buffer);
     // Set the LEDs
     m_led.setData(m_buffer);
   }
-
   /**
    * Creates a command that runs a pattern on the entire LED strip.
    *

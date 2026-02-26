@@ -21,7 +21,11 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Led.LEDSubsystem;
 import frc.robot.subsystems.Feeder.Feeder;
 import frc.robot.subsystems.IntakeShooter.IntakeShooter;
+import frc.robot.subsystems.Led.LEDSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+
+import static edu.wpi.first.units.Units.RPM;
+
 import java.io.File;
 import swervelib.SwerveInputStream;
 import frc.robot.subsystems.Led.LEDSubsystem;
@@ -248,5 +252,13 @@ public class RobotContainer {
     // Configure to run auto
 
   }
+
+public void updateLEDs(){
+  if (m_IntakeShooter.getVelocity().in(RPM) > 0) {
+    LEDSubsystem.isIntaking = true;
+  } else {
+    LEDSubsystem.isIntaking = false;
+  }
+}
 
 }
