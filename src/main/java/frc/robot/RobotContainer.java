@@ -205,6 +205,15 @@ public class RobotContainer {
       m_driverController.leftBumper().whileTrue(Intake());
     }
 
+    if (RobotBase.isSimulation()) {
+      drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
+    }
+    if (IntakeShooter.FuelCounter >= 10) {
+      Stop();
+    } else {
+      m_driverController.leftBumper().whileTrue(Intake());
+    }
+
     m_driverController
         .rightBumper()
         .whileTrue(
@@ -213,7 +222,6 @@ public class RobotContainer {
                 .andThen(Launch())
                 .finallyDo(() -> Stop()));
     m_driverController.a().whileTrue(Eject());
-
     if (RobotBase.isSimulation()) {
       drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
     }
