@@ -1,5 +1,6 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.RPM;
 import static frc.robot.Constants.OperatorConstants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -87,7 +88,7 @@ public class RobotContainer {
               .withControllerRotationAxis(
                   () ->
                       -m_driverController.getRightX()
-                          * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
+                          * Constants.DriveConstants.MAX_ANGULAR_SPEED)
               .deadband(Constants.DriveConstants.DEADBAND)
               .scaleTranslation(0.8)
               .allianceRelativeControl(true);
@@ -138,9 +139,9 @@ public class RobotContainer {
 
     autoChooser.setDefaultOption("Do Nothing", null);
 
-    // m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
-    m_feeder.setDefaultCommand(m_feeder.set(-0));
-    m_IntakeShooter.setDefaultCommand(m_IntakeShooter.ManualSpeedControl());
+    m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
+    m_feeder.setDefaultCommand(m_feeder.set(0));
+    //m_IntakeShooter.setDefaultCommand(m_IntakeShooter.ManualSpeedControl());
 
     DriverStation.silenceJoystickConnectionWarning(true);
 
@@ -179,9 +180,13 @@ public class RobotContainer {
    * joysticks}.
    */
   public Command Intake() {
-    return m_IntakeShooter
-        .set(FuelConstants.IntakingIntake)
-        .alongWith(m_feeder.set(FuelConstants.IntakingFeeder));
+    // return m_IntakeShooter
+    //     //.set(FuelConstants.IntakingIntake)
+    //     // .alongWith(m_feeder.set(FuelConstants.IntakingFeeder));
+    //     .setVelocity(RPM.of(500))
+    //     .alongWith(m_feeder.setVelocity(RPM.of(500)));
+    return m_feeder
+    .setVelocity(RPM.of(500));
   }
 
   public Command Eject() {

@@ -60,12 +60,13 @@ public final class Constants {
   public static class IntakeConstants {
 
     public static final int Intake_SparkMax_ID = 60;
+     public static final int IntakeFollower_SparkMax_ID = 70;
     public static final int IntakenumMotors = 1;
 
     public static final int Intake_RPM = 60;
     public static final int FlyWheel_Diameter = 4;
     public static final double FlyWheel_Mass = 1;
-    public static final int SoftLimit = 1000;
+    public static final int SoftLimit = 5000;
 
     public static final double KP = 0;
     public static final double KI = 0;
@@ -77,7 +78,7 @@ public final class Constants {
     public static final int CurrentLimit = 40;
     public static final int MaxVelocity = 90;
     public static final int MaxAcceleration = 45;
-    public static final double Intake_GearRatio = 1;
+    public static final double Intake_GearRatio = 1.5; ///on swerve bot 2/3
     public static final double x_DutyCycle = 0.3;
     public static final double y_DutyCycle = -0.3;
 
@@ -113,10 +114,9 @@ public final class Constants {
     public static final int controllerBmagnitude = 300;
 
     public static final double ks = 0;
-
     public static final double kv = 0;
     public static final double ka = 0;
-    public static final int reductionStages = 12;
+    public static final int reductionStages = 3;   //on swerve bot 1/3
     public static final int StatorLimit = 40;
 
     public static final double ClosedLoopRampRate = 0.25;
@@ -129,7 +129,7 @@ public final class Constants {
     public static final int Diameter = 4;
 
     public static final double Mass = 0.3;
-    public static final int UpperSoftLimit = 1000;
+    public static final int UpperSoftLimit = 5000;
 
     public static final double controllerxdutyCycle = 0.3;
     public static final double controllerydutyCycle = -0.3;
@@ -141,8 +141,8 @@ public final class Constants {
 
     public static final int FuelLimit = 8;
 
-    public static final double IntakingFeeder = 0.7;
-    public static final double IntakingIntake = 0.7;
+    public static final double IntakingFeeder = 0.1;
+    public static final double IntakingIntake = 0.1;
 
     public static final double EjectingFeeder = -0.7;
     public static final double EjectingIntake = -0.7;
