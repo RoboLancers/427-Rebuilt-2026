@@ -259,12 +259,12 @@ public class VisionSubsystem extends SubsystemBase {
   private void openSimCameraViews() {
     // uncoment the following;
 
-    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE))
-    {
+    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
       try {
         Desktop.getDesktop().browse(new URI("http://localhost:1182/"));
         Desktop.getDesktop().browse(new URI("http://localhost:1184/"));
         Desktop.getDesktop().browse(new URI("http://localhost:1186/"));
+        Desktop.getDesktop().browse(new URI("http://localhost:1188/"));
       } catch (IOException | URISyntaxException e) {
         e.printStackTrace();
       }

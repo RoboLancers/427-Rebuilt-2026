@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import java.io.File;
 import java.util.Arrays;
@@ -34,7 +35,6 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
-import swervelib.SwerveInputStream;
 import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
@@ -50,20 +50,21 @@ public class SwerveSubsystem extends SubsystemBase {
   public VisionSubsystem vision;
 
   /* Creates a new SwerveSubsystem. */
-  public SwerveSubsystem(File directory, VisionSubsystem,vision ;){
-    File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
+  public SwerveSubsystem(File directory) {
+    File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
     // Catches any errors within the code and crashes the program if there are any
 
     /* DO NOT TOUCH or everything breaks
     |
     V    */
-    this.vision = vision; 
     try {
       swerveDrive =
           new SwerveParser(directory).createSwerveDrive(Constants.DriveConstants.MAX_SPEED);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+
+    this.vision = new VisionSubsystem(() -> getPose());
 
     // Configure AutoBuilder last
     try {
@@ -89,9 +90,10 @@ public class SwerveSubsystem extends SubsystemBase {
           this);
     } catch (Exception e) {
       DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+    } finally {
+
     }
   }
-  
 
   public Command followPathCommand(String pathName) {
     try {
@@ -106,16 +108,20 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
-    vision.debugField.setRobotPose(getPose());
-    vision.updatePoseEstimation(swerveDrive);
-    swerveDrive.updateOdometry();
+    if (VisionConstants.isVision) {
+      vision.debugField.setRobotPose(getPose());
+      vision.updatePoseEstimation(swerveDrive);
+      swerveDrive.updateOdometry();
+    }
   }
 
   public void periodic() {
     // This method will be called once per scheduler run
-    vision.debugField.setRobotPose(getPose());
-    double distanceToHub = vision.getDistanceFromAprilTag(26);
-    SmartDashboard.putNumber("Distance To Hub", distanceToHub);
+    if (VisionConstants.isVision) {
+      vision.debugField.setRobotPose(getPose());
+      double distanceToHub = vision.getDistanceFromAprilTag(26);
+      SmartDashboard.putNumber("Distance To Hub", distanceToHub);
+    }
   }
 
   public Command sysIdDriveMotorCommand() {

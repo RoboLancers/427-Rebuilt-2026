@@ -56,6 +56,8 @@ public final class Constants {
   }
 
   public static class VisionConstants {
+    public static final boolean isVision = true;
+
     public static final String kCameraName = "YOUR CAMERA NAME";
     // Cam mounted facing forward, half a meter forward of center, half a meter up from cen
 
@@ -64,7 +66,7 @@ public final class Constants {
 
     // The layout of the AprilTags on the field
     public static final AprilTagFieldLayout kTagLayout =
-        AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+        AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
     ;
 
     // The standard deviations of our vision estimated poses, which affect correction rate
@@ -183,15 +185,15 @@ public final class Constants {
         new Translation3d(
             Units.inchesToMeters(11), Units.inchesToMeters(7.25), Units.inchesToMeters(9));
 
-    public static final Rotation3d FRONT_RIGHT_ROTATION =
-        new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(-30));
-    public static final Translation3d FRONT_RIGHT_TRANSLATION =
+    public static final Rotation3d BACK_LEFT_ROTATION =
+        new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(150));
+    public static final Translation3d BACK_LEFT_TRANSLATION =
         new Translation3d(
             Units.inchesToMeters(-11), Units.inchesToMeters(7.25), Units.inchesToMeters(9));
 
-    public static final Rotation3d BACK_LEFT_ROTATION =
-        new Rotation3d(0, Units.degreesToRadians(-24.094), Math.toRadians(150));
-    public static final Translation3d BACK_LEFT_TRANSLATION =
+    public static final Rotation3d FRONT_RIGHT_ROTATION =
+        new Rotation3d(0, Units.degreesToRadians(-24.094), Math.toRadians(-30));
+    public static final Translation3d FRONT_RIGHT_TRANSLATION =
         new Translation3d(
             Units.inchesToMeters(11), Units.inchesToMeters(-7.25), Units.inchesToMeters(9));
 
