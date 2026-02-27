@@ -5,12 +5,24 @@
 package frc.robot.subsystems.swervedrive;
 
 // Imports! D:
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.swerve.SwerveSetpoint;
+import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+// import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
@@ -20,13 +32,18 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
+// import swervelib.SwerveInputStream;
 import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 
 // This is the main class for the swerve drive subsystem
+@Logged
 public class SwerveSubsystem extends SubsystemBase {
-  private final SwerveDrive swerveDrive;
+  double maximumSpeed = Units.feetToMeters(4.5);
+  private SwerveSetpointGenerator setpointGenerator;
+  private SwerveSetpoint previousSetpoint;
+  private SwerveDrive swerveDrive;
 
   /* Creates a new SwerveSubsystem. */
   public SwerveSubsystem(File directory) {
@@ -42,8 +59,43 @@ public class SwerveSubsystem extends SubsystemBase {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-    // This method will be called once per scheduler run during simulation
 
+    // Configure AutoBuilder last
+    try {
+      RobotConfig config = RobotConfig.fromGUISettings();
+
+      setpointGenerator = new SwerveSetpointGenerator(config, Units.rotationsToRadians(10.0));
+
+      AutoBuilder.configure(
+          this::getPose,
+          this::resetPose,
+          this::getSpeeds,
+          (speeds, feedforwards) -> driveFieldOriented(speeds),
+          new PPHolonomicDriveController(
+              new PIDConstants(0.0, 0.0, 1.2), new PIDConstants(0.01, 0.0, 0.1)),
+          config,
+          () -> {
+            var alliance = DriverStation.getAlliance();
+            if (alliance.isPresent()) {
+              return alliance.get() == DriverStation.Alliance.Red;
+            }
+            return false;
+          },
+          this);
+    } catch (Exception e) {
+      DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+    }
+  }
+
+  public Command followPathCommand(String pathName) {
+    try {
+      PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+      return AutoBuilder.followPath(path);
+
+    } catch (Exception e) {
+      DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+      return Commands.none();
+    }
   }
 
   @Override
@@ -91,6 +143,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * @param translationY Translation in the Y direction
    * @param angularRotationX Rotation of the robot to set
    * @return Drive command.
+   *     <p>IT DOES SOMETHING
    */
   public Command driveCommand(
       DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
@@ -136,6 +189,10 @@ public class SwerveSubsystem extends SubsystemBase {
     swerveDrive.resetOdometry(pose);
   }
 
+  public ChassisSpeeds getSpeeds() {
+    return swerveDrive.getRobotVelocity();
+  }
+
   public Rotation2d getHeading() {
     return getPose().getRotation();
   }
@@ -169,7 +226,6 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public SwerveDriveConfiguration getSwerveDriveConfiguration() {
-
     return swerveDrive.swerveDriveConfiguration;
   }
 
