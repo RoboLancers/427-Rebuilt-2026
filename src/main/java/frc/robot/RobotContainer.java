@@ -221,10 +221,14 @@ public class RobotContainer {
                 .andThen(Launch())
                 .finallyDo(() -> Stop()));
     m_driverController.rightTrigger().whileTrue(Eject());
-
-    if (Constants.OperatorConstants.IsSwerve == false) {
+     if (Constants.OperatorConstants.IsSwerve == false) {
       driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController));
+     }
+
+    if (RobotBase.isSimulation()) {
+      drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
     }
+
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed, cancelling on
@@ -253,56 +257,49 @@ public class RobotContainer {
         drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
       }
 
-      if (Robot.isSimulation()) {
-        Pose2d target = new Pose2d(new Translation2d(1, 4), Rotation2d.fromDegrees(90));
-        // drivebase.getSwerveDrive().field.getObject("targetPose").setPose(target);
-        driveDirectAngle.driveToPose(
-            () -> target,
-            new ProfiledPIDController(5, 0, 0, new Constraints(5, 2)),
-            new ProfiledPIDController(
-                5,
-                0,
-                0,
-                new Constraints(Units.degreesToRadians(360), Units.degreesToRadians(180))));
-        m_driverController
-            .start()
-            .onTrue(
-                Commands.runOnce(
-                    () -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
-        m_driverController.a().whileTrue(drivebase.sysIdDriveMotorCommand());
-        m_driverController
-            .b()
-            .whileTrue(
-                Commands.runEnd(
-                    () -> driveDirectAngle.driveToPoseEnabled(true), // And this one
-                    () -> driveDirectAngle.driveToPoseEnabled(false))); // And this one
-      }
-      if (DriverStation.isTest()) {
-        drivebase.setDefaultCommand(
-            driveFieldOrientedAnglularVelocity); // Overrides drive command above!
-
-        m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-        m_driverController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-        m_driverController.back().whileTrue(drivebase.centerModulesCommand());
-        m_driverController.leftBumper().onTrue(Commands.none());
-        m_driverController.rightBumper().onTrue(Commands.none());
-      } else {
-        m_driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-        m_driverController.start().whileTrue(Commands.none());
-        m_driverController.back().whileTrue(Commands.none());
-        m_driverController
-            .leftBumper()
-            .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-        m_driverController.rightBumper().onTrue(Commands.none());
-      }
-      autoChooser = AutoBuilder.buildAutoChooser();
-      // AutoBuilder.buildAutoChooserWithOptionsModifier(
-      //     (stream) ->
-      //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) :
-      // stream);
-      SmartDashboard.putData("Auto Chooser", autoChooser);
+    if (Robot.isSimulation()) {
+      Pose2d target = new Pose2d(new Translation2d(1, 4), Rotation2d.fromDegrees(90));
+      // drivebase.getSwerveDrive().field.getObject("targetPose").setPose(target);
+      driveDirectAngle.driveToPose(
+          () -> target,
+          new ProfiledPIDController(5, 0, 0, new Constraints(5, 2)),
+          new ProfiledPIDController(
+              5, 0, 0, new Constraints(Units.degreesToRadians(360), Units.degreesToRadians(180))));
+      m_driverController
+          .start()
+          .onTrue(
+              Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
+      m_driverController.a().whileTrue(drivebase.sysIdDriveMotorCommand());
+      m_driverController
+          .b()
+          .whileTrue(
+              Commands.runEnd(
+                  () -> driveDirectAngle.driveToPoseEnabled(true), // And this one
+                  () -> driveDirectAngle.driveToPoseEnabled(false))); // And this one
     }
+    if (DriverStation.isTest()) {
+      drivebase.setDefaultCommand(
+          driveFieldOrientedAnglularVelocity); // Overrides drive command above!
+      m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      m_driverController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      m_driverController.back().whileTrue(drivebase.centerModulesCommand());
+      m_driverController.leftBumper().onTrue(Commands.none());
+      m_driverController.rightBumper().onTrue(Commands.none());
+    } else {
+      m_driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      m_driverController.start().whileTrue(Commands.none());
+      m_driverController.back().whileTrue(Commands.none());
+      m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      m_driverController.rightBumper().onTrue(Commands.none());
+    }
+    autoChooser = AutoBuilder.buildAutoChooser();
+    // AutoBuilder.buildAutoChooserWithOptionsModifier(
+    //     (stream) ->
+    //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) :
+    // stream);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
+}
 }
 
   /**
