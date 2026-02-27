@@ -107,7 +107,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("SHOOT", timedCommand(Launch(), 1));
     NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 1));
     NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 1));
-    NamedCommands.registerCommand("END_INTAKE", Stop());
+    NamedCommands.registerCommand("END_INTAKE", timedCommand(Stop(), 1));
     // NamedCommands.registerCommand("CLIMB", );
 
     configureBindings();
@@ -117,8 +117,6 @@ public class RobotContainer {
     m_feeder.setDefaultCommand(m_feeder.set(0));
     m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
     // m_fuel.setDefaultCommand(m_fuel.stopCommand());
-
-    DriverStation.silenceJoystickConnectionWarning(true);
 
     DriverStation.silenceJoystickConnectionWarning(true);
 
@@ -201,20 +199,6 @@ public class RobotContainer {
     if (RobotBase.isSimulation()) {
       drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
     }
-    if (IntakeShooter.FuelCounter >= 10) {
-      Stop();
-    } else {
-      m_driverController.leftBumper().whileTrue(Intake());
-    }
-
-    m_driverController
-        .rightBumper()
-        .whileTrue(
-            SpinUp()
-                .withTimeout(FuelConstants.SpinUpTime)
-                .andThen(Launch())
-                .finallyDo(() -> Stop()));
-    m_driverController.a().whileTrue(Eject());
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
