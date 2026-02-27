@@ -225,7 +225,7 @@ public class RobotContainer {
       driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController));
      }
 
-    if (RobotBase.isSimulation()) {
+    if (RobotBase.isSimulation() && IsSwerve) {
       drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
     }
 
