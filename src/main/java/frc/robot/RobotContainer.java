@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -311,6 +312,27 @@ public void updateLEDs(){
   } else {
     LEDSubsystem.isEjecting = false;
   }
+
+  if(DriverStation.getGameSpecificMessage().length() > 0){
+    switch (DriverStation.getGameSpecificMessage().charAt(0)){
+      case 'B':
+        LEDSubsystem.redHub = false;
+        LEDSubsystem.blueHub = true;
+        break;
+      case 'R':
+        LEDSubsystem.redHub = true;
+        LEDSubsystem.blueHub = false;
+        break;
+      default:
+        LEDSubsystem.redHub = false;
+        LEDSubsystem.blueHub = false;
+    }
+    }
+    else {
+      LEDSubsystem.redHub = false;
+      LEDSubsystem.blueHub = false;
+  }
+
 
 }
 }
