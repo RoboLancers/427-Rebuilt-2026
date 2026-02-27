@@ -166,7 +166,7 @@ public class RobotContainer {
                 .withTimeout(FuelConstants.SpinUpTime)
                 .andThen(Launch())
                 .finallyDo(() -> Stop()));
-    m_driverController.a().whileTrue(Eject());
+    m_driverController.rightTrigger().whileTrue(Eject());
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
@@ -226,7 +226,7 @@ public class RobotContainer {
       m_driverController.start().whileTrue(Commands.none());
       m_driverController.back().whileTrue(Commands.none());
       m_driverController
-          .leftBumper()
+          .leftTrigger()
           .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       m_driverController.rightBumper().onTrue(Commands.none());
     }
