@@ -156,7 +156,7 @@ public final class Constants {
     public static final double ks = 0;
     public static final double kg = 0.015;
     public static final double kv = 12.19;
-    public static final double ka = 0.15;
+    public static final double ka = 0.23;
 
     public static final int GearRatio = 100;
 
