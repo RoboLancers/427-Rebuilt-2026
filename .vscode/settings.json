@@ -78,6 +78,8 @@
       "source.fixAll.spotlessGradle": "explicit"
     }
   },
-  "java.compile.nullAnalysis.mode": "automatic"
+  "java.compile.nullAnalysis.mode": "automatic",
+  "spotlessGradle.diagnostics.enable": true,
+  "spotlessGradle.format.enable": true
 }
 

@@ -4,38 +4,24 @@
 
 package frc.robot.subsystems.Led;
 
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.Percent;
-import static edu.wpi.first.units.Units.Seconds;
-import static edu.wpi.first.units.Units.RPM;
-
-import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import frc.robot.Constants;
-import swervelib.parser.SwerveParser;
-
-import java.util.Map;
 
 public class LEDSubsystem extends SubsystemBase {
 
   private final AddressableLED m_led;
   private final AddressableLEDBuffer m_buffer;
 
-  //Declares conditions which will be changed in commands
+  // Declares conditions which will be changed in commands
   public static boolean isIntaking = false;
-  public static boolean isShooting = false; 
+  public static boolean isShooting = false;
 
-
-
-//Camera isConnected 
+  // Camera isConnected
   public LEDSubsystem() {
     m_led = new AddressableLED(Constants.LedConstants.kPort);
 
@@ -50,17 +36,17 @@ public class LEDSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-  LEDPattern decidedPattern = LEDPatterns.defaultPattern;
-  
-  
-   //note, the higher up the condition, the lower the priority
-   //if(isIntaking) decidedPattern = LEDPatterns.oliveGreenScroll;
-   //if(isShooting) decidedPattern = LEDPatterns.bluePinkYellowWhiteScroll;
+    LEDPattern decidedPattern = LEDPatterns.defaultPattern;
 
-  decidedPattern.applyTo(m_buffer);
+    // note, the higher up the condition, the lower the priority
+    if (isIntaking) decidedPattern = LEDPatterns.oliveGreenScroll;
+    //if(isShooting) decidedPattern = LEDPatterns.bluePinkYellowWhiteScroll;
+
+    decidedPattern.applyTo(m_buffer);
     // Set the LEDs
     m_led.setData(m_buffer);
   }
+
   /**
    * Creates a command that runs a pattern on the entire LED strip.
    *

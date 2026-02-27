@@ -30,9 +30,6 @@ public final class Constants {
     public static final double TURN_CONSTANT = 6;
   }
 
-  
-
-   
   public static class OperatorConstants {
 
     // Joystick Deadbband
@@ -41,7 +38,8 @@ public final class Constants {
     public static final String drivebase = "drivebase";
     // this used to be 6 if turning speed is stupid make it six
   }
-   public static class IntakeConstants {
+
+  public static class IntakeConstants {
 
     public static final int Intake_SparkMax_ID = 14;
     public static final int IntakenumMotors = 1;
@@ -147,6 +145,6 @@ public final class Constants {
   public static final class LedConstants {
     public static final int kPort = 9;
     public static final int kLength = 60;
-    //will declare LED situations here ex: if(test) pattern = kTestPattern
+    // will declare LED situations here ex: if(test) pattern = kTestPattern
   }
 }
