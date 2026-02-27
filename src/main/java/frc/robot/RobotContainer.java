@@ -112,7 +112,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("SHOOT", timedCommand(Launch(), 1));
     NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 1));
     NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 1));
-    NamedCommands.registerCommand("END_INTAKE", Stop());
+    NamedCommands.registerCommand("END_INTAKE", timedCommand(Stop(), 1));
     // NamedCommands.registerCommand("CLIMB", );
 
     configureBindings();
@@ -197,7 +197,7 @@ public class RobotContainer {
                 .withTimeout(FuelConstants.SpinUpTime)
                 .andThen(Launch())
                 .finallyDo(() -> Stop()));
-    // m_driverController.a().whileTrue(Eject());
+    m_driverController.a().whileTrue(Eject());
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
