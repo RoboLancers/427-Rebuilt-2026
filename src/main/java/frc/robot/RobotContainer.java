@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Feeder.Feeder;
@@ -48,20 +49,34 @@ public class RobotContainer {
 
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
-  // The robot's subsystems and commands are defined here...
-
   private final Field2d field = new Field2d();
 
   private final SwerveSubsystem drivebase =
       new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
 
+  SwerveInputStream aimWhileDriving =
+      SwerveInputStream.of(
+              drivebase.getSwerveDrive(),
+              () -> -m_driverController.getLeftY() * Constants.DriveConstants.MAX_SPEED,
+              () -> -m_driverController.getLeftX() * Constants.DriveConstants.MAX_SPEED)
+          .withControllerRotationAxis(
+              () -> m_driverController.getRightX() * Constants.DriveConstants.MAX_ANGULAR_SPEED)
+          .deadband(OperatorConstants.DEADBAND)
+          .scaleTranslation(0.8)
+          .allianceRelativeControl(true)
+          .aim(FieldConstants.BLUE_HUB)
+          .aimWhile(m_driverController.y());
+
   SwerveInputStream driveAngularVelocity =
       SwerveInputStream.of(
               drivebase.getSwerveDrive(),
-              () -> -m_driverController.getLeftY() * DriveConstants.MAX_SPEED,
-              () -> -m_driverController.getLeftX() * DriveConstants.MAX_SPEED)
-          .withControllerRotationAxis(m_driverController::getRightX)
-          .deadband(DriveConstants.DEADBAND)
+              () -> -m_driverController.getLeftY() * Constants.DriveConstants.MAX_SPEED,
+              () -> -m_driverController.getLeftX() * Constants.DriveConstants.MAX_SPEED)
+          .withControllerRotationAxis(
+              () ->
+                  m_driverController.getRightX()
+                      * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
+          .deadband(OperatorConstants.DEADBAND)
           .scaleTranslation(0.8)
           .allianceRelativeControl(true);
 
@@ -99,8 +114,6 @@ public class RobotContainer {
                       * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
           .headingWhile(true);
 
-  // Clone's the angular velocity input stream and converts it to a robotRelative input stream.
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -118,12 +131,7 @@ public class RobotContainer {
     m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
     // m_fuel.setDefaultCommand(m_fuel.stopCommand());
 
-    DriverStation.silenceJoystickConnectionWarning(true);
-
-    DriverStation.silenceJoystickConnectionWarning(true);
-
     SmartDashboard.putData("Field", field);
-
     PathPlannerLogging.setLogCurrentPoseCallback(
         (pose) -> {
           field.setRobotPose(pose);
@@ -139,6 +147,14 @@ public class RobotContainer {
           field.getObject("path").setPoses(poses);
         });
   }
+
+  public Command getAutonomousCommand() {
+    return null;
+    // Configure to run auto
+
+  }
+
+  public void updateVisionSim() {}
 
   // path.preventFlipping = true;
   public Command Intake() {
@@ -205,15 +221,57 @@ public class RobotContainer {
                 .withTimeout(FuelConstants.SpinUpTime)
                 .andThen(Launch())
                 .finallyDo(() -> Stop()));
-    m_driverController.rightTrigger().whileTrue(Eject());
+    m_driverController.a().whileTrue(Eject());
+    if (RobotBase.isSimulation()) {
+      drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
+    }
+    if (IntakeShooter.FuelCounter >= 10) {
+      Stop();
+    } else {
+      m_driverController.leftBumper().whileTrue(Intake());
+    }
+
+    m_driverController
+        .rightBumper()
+        .whileTrue(
+            SpinUp()
+                .withTimeout(FuelConstants.SpinUpTime)
+                .andThen(Launch())
+                .finallyDo(() -> Stop()));
+    m_driverController.a().whileTrue(Eject());
+
+    if (RobotBase.isSimulation()) {
+      drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
+    }
+    if (IntakeShooter.FuelCounter >= 10) {
+      Stop();
+    } else {
+      m_driverController.leftBumper().whileTrue(Intake());
+    }
+
+    m_driverController
+        .rightBumper()
+        .whileTrue(
+            SpinUp()
+                .withTimeout(FuelConstants.SpinUpTime)
+                .andThen(Launch())
+                .finallyDo(() -> Stop()));
+    m_driverController.a().whileTrue(Eject());
+
+    if (RobotBase.isSimulation()) {
+      drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
+    }
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed, cancelling on
     // release
+    // new Trigger(m_exampleSubsystem::exampleCondition)
+    //     .onTrue(new ExampleCommand(m_exampleSubsystem));
 
+    // sets default commands and other commands depending on mode
     Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
-    Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+    Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(aimWhileDriving);
     Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
     Command driveFieldOrientedDirectAngleKeyboard =
         drivebase.driveFieldOriented(driveDirectAngleKeyboard);
@@ -224,13 +282,6 @@ public class RobotContainer {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Change this one
     } else {
       // sets default commands and other commands depending on mode
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-    }
-
-    if (RobotBase.isSimulation()) {
-      drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Change this one
-    } else {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     }
 
@@ -257,29 +308,35 @@ public class RobotContainer {
     if (DriverStation.isTest()) {
       drivebase.setDefaultCommand(
           driveFieldOrientedAnglularVelocity); // Overrides drive command above!
-      m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      m_driverController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      m_driverController.back().whileTrue(drivebase.centerModulesCommand());
-      m_driverController.leftBumper().onTrue(Commands.none());
-      m_driverController.rightBumper().onTrue(Commands.none());
-    } else {
-      m_driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      m_driverController.start().whileTrue(Commands.none());
-      m_driverController.back().whileTrue(Commands.none());
-      m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      m_driverController.rightBumper().onTrue(Commands.none());
+
+      if (DriverStation.isTest()) {
+        drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+
+        m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+        m_driverController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+        m_driverController.back().whileTrue(drivebase.centerModulesCommand());
+        m_driverController.leftBumper().onTrue(Commands.none());
+        m_driverController.rightBumper().onTrue(Commands.none());
+      } else {
+        m_driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+        m_driverController.start().whileTrue(Commands.none());
+        m_driverController.back().whileTrue(Commands.none());
+        m_driverController
+            .leftBumper()
+            .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+        m_driverController.rightBumper().onTrue(Commands.none());
+      }
+      autoChooser = AutoBuilder.buildAutoChooser();
+      // AutoBuilder.buildAutoChooserWithOptionsModifier(
+      //     (stream) ->
+      //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) :
+      // stream);
+      SmartDashboard.putData("Auto Chooser", autoChooser);
     }
-    autoChooser = AutoBuilder.buildAutoChooser();
-    // AutoBuilder.buildAutoChooserWithOptionsModifier(
-    //     (stream) ->
-    //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) :
-    // stream);
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class. @.return the command
+     * to run in autonomous
+     */
   }
 }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
