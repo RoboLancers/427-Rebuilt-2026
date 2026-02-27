@@ -260,6 +260,11 @@ public void updateLEDs(){
     LEDSubsystem.isIntaking = false;
   }
 
+  if (m_IntakeShooter.getVelocity().in(RPM) < 0) {
+    LEDSubsystem.isEjecting = true;
+  } else {
+    LEDSubsystem.isEjecting = false;
+  }
 
 }
 }

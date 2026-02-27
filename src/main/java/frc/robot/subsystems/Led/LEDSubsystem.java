@@ -19,7 +19,7 @@ public class LEDSubsystem extends SubsystemBase {
 
   // Declares conditions which will be changed in commands
   public static boolean isIntaking = false;
-  public static boolean isShooting = false;
+  public static boolean isEjecting = false;
 
   // Camera isConnected
   public LEDSubsystem() {
@@ -39,8 +39,8 @@ public class LEDSubsystem extends SubsystemBase {
     LEDPattern decidedPattern = LEDPatterns.defaultPattern;
 
     // note, the higher up the condition, the lower the priority
-    if (isIntaking) decidedPattern = LEDPatterns.oliveGreenScroll;
-    //if(isShooting) decidedPattern = LEDPatterns.bluePinkYellowWhiteScroll;
+    if (isIntaking) decidedPattern = LEDPatterns.yellow;
+    if(isEjecting) decidedPattern = LEDPatterns.red;
 
     decidedPattern.applyTo(m_buffer);
     // Set the LEDs

@@ -13,14 +13,15 @@ import java.util.Map;
 
 public class LEDPatterns {
 
-  public static LEDPattern m_rainbow = LEDPattern.rainbow(255, 128);
+
   public static LEDPattern defaultPattern = LEDPattern.solid(Color.kBlack);
 
-  public static LEDPattern oliveGreenGradient =
-      LEDPattern.gradient(LEDPattern.GradientType.kContinuous, Color.kGreen, Color.kDarkOliveGreen);
-  public static LEDPattern oliveGreenBreathe = oliveGreenGradient.breathe(Seconds.of(2));
-  public static LEDPattern oliveGreenScroll =
-      oliveGreenGradient.scrollAtRelativeSpeed(Percent.per(Seconds).of(25));
+    public static LEDPattern red = LEDPattern.solid(Color.kRed);
+    public static LEDPattern orange = LEDPattern.solid(Color.kOrange);
+    public static LEDPattern yellow = LEDPattern.solid(Color.kYellow);
+    public static LEDPattern green = LEDPattern.solid(Color.kGreen);
+    public static LEDPattern blue = LEDPattern.solid(Color.kBlue);
+    public static LEDPattern pink = LEDPattern.solid(Color.kPink);
 
   public static LEDPattern bluePinkYellowWhiteGradient =
       LEDPattern.gradient(
