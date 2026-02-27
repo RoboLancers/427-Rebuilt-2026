@@ -182,49 +182,12 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  public Command Intake() {
-    return m_IntakeShooter
-        .set(FuelConstants.IntakingIntake)
-        .alongWith(m_feeder.set(FuelConstants.IntakingFeeder));
-  }
-
-  public Command Eject() {
-    return m_IntakeShooter
-        .set(FuelConstants.EjectingIntake)
-        .alongWith(m_feeder.set(FuelConstants.EjectingFeeder));
-  }
-
-  public Command Launch() {
-    return m_IntakeShooter
-        .set(FuelConstants.LaunchingIntake)
-        .alongWith(m_feeder.set(FuelConstants.LaunchingFeeder));
-  }
-
-  public Command Stop() {
-    return m_IntakeShooter
-        .set(FuelConstants.StoppingIntake)
-        .alongWith(m_feeder.set(FuelConstants.StoppingFeeder));
-  }
-
-  public Command SpinUp() {
-    return m_IntakeShooter.set(FuelConstants.SpinupIntake);
-  }
-
   private void configureBindings() {
     if (IntakeShooter.FuelCounter >= 10) {
       Stop();
     } else {
       m_driverController.leftBumper().whileTrue(Intake());
     }
-
-    m_driverController
-        .rightBumper()
-        .whileTrue(
-            SpinUp()
-                .withTimeout(FuelConstants.SpinUpTime)
-                .andThen(Launch())
-                .finallyDo(() -> Stop()));
-    m_driverController.a().whileTrue(Eject());
 
     if (RobotBase.isSimulation()) {
       drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
@@ -294,31 +257,24 @@ public class RobotContainer {
     if (DriverStation.isTest()) {
       drivebase.setDefaultCommand(
           driveFieldOrientedAnglularVelocity); // Overrides drive command above!
-
-      if (DriverStation.isTest()) {
-        drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-
-        m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-        m_driverController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-        m_driverController.back().whileTrue(drivebase.centerModulesCommand());
-        m_driverController.leftBumper().onTrue(Commands.none());
-        m_driverController.rightBumper().onTrue(Commands.none());
-      } else {
-        m_driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-        m_driverController.start().whileTrue(Commands.none());
-        m_driverController.back().whileTrue(Commands.none());
-        m_driverController
-            .leftTrigger()
-            .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-        m_driverController.rightBumper().onTrue(Commands.none());
-      }
-      autoChooser = AutoBuilder.buildAutoChooser();
-      // AutoBuilder.buildAutoChooserWithOptionsModifier(
-      //     (stream) ->
-      //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) :
-      // stream);
-      SmartDashboard.putData("Auto Chooser", autoChooser);
+      m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      m_driverController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      m_driverController.back().whileTrue(drivebase.centerModulesCommand());
+      m_driverController.leftBumper().onTrue(Commands.none());
+      m_driverController.rightBumper().onTrue(Commands.none());
+    } else {
+      m_driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      m_driverController.start().whileTrue(Commands.none());
+      m_driverController.back().whileTrue(Commands.none());
+      m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      m_driverController.rightBumper().onTrue(Commands.none());
     }
+    autoChooser = AutoBuilder.buildAutoChooser();
+    // AutoBuilder.buildAutoChooserWithOptionsModifier(
+    //     (stream) ->
+    //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) :
+    // stream);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 }
 
