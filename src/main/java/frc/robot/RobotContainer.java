@@ -152,7 +152,6 @@ public class RobotContainer {
 
     configureBindings();
 
-    autoChooser.setDefaultOption("Do Nothing", null);
 
     m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
     m_feeder.setDefaultCommand(m_feeder.set(0));
@@ -322,6 +321,7 @@ public class RobotContainer {
       }
     }
     autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser.setDefaultOption("Do Nothing", null);
     // AutoBuilder.buildAutoChooserWithOptionsModifier(
     //     (stream) ->
     //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) :
