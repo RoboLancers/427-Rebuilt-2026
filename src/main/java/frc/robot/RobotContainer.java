@@ -243,13 +243,13 @@ public class RobotContainer {
         .x()
         .whileTrue(
             m_ClimbSubsystem
-                .setAngleAndStop(Degrees.of(ClimbConstants.A_Angle))
+                .setDeployAngle()
                 .andThen(m_ClimbSubsystem.set(ClimbConstants.X_DutyCycle)));
     m_driverController
         .y()
         .whileTrue(
             m_ClimbSubsystem
-                .setAngleAndStop(Degrees.of(ClimbConstants.B_Angle))
+                .setClimbAngle()
                 .andThen(m_ClimbSubsystem.set(ClimbConstants.Y_DutyCycle)));
     if (IsSwerve == false) {
       driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController));
