@@ -54,11 +54,7 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
-<<<<<<< The-Climber-
   // The robot's subsystems and commands are defined here...
-=======
-  private SendableChooser<Command> autoChooser = new SendableChooser<>();
->>>>>>> develop
 
   private final Field2d field = new Field2d();
 
@@ -81,21 +77,12 @@ public class RobotContainer {
   SwerveInputStream driveAngularVelocity =
       SwerveInputStream.of(
               drivebase.getSwerveDrive(),
-<<<<<<< The-Climber-
               () -> -m_driverController.getLeftY() * DriveConstants.MAX_SPEED,
               () -> -m_driverController.getLeftX() * DriveConstants.MAX_SPEED)
           .withControllerRotationAxis(
               () -> m_driverController.getRightX() * DriveConstants.MAX_ANGULAR_SPEED)
           .deadband(DriveConstants.DEADBAND)
-=======
-              () -> -m_driverController.getLeftY() * Constants.DriveConstants.MAX_SPEED,
-              () -> -m_driverController.getLeftX() * Constants.DriveConstants.MAX_SPEED)
-          .withControllerRotationAxis(
-              () ->
-                  m_driverController.getRightX()
-                      * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
-          .deadband(OperatorConstants.DEADBAND)
->>>>>>> develop
+
           .scaleTranslation(0.8)
           .allianceRelativeControl(true);
 
@@ -150,11 +137,9 @@ public class RobotContainer {
     m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
     // m_fuel.setDefaultCommand(m_fuel.stopCommand());
 
-<<<<<<< The-Climber-
     DriverStation.silenceJoystickConnectionWarning(true);
 
-=======
->>>>>>> develop
+
     SmartDashboard.putData("Field", field);
     PathPlannerLogging.setLogCurrentPoseCallback(
         (pose) -> {
@@ -346,15 +331,6 @@ public class RobotContainer {
         m_driverController.leftBumper().onTrue(Commands.none());
         m_driverController.rightBumper().onTrue(Commands.none());
       } else {
-<<<<<<< The-Climber-
-        // m_driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-        m_driverController.start().whileTrue(Commands.none());
-        m_driverController.back().whileTrue(Commands.none());
-        m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-        m_driverController.rightBumper().onTrue(Commands.none());
-      }
-      autoChooser = AutoBuilder.buildAutoChooser("Center");
-=======
         m_driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
         m_driverController.start().whileTrue(Commands.none());
         m_driverController.back().whileTrue(Commands.none());
@@ -364,7 +340,6 @@ public class RobotContainer {
         m_driverController.rightBumper().onTrue(Commands.none());
       }
       autoChooser = AutoBuilder.buildAutoChooser();
->>>>>>> develop
       // AutoBuilder.buildAutoChooserWithOptionsModifier(
       //     (stream) ->
       //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) :
@@ -372,34 +347,9 @@ public class RobotContainer {
       SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
-<<<<<<< The-Climber-
-    // Schedule `setAngle` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.a().onTrue(m_ClimbSubsystem.setDeployAngle());
-    m_driverController.b().onTrue(m_ClimbSubsystem.setClimbAngle());
-    // Schedule `set` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController
-        .x()
-        .whileTrue(
-            m_ClimbSubsystem
-                .setAngleAndStop(Degrees.of(ClimbConstants.A_Angle))
-                .andThen(m_ClimbSubsystem.set(ClimbConstants.X_DutyCycle)));
-    m_driverController
-        .y()
-        .whileTrue(
-            m_ClimbSubsystem
-                .setAngleAndStop(Degrees.of(ClimbConstants.B_Angle))
-                .andThen(m_ClimbSubsystem.set(ClimbConstants.Y_DutyCycle)));
-  }
-
-  public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
-=======
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class. @.return the command
      * to run in autonomous
      */
->>>>>>> develop
   }
 }
