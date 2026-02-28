@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Feeder.Feeder;
@@ -48,20 +49,34 @@ public class RobotContainer {
 
   private SendableChooser<Command> autoChooser;
 
-  // The robot's subsystems and commands are defined here...
-
   private final Field2d field = new Field2d();
 
   private final SwerveSubsystem drivebase =
       new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
 
+  SwerveInputStream aimWhileDriving =
+      SwerveInputStream.of(
+              drivebase.getSwerveDrive(),
+              () -> -m_driverController.getLeftY() * Constants.DriveConstants.MAX_SPEED,
+              () -> -m_driverController.getLeftX() * Constants.DriveConstants.MAX_SPEED)
+          .withControllerRotationAxis(
+              () -> m_driverController.getRightX() * Constants.DriveConstants.MAX_ANGULAR_SPEED)
+          .deadband(OperatorConstants.DEADBAND)
+          .scaleTranslation(0.8)
+          .allianceRelativeControl(true)
+          .aim(FieldConstants.BLUE_HUB)
+          .aimWhile(m_driverController.y());
+
   SwerveInputStream driveAngularVelocity =
       SwerveInputStream.of(
               drivebase.getSwerveDrive(),
-              () -> -m_driverController.getLeftY() * DriveConstants.MAX_SPEED,
-              () -> -m_driverController.getLeftX() * DriveConstants.MAX_SPEED)
-          .withControllerRotationAxis(m_driverController::getRightX)
-          .deadband(DriveConstants.DEADBAND)
+              () -> -m_driverController.getLeftY() * Constants.DriveConstants.MAX_SPEED,
+              () -> -m_driverController.getLeftX() * Constants.DriveConstants.MAX_SPEED)
+          .withControllerRotationAxis(
+              () ->
+                  m_driverController.getRightX()
+                      * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
+          .deadband(OperatorConstants.DEADBAND)
           .scaleTranslation(0.8)
           .allianceRelativeControl(true);
 
@@ -99,8 +114,6 @@ public class RobotContainer {
                       * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
           .headingWhile(true);
 
-  // Clone's the angular velocity input stream and converts it to a robotRelative input stream.
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -121,7 +134,6 @@ public class RobotContainer {
     DriverStation.silenceJoystickConnectionWarning(true);
 
     SmartDashboard.putData("Field", field);
-
     PathPlannerLogging.setLogCurrentPoseCallback(
         (pose) -> {
           field.setRobotPose(pose);
@@ -137,6 +149,14 @@ public class RobotContainer {
           field.getObject("path").setPoses(poses);
         });
   }
+
+  public Command getAutonomousCommand() {
+    return null;
+    // Configure to run auto
+
+  }
+
+  public void updateVisionSim() {}
 
   // path.preventFlipping = true;
   public Command Intake() {
@@ -200,13 +220,20 @@ public class RobotContainer {
       drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
     }
 
+    if (RobotBase.isSimulation()) {
+      drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
+    }
+
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed, cancelling on
     // release
+    // new Trigger(m_exampleSubsystem::exampleCondition)
+    //     .onTrue(new ExampleCommand(m_exampleSubsystem));
 
+    // sets default commands and other commands depending on mode
     Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
-    Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+    Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(aimWhileDriving);
     Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
     Command driveFieldOrientedDirectAngleKeyboard =
         drivebase.driveFieldOriented(driveDirectAngleKeyboard);
@@ -217,13 +244,6 @@ public class RobotContainer {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Change this one
     } else {
       // sets default commands and other commands depending on mode
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-    }
-
-    if (RobotBase.isSimulation()) {
-      drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Change this one
-    } else {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     }
 
@@ -281,9 +301,3 @@ public class RobotContainer {
     return autoChooser.getSelected();
   }
 }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
