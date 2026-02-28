@@ -1,6 +1,16 @@
 package frc.robot;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
 
@@ -43,18 +53,96 @@ public final class Constants {
     public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;
   }
 
+  public static class ClimbConstants {
+    // ClimbSubsystem
+    public static final double kP = 0.4;
+    public static final double kI = 0;
+    public static final double kD = 0;
+
+    public static final int MaxVelocity = 90;
+    public static final int MaxAcceleration = 45;
+
+    public static final double ks = 0;
+    public static final double kg = 0.015;
+    public static final double kv = 12.19;
+    public static final double ka = 0.23;
+
+    public static final int GearRatio = 100;
+
+    public static final boolean MotorInverted = false;
+
+    public static final int StatorCurrentLimit = 40;
+    public static final double LoopRampRate = 0.25;
+
+    public static final int SparkMaxDeviceID = 16;
+
+    public static final int NumMotors = 1;
+    // NumMotors and SoftLowerLimit will have to be adjusted based on the actual climb arm's freedom
+    // of movement.
+    public static final int SoftLowerLimit = -20;
+    public static final int SoftUpperLimit = 110;
+    public static final int HardMin = -20;
+    public static final int HardMax = 110;
+    public static final int StartingPosition = 90;
+
+    public static final int Length = 3;
+    public static final int Mass = 3;
+
+    public static final int ToleranceAngle = 5;
+    public static final int DeployAngle = 0;
+    public static final int ClimbAngle = 110;
+
+    public static final int MaximumVoltage = 12;
+    public static final int StepVoltage = 2;
+    public static final int Duration = 4;
+
+    // RobotContainer
+    public static final int DefaultAngle = 90;
+    public static final int A_Angle = 20;
+    public static final int B_Angle = -20;
+    public static final double X_DutyCycle = 0.3;
+    public static final double Y_DutyCycle = -0.3;
+  }
+
+
   public static class OperatorConstants {
+
+    // Joystick Deadbband
 
     // Joystick Deadbband
 
     public static final int kDriverControllerPort = 0; 
     public static final String drivebase = "drivebase";
+    public static final double DEADBAND = 0.3;
+    public static final double LEFT_Y_DEADBAND = 0.1;
+    public static final double RIGHT_X_DEADBAND = 0.1;
+    public static final double TURN_CONSTANT = 6;
     // this used to be 6 if turning speed is stupid make it six
 
     public static final int DRIVE_SCALING = 7;
     public static final int ROTATION_SCALING = 6;
 
     public static final boolean IsSwerve = false;
+  }
+
+  public static class VisionConstants {
+    public static final boolean isVision = true;
+
+    public static final String kCameraName = "YOUR CAMERA NAME";
+    // Cam mounted facing forward, half a meter forward of center, half a meter up from cen
+
+    public static final Transform3d kRobotToCam =
+        new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0, 0, 0));
+
+    // The layout of the AprilTags on the field
+    public static final AprilTagFieldLayout kTagLayout =
+        AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
+    ;
+
+    // The standard deviations of our vision estimated poses, which affect correction rate
+    // (Fake values. Experiment and determine estimation noise on an actual robot.)
+    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
+    public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
   }
 
   public static class IntakeConstants {
@@ -65,7 +153,7 @@ public final class Constants {
 
     public static final int Intake_RPM = 60;
     public static final int FlyWheel_Diameter = 4;
-    public static final double FlyWheel_Mass = 1;
+    public static final double FlyWheel_Mass = 2;
     public static final int SoftLimit = 5000;
 
     public static final double KP = 0;
@@ -154,5 +242,89 @@ public final class Constants {
     public static final int StoppingIntake = 0;
 
     public static final double SpinupIntake = 0.4;
+  }
+
+  public static class CameraConstants {
+    public static final Rotation3d FRONT_LEFT_ROTATION =
+        new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30));
+    public static final Translation3d FRONT_LEFT_TRANSLATION =
+        new Translation3d(
+            Units.inchesToMeters(11), Units.inchesToMeters(7.25), Units.inchesToMeters(9));
+
+    public static final Rotation3d BACK_LEFT_ROTATION =
+        new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(150));
+    public static final Translation3d BACK_LEFT_TRANSLATION =
+        new Translation3d(
+            Units.inchesToMeters(-11), Units.inchesToMeters(7.25), Units.inchesToMeters(9));
+
+    public static final Rotation3d FRONT_RIGHT_ROTATION =
+        new Rotation3d(0, Units.degreesToRadians(-24.094), Math.toRadians(-30));
+    public static final Translation3d FRONT_RIGHT_TRANSLATION =
+        new Translation3d(
+            Units.inchesToMeters(11), Units.inchesToMeters(-7.25), Units.inchesToMeters(9));
+
+    public static final Rotation3d BACK_RIGHT_ROTATION =
+        new Rotation3d(0, Units.degreesToRadians(-24.094), Math.toRadians(-150));
+    public static final Translation3d BACK_RIGHT_TRANSLATION =
+        new Translation3d(
+            Units.inchesToMeters(-11), Units.inchesToMeters(-7.25), Units.inchesToMeters(9));
+  }
+
+  public static class FieldConstants {
+
+    public static final Pose2d BLUE_HUB =
+        new Pose2d(
+            Units.inchesToMeters(182.11),
+            Units.inchesToMeters(158.84),
+            Rotation2d.fromDegrees(180));
+    public static final double BLUE_HUB_X = BLUE_HUB.getX();
+    public static final double BLUE_HUB_Y = BLUE_HUB.getY();
+
+    public static final Pose2d BLUE_TOWER =
+        new Pose2d(
+            Units.inchesToMeters(27.00), Units.inchesToMeters(147.47), Rotation2d.fromDegrees(180));
+    public static final double BLUE_TOWER_X = BLUE_TOWER.getX();
+    public static final double BLUE_TOWER_Y = BLUE_TOWER.getY();
+
+    public static final Pose2d BLUE_DEPOT =
+        new Pose2d(
+            Units.inchesToMeters(13.5), Units.inchesToMeters(234.78), Rotation2d.fromDegrees(180));
+    public static final double BLUE_DEPOT_X = BLUE_DEPOT.getX();
+    public static final double BLUE_DEPOT_Y = BLUE_DEPOT.getY();
+
+    public static final Pose2d BLUE_CHUTE =
+        new Pose2d(0, Units.inchesToMeters(26.22), Rotation2d.fromDegrees(180));
+    public static final double BLUE_CHUTE_X = BLUE_CHUTE.getX();
+    public static final double BLUE_CHUTE_Y = BLUE_CHUTE.getY();
+
+    public static final Pose2d RED_HUB =
+        new Pose2d(
+            Units.inchesToMeters(469.11),
+            Units.inchesToMeters(158.84),
+            Rotation2d.fromDegrees(180));
+    public static final double RED_HUB_X = RED_HUB.getX();
+    public static final double RED_HUB_Y = RED_HUB.getY();
+
+    public static final Pose2d RED_TOWER =
+        new Pose2d(
+            Units.inchesToMeters(635.72),
+            Units.inchesToMeters(170.22),
+            Rotation2d.fromDegrees(180));
+    public static final double RED_TOWER_X = RED_TOWER.getX();
+    public static final double RED_TOWER_Y = RED_TOWER.getY();
+
+    public static final Pose2d RED_DEPOT =
+        new Pose2d(
+            Units.inchesToMeters(637.72), Units.inchesToMeters(82.84), Rotation2d.fromDegrees(180));
+    public static final double RED_DEPOT_X = RED_DEPOT.getX();
+    public static final double RED_DEPOT_Y = RED_DEPOT.getY();
+
+    public static final Pose2d RED_CHUTE =
+        new Pose2d(
+            Units.inchesToMeters(651.22),
+            Units.inchesToMeters(291.47),
+            Rotation2d.fromDegrees(180));
+    public static final double RED_CHUTE_X = RED_CHUTE.getX();
+    public static final double RED_CHUTE_Y = RED_CHUTE.getY();
   }
 }
