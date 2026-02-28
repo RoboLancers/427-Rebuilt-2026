@@ -239,18 +239,21 @@ public class RobotContainer {
                 .finallyDo(() -> Stop()));
     m_driverController.rightTrigger().whileTrue(Eject());
 
-    m_driverController
-        .x()
-        .whileTrue(
-            m_ClimbSubsystem
-                .setDeployAngle()
-                .andThen(m_ClimbSubsystem.set(ClimbConstants.X_DutyCycle)));
-    m_driverController
-        .y()
-        .whileTrue(
-            m_ClimbSubsystem
-                .setClimbAngle()
-                .andThen(m_ClimbSubsystem.set(ClimbConstants.Y_DutyCycle)));
+    // m_driverController
+    //     .x()
+    //     .whileTrue(
+    //         m_ClimbSubsystem
+    //             .setDeployAngle()
+    //             .andThen(m_ClimbSubsystem.set(ClimbConstants.X_DutyCycle)));
+    // m_driverController
+    //     .y()
+    //     .whileTrue(
+    //         m_ClimbSubsystem
+    //             .setClimbAngle()
+    //             .andThen(m_ClimbSubsystem.set(ClimbConstants.Y_DutyCycle)));
+
+    m_driverController.x().whileTrue(m_ClimbSubsystem.set(0.9));
+    m_driverController.y().whileTrue(m_ClimbSubsystem.set(-0.9));
     if (IsSwerve == false) {
       driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController));
     }
