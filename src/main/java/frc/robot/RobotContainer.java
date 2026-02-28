@@ -82,7 +82,6 @@ public class RobotContainer {
           .withControllerRotationAxis(
               () -> m_driverController.getRightX() * DriveConstants.MAX_ANGULAR_SPEED)
           .deadband(DriveConstants.DEADBAND)
-
           .scaleTranslation(0.8)
           .allianceRelativeControl(true);
 
@@ -138,7 +137,6 @@ public class RobotContainer {
     // m_fuel.setDefaultCommand(m_fuel.stopCommand());
 
     DriverStation.silenceJoystickConnectionWarning(true);
-
 
     SmartDashboard.putData("Field", field);
     PathPlannerLogging.setLogCurrentPoseCallback(
