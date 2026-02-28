@@ -1,5 +1,7 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Degrees;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -20,10 +22,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ClimbConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Climb.ClimbSubsystem;
 import frc.robot.subsystems.Feeder.Feeder;
 import frc.robot.subsystems.IntakeShooter.IntakeShooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -38,10 +42,11 @@ import swervelib.SwerveInputStream;
  */
 @Logged
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
   private final IntakeShooter m_IntakeShooter = new IntakeShooter();
   private final Feeder m_feeder = new Feeder();
-  // private final FuelSubsystem m_fuel = new FuelSubsystem();
+  private final ClimbSubsystem m_ClimbSubsystem = new ClimbSubsystem();
+
+  boolean isCompetition = true;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -70,13 +75,11 @@ public class RobotContainer {
   SwerveInputStream driveAngularVelocity =
       SwerveInputStream.of(
               drivebase.getSwerveDrive(),
-              () -> -m_driverController.getLeftY() * Constants.DriveConstants.MAX_SPEED,
-              () -> -m_driverController.getLeftX() * Constants.DriveConstants.MAX_SPEED)
+              () -> -m_driverController.getLeftY() * DriveConstants.MAX_SPEED,
+              () -> -m_driverController.getLeftX() * DriveConstants.MAX_SPEED)
           .withControllerRotationAxis(
-              () ->
-                  m_driverController.getRightX()
-                      * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
-          .deadband(OperatorConstants.DEADBAND)
+              () -> m_driverController.getRightX() * DriveConstants.MAX_ANGULAR_SPEED)
+          .deadband(DriveConstants.DEADBAND)
           .scaleTranslation(0.8)
           .allianceRelativeControl(true);
 
@@ -148,6 +151,10 @@ public class RobotContainer {
         (poses) -> {
           field.getObject("path").setPoses(poses);
         });
+
+    // Set the default command to force the arm to go to 0.
+    m_ClimbSubsystem.setDefaultCommand(
+        m_ClimbSubsystem.setAngle(Degrees.of(ClimbConstants.DefaultAngle)));
   }
 
   public void updateVisionSim() {}
@@ -253,13 +260,13 @@ public class RobotContainer {
           .start()
           .onTrue(
               Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
-      m_driverController.a().whileTrue(drivebase.sysIdDriveMotorCommand());
-      m_driverController
-          .b()
-          .whileTrue(
-              Commands.runEnd(
-                  () -> driveDirectAngle.driveToPoseEnabled(true), // And this one
-                  () -> driveDirectAngle.driveToPoseEnabled(false))); // And this one
+      // m_driverController.a().whileTrue(drivebase.sysIdDriveMotorCommand());
+      // m_driverController
+      //     .b()
+      //     .whileTrue(
+      //         Commands.runEnd(
+      //             () -> driveDirectAngle.driveToPoseEnabled(true), // And this one
+      //             () -> driveDirectAngle.driveToPoseEnabled(false))); // And this one
     }
     if (DriverStation.isTest()) {
       drivebase.setDefaultCommand(
