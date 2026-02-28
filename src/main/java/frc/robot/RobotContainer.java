@@ -48,13 +48,11 @@ public class RobotContainer {
 
   boolean isCompetition = true;
 
-  private SendableChooser<Command> autoChooser = new SendableChooser<>();
-
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
-  // The robot's subsystems and commands are defined here...
+  private SendableChooser<Command> autoChooser;
 
   private final Field2d field = new Field2d();
 
@@ -121,7 +119,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
     NamedCommands.registerCommand("SHOOT", timedCommand(Launch(), 1));
     NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 1));
     NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 1));
@@ -157,12 +155,6 @@ public class RobotContainer {
     // Set the default command to force the arm to go to 0.
     m_ClimbSubsystem.setDefaultCommand(
         m_ClimbSubsystem.setAngle(Degrees.of(ClimbConstants.DefaultAngle)));
-  }
-
-  public Command getAutonomousCommand() {
-    return null;
-    // Configure to run auto
-
   }
 
   public void updateVisionSim() {}
@@ -216,32 +208,6 @@ public class RobotContainer {
       m_driverController.leftBumper().whileTrue(Intake());
     }
 
-    if (RobotBase.isSimulation()) {
-      drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
-    }
-    if (IntakeShooter.FuelCounter >= 10) {
-      Stop();
-    } else {
-      m_driverController.leftBumper().whileTrue(Intake());
-    }
-
-    m_driverController
-        .rightBumper()
-        .whileTrue(
-            SpinUp()
-                .withTimeout(FuelConstants.SpinUpTime)
-                .andThen(Launch())
-                .finallyDo(() -> Stop()));
-    m_driverController.a().whileTrue(Eject());
-    if (RobotBase.isSimulation()) {
-      drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
-    }
-    if (IntakeShooter.FuelCounter >= 10) {
-      Stop();
-    } else {
-      m_driverController.leftBumper().whileTrue(Intake());
-    }
-
     m_driverController
         .rightBumper()
         .whileTrue(
@@ -254,20 +220,6 @@ public class RobotContainer {
     if (RobotBase.isSimulation()) {
       drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
     }
-    if (IntakeShooter.FuelCounter >= 10) {
-      Stop();
-    } else {
-      m_driverController.leftBumper().whileTrue(Intake());
-    }
-
-    m_driverController
-        .rightBumper()
-        .whileTrue(
-            SpinUp()
-                .withTimeout(FuelConstants.SpinUpTime)
-                .andThen(Launch())
-                .finallyDo(() -> Stop()));
-    m_driverController.a().whileTrue(Eject());
 
     if (RobotBase.isSimulation()) {
       drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
@@ -337,17 +289,16 @@ public class RobotContainer {
             .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
         m_driverController.rightBumper().onTrue(Commands.none());
       }
-      autoChooser = AutoBuilder.buildAutoChooser();
-      // AutoBuilder.buildAutoChooserWithOptionsModifier(
-      //     (stream) ->
-      //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) :
-      // stream);
-      SmartDashboard.putData("Auto Chooser", autoChooser);
     }
+    autoChooser = AutoBuilder.buildAutoChooser();
+    // AutoBuilder.buildAutoChooserWithOptionsModifier(
+    //     (stream) ->
+    //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) :
+    // stream);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+  }
 
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class. @.return the command
-     * to run in autonomous
-     */
+  public Command getAutonomousCommand() {
+    return autoChooser.getSelected();
   }
 }
