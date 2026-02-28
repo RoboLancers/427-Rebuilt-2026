@@ -150,12 +150,6 @@ public class RobotContainer {
         });
   }
 
-  public Command getAutonomousCommand() {
-    return null;
-    // Configure to run auto
-
-  }
-
   public void updateVisionSim() {}
 
   // path.preventFlipping = true;
