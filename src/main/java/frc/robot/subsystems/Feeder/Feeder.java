@@ -14,9 +14,11 @@ import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FeederConstants;
+import frc.robot.Constants.IntakeConstants;
 import yams.gearing.GearBox;
 import yams.gearing.MechanismGearing;
 import yams.mechanisms.config.FlyWheelConfig;
@@ -30,13 +32,7 @@ import yams.motorcontrollers.local.SparkWrapper;
 import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 public class Feeder extends SubsystemBase {
-
-  SmartMotorControllerTelemetryConfig motorTelemetryConfig =
-      new SmartMotorControllerTelemetryConfig()
-          .withMechanismPosition()
-          .withRotorPosition()
-          .withMechanismLowerLimit()
-          .withMechanismUpperLimit();
+  public static double FeedSpeed;
 
   // SmartMotorControllerConfig motorConfig =
   //     new SmartMotorControllerConfig(this)
@@ -53,25 +49,47 @@ public class Feeder extends SubsystemBase {
   //         .withIdleMode(MotorMode.BRAKE)
   //         .withTelemetry("FeederMotor", motorTelemetryConfig);
 
+  // private SmartMotorControllerConfig smcConfig =
+  //     new SmartMotorControllerConfig(this)
+  //         .withControlMode(ControlMode.CLOSED_LOOP)
+  //         .withClosedLoopController(FeederConstants.kP, FeederConstants.kI, FeederConstants.kD)
+  //         .withSimClosedLoopController(FeederConstants.kP, FeederConstants.kI, FeederConstants.kD)
+  //         .withFeedforward(
+  //             new SimpleMotorFeedforward(
+  //                 FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
+  //         .withSimFeedforward(
+  //             new SimpleMotorFeedforward(
+  //                 FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
+  //         .withTelemetry("FeederMotor", TelemetryVerbosity.HIGH)
+  //         .withGearing(FeederConstants.reductionStages)
+  //         .withMotorInverted(false)
+  //         .withIdleMode(MotorMode.BRAKE)
+  //         .withStatorCurrentLimit(Amps.of(FeederConstants.StatorLimit))
+  //         .withClosedLoopRampRate(Seconds.of(FeederConstants.ClosedLoopRampRate))
+  //         .withOpenLoopRampRate(Seconds.of(FeederConstants.OpenLoopRampRate));
   private SmartMotorControllerConfig smcConfig =
       new SmartMotorControllerConfig(this)
           .withControlMode(ControlMode.CLOSED_LOOP)
+          // Feedback Constants (PID Constants)
           .withClosedLoopController(FeederConstants.kP, FeederConstants.kI, FeederConstants.kD)
           .withSimClosedLoopController(FeederConstants.kP, FeederConstants.kI, FeederConstants.kD)
+          // FeedForward Constants
           .withFeedforward(
               new SimpleMotorFeedforward(
                   FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
           .withSimFeedforward(
               new SimpleMotorFeedforward(
                   FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
+          // Telemtry name and verbosity level
           .withTelemetry("FeederMotor", TelemetryVerbosity.HIGH)
+          // Gearing from the motor rotor to final shaft
           .withGearing(FeederConstants.reductionStages)
+          // Motor Properties to prevent over currenting
           .withMotorInverted(false)
           .withIdleMode(MotorMode.BRAKE)
           .withStatorCurrentLimit(Amps.of(FeederConstants.StatorLimit))
           .withClosedLoopRampRate(Seconds.of(FeederConstants.ClosedLoopRampRate))
           .withOpenLoopRampRate(Seconds.of(FeederConstants.OpenLoopRampRate));
-
   private SparkMax spark = new SparkMax(FeederConstants.FeederdeviceId, MotorType.kBrushless);
 
   private SmartMotorController sparkSmartMotorController =
@@ -84,7 +102,7 @@ public class Feeder extends SubsystemBase {
           .withUpperSoftLimit(RPM.of(FeederConstants.UpperSoftLimit))
           .withTelemetry("FeederMech", TelemetryVerbosity.HIGH);
 
-  private FlyWheel Feeder = new FlyWheel(FeederConfig);
+  private FlyWheel feeder = new FlyWheel(FeederConfig);
 
   /**
    * Gets the current velocity of the Feeder.
@@ -92,18 +110,24 @@ public class Feeder extends SubsystemBase {
    * @return Feeder velocity.
    */
   public AngularVelocity getVelocity() {
-    return Feeder.getSpeed();
+    return feeder.getSpeed();
   }
 
   public Command setVelocity(AngularVelocity speed) {
-    return Feeder.setSpeed(speed);
+    return feeder.setSpeed(speed);
   }
 
   public Command set(double dutyCycle) {
-    return Feeder.set(dutyCycle);
+    return feeder.set(dutyCycle);
   }
 
-  public Feeder() {}
+  public Command ManualSpeedControl() {
+    return feeder.setSpeed(() -> RPM.of(Feeder.FeedSpeed));
+  }
+
+  public Feeder() {
+    SmartDashboard.putNumber("FeederSpeed", FeedSpeed);
+  }
 
   /**
    * Example command factory method.
@@ -113,12 +137,17 @@ public class Feeder extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    Feeder.updateTelemetry();
+    feeder.updateTelemetry();
+    FeedSpeed = SmartDashboard.getNumber("FeederSpeed", FeedSpeed);
+    SmartDashboard.putNumber("FeederRPM", FeedSpeed);
   }
 
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
-    Feeder.simIterate();
+    feeder.simIterate();
   }
+
+
 }
+

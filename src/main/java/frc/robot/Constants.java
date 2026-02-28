@@ -119,7 +119,7 @@ public final class Constants {
     public static final double TURN_CONSTANT = 6;
     // this used to be 6 if turning speed is stupid make it six
 
-    public static final int DRIVE_SCALING = 7;
+    public static final int DRIVE_SCALING = 6;
     public static final int ROTATION_SCALING = 6;
 
     public static final boolean IsSwerve = false;
@@ -144,11 +144,40 @@ public final class Constants {
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
   }
+ public static class IntakeAlphaConstants {
+
+    public static final int Intake_SparkMax_ID = 14;
+    public static final int IntakenumMotors = 1;
+
+    public static final int Intake_RPM = 60;
+    public static final int FlyWheel_Diameter = 5;
+    public static final double FlyWheel_Mass = 1;
+    public static final int SoftLimit = 5000;
+
+    public static final double KP = 0;
+    public static final double KI = 0;
+    public static final double KD = 0;
+    public static final double ks = 0;
+    public static final double kv = 0.186;
+    public static final double ka = 0;
+
+    public static final int CurrentLimit = 40;
+    public static final int MaxVelocity = 90;
+    public static final int MaxAcceleration = 45;
+    public static final double Intake_GearRatio = 1.5; ///on swerve bot 2/3
+    public static final double x_DutyCycle = 0.3;
+    public static final double y_DutyCycle = -0.3;
+
+    public static final double DebounceTime = 0.1;
+    public static final double DebounceMagnitude = 40;
+    public static final double ClosedLoopRampRate = 0.25;
+    public static final double OpenLoopRampRate = 0.25;
+  }
 
   public static class IntakeConstants {
 
-    public static final int Intake_SparkMax_ID = 60;
-     public static final int IntakeFollower_SparkMax_ID = 70;
+    public static final int Intake_SparkMax_ID = 14;
+     public static final int IntakeFollower_SparkMax_ID = 15;
     public static final int IntakenumMotors = 1;
 
     public static final int Intake_RPM = 60;
@@ -160,7 +189,7 @@ public final class Constants {
     public static final double KI = 0;
     public static final double KD = 0;
     public static final double ks = 0;
-    public static final double kv = 0.18;
+    public static final double kv = 0.186;
     public static final double ka = 0;
 
     public static final int CurrentLimit = 40;
@@ -202,7 +231,7 @@ public final class Constants {
     public static final int controllerBmagnitude = 300;
 
     public static final double ks = 0;
-    public static final double kv = 0;
+    public static final double kv = 0.375;
     public static final double ka = 0;
     public static final int reductionStages = 3;   //on swerve bot 1/3
     public static final int StatorLimit = 40;
@@ -216,7 +245,7 @@ public final class Constants {
 
     public static final int Diameter = 4;
 
-    public static final double Mass = 0.3;
+    public static final double Mass = 0.5;
     public static final int UpperSoftLimit = 5000;
 
     public static final double controllerxdutyCycle = 0.3;
@@ -229,19 +258,19 @@ public final class Constants {
 
     public static final int FuelLimit = 8;
 
-    public static final double IntakingFeeder = 0.1;
-    public static final double IntakingIntake = 0.1;
+    public static final double IntakingFeeder = 2000;
+    public static final double IntakingIntake = 3000;
 
-    public static final double EjectingFeeder = -0.7;
-    public static final double EjectingIntake = -0.7;
+    public static final double EjectingFeeder = -2000;
+    public static final double EjectingIntake = -3000;
 
-    public static final double LaunchingFeeder = -0.7;
-    public static final double LaunchingIntake = 0.7;
+    public static final double LaunchingFeeder = -2000;
+    public static final double LaunchingIntake = 3000;
 
     public static final int StoppingFeeder = 0;
     public static final int StoppingIntake = 0;
 
-    public static final double SpinupIntake = 0.4;
+    public static final double SpinupIntake = 3000;
   }
 
   public static class CameraConstants {

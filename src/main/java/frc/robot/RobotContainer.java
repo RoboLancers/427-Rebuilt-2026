@@ -1,13 +1,15 @@
 package frc.robot;
 
-import static edu.wpi.first.units.Units.RPM;
-import static frc.robot.Constants.OperatorConstants.*;
-
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.RPM;
+import static frc.robot.Constants.OperatorConstants.IsSwerve;
+
+import java.io.File;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
+
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -36,7 +38,6 @@ import frc.robot.subsystems.Climb.ClimbSubsystem;
 import frc.robot.subsystems.Feeder.Feeder;
 import frc.robot.subsystems.IntakeShooter.IntakeShooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import java.io.File;
 import swervelib.SwerveInputStream;
 
 /**
@@ -47,10 +48,11 @@ import swervelib.SwerveInputStream;
  */
 @Logged
 public class RobotContainer {
-  private final IntakeShooter m_IntakeShooter = new IntakeShooter();
+
+  private IntakeShooter m_IntakeShooter = new IntakeShooter();
   private final Feeder m_feeder = new Feeder();
   private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
-  private final ClimbSubsystem m_ClimbSubsystem = new ClimbSubsystem();
+  //private final ClimbSubsystem m_ClimbSubsystem = new ClimbSubsystem();
 
   boolean isCompetition = true;
 
@@ -81,7 +83,6 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
     if (IsSwerve == true) {
       drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
 
@@ -152,11 +153,10 @@ public class RobotContainer {
 
     configureBindings();
 
-    autoChooser.setDefaultOption("Do Nothing", null);
-
-    m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
-    m_feeder.setDefaultCommand(m_feeder.set(0));
-    //m_IntakeShooter.setDefaultCommand(m_IntakeShooter.ManualSpeedControl());
+    // m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
+    // m_feeder.setDefaultCommand(m_feeder.set(0));
+    m_IntakeShooter.setDefaultCommand(m_IntakeShooter.ManualSpeedControl());
+    m_feeder.setDefaultCommand(m_feeder.ManualSpeedControl());
 
     DriverStation.silenceJoystickConnectionWarning(true);
 
@@ -179,8 +179,8 @@ public class RobotContainer {
         });
 
     // Set the default command to force the arm to go to 0.
-    m_ClimbSubsystem.setDefaultCommand(
-        m_ClimbSubsystem.setAngle(Degrees.of(ClimbConstants.DefaultAngle)));
+    //m_ClimbSubsystem.setDefaultCommand(
+       // m_ClimbSubsystem.setAngle(Degrees.of(ClimbConstants.DefaultAngle)));
   }
 
   public void updateVisionSim() {}
@@ -200,35 +200,31 @@ public class RobotContainer {
    * joysticks}.
    */
   public Command Intake() {
-    // return m_IntakeShooter
-    //     //.set(FuelConstants.IntakingIntake)
-    //     // .alongWith(m_feeder.set(FuelConstants.IntakingFeeder));
-    //     .setVelocity(RPM.of(500))
-    //     .alongWith(m_feeder.setVelocity(RPM.of(500)));
-    return m_feeder
-    .setVelocity(RPM.of(500));
+    return m_IntakeShooter
+        .setVelocity(RPM.of(FuelConstants.IntakingIntake))
+        .alongWith(m_feeder.setVelocity(RPM.of(FuelConstants.IntakingFeeder)));
   }
 
   public Command Eject() {
     return m_IntakeShooter
-        .set(FuelConstants.EjectingIntake)
-        .alongWith(m_feeder.set(FuelConstants.EjectingFeeder));
+        .setVelocity(RPM.of(FuelConstants.EjectingIntake))
+        .alongWith(m_feeder.setVelocity(RPM.of(FuelConstants.EjectingFeeder)));
   }
 
   public Command Launch() {
     return m_IntakeShooter
-        .set(FuelConstants.LaunchingIntake)
-        .alongWith(m_feeder.set(FuelConstants.LaunchingFeeder));
+        .setVelocity(RPM.of(FuelConstants.LaunchingIntake))
+        .alongWith(m_feeder.setVelocity(RPM.of(FuelConstants.LaunchingFeeder)));
   }
 
   public Command Stop() {
     return m_IntakeShooter
-        .set(FuelConstants.StoppingIntake)
-        .alongWith(m_feeder.set(FuelConstants.StoppingFeeder));
+        .setVelocity(RPM.of(FuelConstants.StoppingIntake))
+        .alongWith(m_feeder.setVelocity(RPM.of(FuelConstants.StoppingFeeder)));
   }
 
   public Command SpinUp() {
-    return m_IntakeShooter.set(FuelConstants.SpinupIntake);
+    return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinupIntake));
   }
 
   private void configureBindings() {
@@ -322,6 +318,8 @@ public class RobotContainer {
       }
     }
     autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser.setDefaultOption("Do Nothing", null);
+
     // AutoBuilder.buildAutoChooserWithOptionsModifier(
     //     (stream) ->
     //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) :
