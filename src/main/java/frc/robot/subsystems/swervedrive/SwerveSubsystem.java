@@ -19,18 +19,21 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
+import frc.robot.Constants.VisionConstants;
+import frc.robot.subsystems.vision.VisionSubsystem;
 import java.io.File;
 import java.util.Arrays;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
-// import swervelib.SwerveInputStream;
 import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
@@ -38,14 +41,16 @@ import swervelib.parser.SwerveParser;
 // This is the main class for the swerve drive subsystem
 @Logged
 public class SwerveSubsystem extends SubsystemBase {
+  public static final String getSimPose = null;
   double maximumSpeed = Units.feetToMeters(4.5);
   private SwerveSetpointGenerator setpointGenerator;
   private SwerveSetpoint previousSetpoint;
   private SwerveDrive swerveDrive;
+  public VisionSubsystem vision;
 
   /* Creates a new SwerveSubsystem. */
   public SwerveSubsystem(File directory) {
-    // File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
+    File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
     // Catches any errors within the code and crashes the program if there are any
 
     /* DO NOT TOUCH or everything breaks
@@ -57,6 +62,8 @@ public class SwerveSubsystem extends SubsystemBase {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+
+    this.vision = new VisionSubsystem(() -> getPose());
 
     // Configure AutoBuilder last
     try {
@@ -82,6 +89,8 @@ public class SwerveSubsystem extends SubsystemBase {
           this);
     } catch (Exception e) {
       DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+    } finally {
+
     }
   }
 
@@ -97,10 +106,21 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    if (VisionConstants.isVision) {
+      vision.debugField.setRobotPose(getPose());
+      vision.updatePoseEstimation(swerveDrive);
+      swerveDrive.updateOdometry();
+    }
+  }
 
   public void periodic() {
     // This method will be called once per scheduler run
+    if (VisionConstants.isVision) {
+      vision.debugField.setRobotPose(getPose());
+      double distanceToHub = vision.getDistanceFromAprilTag(26);
+      SmartDashboard.putNumber("Distance To Hub", distanceToHub);
+    }
   }
 
   public Command sysIdDriveMotorCommand() {
@@ -139,7 +159,7 @@ public class SwerveSubsystem extends SubsystemBase {
    *
    * @param translationX Translation in the X direction
    * @param translationY Translation in the Y direction
-   * @param angularRotationX Rotation of the robot to set
+   * @param angularRotationX Rotation of the robot to t
    * @return Drive command.
    *     <p>IT DOES SOMETHING
    */
