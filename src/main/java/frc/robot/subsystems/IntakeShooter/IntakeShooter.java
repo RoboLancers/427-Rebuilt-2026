@@ -8,8 +8,6 @@ import static edu.wpi.first.units.Units.Seconds;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-
-import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -32,7 +30,8 @@ public class IntakeShooter extends SubsystemBase {
   public static int FuelCounter = 0;
   public static double ShootSpeed;
   private SparkMax spark = new SparkMax(IntakeConstants.Intake_SparkMax_ID, MotorType.kBrushless);
-  private SparkMax sparkFollower = new SparkMax(IntakeConstants.IntakeFollower_SparkMax_ID, MotorType.kBrushless);
+  private SparkMax sparkFollower =
+      new SparkMax(IntakeConstants.IntakeFollower_SparkMax_ID, MotorType.kBrushless);
 
   protected void execute() {
     SmartDashboard.putNumber("Fuel Number", FuelCounter);
@@ -73,7 +72,7 @@ public class IntakeShooter extends SubsystemBase {
           .withStatorCurrentLimit(Amps.of(IntakeConstants.CurrentLimit))
           .withClosedLoopRampRate(Seconds.of(IntakeConstants.ClosedLoopRampRate))
           .withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate));
-         // .withFollowers(Pair.of(sparkFollower, true));
+  // .withFollowers(Pair.of(sparkFollower, true));
 
   private SmartMotorController sparkSmartMotorController =
       new SparkWrapper(spark, DCMotor.getNEO(IntakeConstants.IntakenumMotors), smcConfig);
