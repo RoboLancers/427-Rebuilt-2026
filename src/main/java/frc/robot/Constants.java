@@ -79,9 +79,9 @@ public final class Constants {
     public static final int NumMotors = 1;
     // NumMotors and SoftLowerLimit will have to be adjusted based on the actual climb arm's freedom
     // of movement.
-    public static final int SoftLowerLimit = -20;
+    public static final int SoftLowerLimit = -50;
     public static final int SoftUpperLimit = 110;
-    public static final int HardMin = -20;
+    public static final int HardMi
     public static final int HardMax = 110;
     public static final int StartingPosition = 90;
 
