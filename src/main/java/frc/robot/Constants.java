@@ -121,7 +121,7 @@ public final class Constants {
     public static final int DRIVE_SCALING = 7;
     public static final int ROTATION_SCALING = 6;
 
-    public static final boolean IsSwerve = false;
+    public static final boolean IsSwerve = true;
   }
 
   public static class VisionConstants {

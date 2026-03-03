@@ -81,7 +81,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    if (IsSwerve == true) {
+    if (IsSwerve) {
       drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
 
       SwerveInputStream aimWhileDriving =
@@ -148,6 +148,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 1));
     NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 1));
     NamedCommands.registerCommand("END_INTAKE", timedCommand(Stop(), 1));
+    NamedCommands.registerCommand("DEPLOY", timedCommand(m_ClimbSubsystem.setDeployAngle(), 1));
     // NamedCommands.registerCommand("CLIMB", );
 
     configureBindings();
@@ -254,7 +255,8 @@ public class RobotContainer {
 
     m_driverController.x().whileTrue(m_ClimbSubsystem.set(0.9));
     m_driverController.y().whileTrue(m_ClimbSubsystem.set(-0.9));
-    if (IsSwerve == false) {
+
+    if (!IsSwerve) {
       driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController));
     }
 
@@ -269,7 +271,7 @@ public class RobotContainer {
     // new Trigger(m_exampleSubsystem::exampleCondition)
     //     .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    if (Constants.OperatorConstants.IsSwerve == true) {
+    if (Constants.OperatorConstants.IsSwerve) {
       Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
       Command driveFieldOrientedAnglularVelocity =
           drivebase.driveFieldOriented(driveAngularVelocity);
