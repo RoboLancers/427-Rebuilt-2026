@@ -52,8 +52,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /* Creates a new SwerveSubsystem. */
   public SwerveSubsystem(File directory) {
-    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     // Catches any errors within the code and crashes the program if there are any
 
     /* DO NOT TOUCH or everything breaks

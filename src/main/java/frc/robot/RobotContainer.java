@@ -44,9 +44,9 @@ import swervelib.SwerveInputStream;
  */
 @Logged
 public class RobotContainer {
-  private final IntakeShooter m_IntakeShooter = new IntakeShooter();
+  //private final IntakeShooter m_IntakeShooter = new IntakeShooter();
   private final Feeder m_feeder = new Feeder();
-  private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
+  private CANDriveSubsystem driveSubsystem; //= new CANDriveSubsystem();
   private final ClimbSubsystem m_ClimbSubsystem = new ClimbSubsystem();
 
   boolean isCompetition = true;
@@ -79,7 +79,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    if (IsSwerve == true) {
+    if (IsSwerve) {
       drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
 
       SwerveInputStream aimWhileDriving =
@@ -98,10 +98,10 @@ public class RobotContainer {
       driveAngularVelocity =
           SwerveInputStream.of(
                   drivebase.getSwerveDrive(),
-                  () -> -m_driverController.getLeftY() * DriveConstants.MAX_SPEED,
-                  () -> -m_driverController.getLeftX() * DriveConstants.MAX_SPEED)
+                  () -> m_driverController.getLeftY(),
+                  () -> m_driverController.getLeftX())
               .withControllerRotationAxis(
-                  () -> m_driverController.getRightX() * DriveConstants.MAX_ANGULAR_SPEED)
+                  () -> m_driverController.getRightX())
               .deadband(DriveConstants.DEADBAND)
               .scaleTranslation(0.8)
               .allianceRelativeControl(true);
@@ -140,20 +140,23 @@ public class RobotContainer {
                           * Constants.DriveConstants.MAX_ANGULAR_SPEED) // ASDFGHJKL
               .headingWhile(true);
     }
+     else {
+      driveSubsystem = new CANDriveSubsystem();
+     }
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     // SmartDashboard.putData("Auto Chooser", autoChooser);
-    NamedCommands.registerCommand("SHOOT", timedCommand(Launch(), 1));
-    NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 1));
-    NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 1));
-    NamedCommands.registerCommand("END_INTAKE", timedCommand(Stop(), 1));
+    // NamedCommands.registerCommand("SHOOT", timedCommand(Launch(), 1));
+    // NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 1));
+    // NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 1));
+    // NamedCommands.registerCommand("END_INTAKE", timedCommand(Stop(), 1));
     // NamedCommands.registerCommand("CLIMB", );
 
     configureBindings();
 
-    m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
+    //m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
     m_feeder.setDefaultCommand(m_feeder.set(0));
 
-    m_IntakeShooter.setDefaultCommand(m_IntakeShooter.ManualSpeedControl());
+    //m_IntakeShooter.setDefaultCommand(m_IntakeShooter.ManualSpeedControl());
 
     DriverStation.silenceJoystickConnectionWarning(true);
 
@@ -196,45 +199,45 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  public Command Intake() {
-    return m_IntakeShooter
-        .set(FuelConstants.IntakingIntake)
-        .alongWith(m_feeder.set(FuelConstants.IntakingFeeder));
-  }
+  // public Command Intake() {
+  //   return m_IntakeShooter
+  //       .set(FuelConstants.IntakingIntake)
+  //       .alongWith(m_feeder.set(FuelConstants.IntakingFeeder));
+  // }
 
-  public Command Eject() {
-    return m_IntakeShooter
-        .set(FuelConstants.EjectingIntake)
-        .alongWith(m_feeder.set(FuelConstants.EjectingFeeder));
-  }
+  // public Command Eject() {
+  //   return m_IntakeShooter
+  //       .set(FuelConstants.EjectingIntake)
+  //       .alongWith(m_feeder.set(FuelConstants.EjectingFeeder));
+  // }
 
-  public Command Launch() {
-    return m_IntakeShooter
-        .set(FuelConstants.LaunchingIntake)
-        .alongWith(m_feeder.set(FuelConstants.LaunchingFeeder));
-  }
+  // public Command Launch() {
+  //   return m_IntakeShooter
+  //       .set(FuelConstants.LaunchingIntake)
+  //       .alongWith(m_feeder.set(FuelConstants.LaunchingFeeder));
+  // }
 
-  public Command Stop() {
-    return m_IntakeShooter
-        .set(FuelConstants.StoppingIntake)
-        .alongWith(m_feeder.set(FuelConstants.StoppingFeeder));
-  }
+  // public Command Stop() {
+  //   return m_IntakeShooter
+  //       .set(FuelConstants.StoppingIntake)
+  //       .alongWith(m_feeder.set(FuelConstants.StoppingFeeder));
+  // }
 
-  public Command SpinUp() {
-    return m_IntakeShooter.set(FuelConstants.SpinupIntake);
-  }
+  // public Command SpinUp() {
+  //   return m_IntakeShooter.set(FuelConstants.SpinupIntake);
+  // }
 
   private void configureBindings() {
-    m_driverController.leftBumper().whileTrue(Intake());
-    m_driverController
-        .rightBumper()
-        .whileTrue(
-            SpinUp()
-                .withTimeout(FuelConstants.SpinUpTime)
-                .andThen(Launch())
-                .finallyDo(() -> Stop()));
-    m_driverController.rightTrigger().whileTrue(Eject());
-    if (IsSwerve == false) {
+    // m_driverController.leftBumper().whileTrue(Intake());
+    // m_driverController
+    //     .rightBumper()
+    //     .whileTrue(
+    //         SpinUp()
+    //             .withTimeout(FuelConstants.SpinUpTime)
+    //             .andThen(Launch())
+    //             .finallyDo(() -> Stop()));
+    // m_driverController.rightTrigger().whileTrue(Eject());
+    if (!IsSwerve) {
       driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController));
     }
 
@@ -249,7 +252,7 @@ public class RobotContainer {
     // new Trigger(m_exampleSubsystem::exampleCondition)
     //     .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    if (IsSwerve == true) {
+    if (IsSwerve) {
       Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
       Command driveFieldOrientedAnglularVelocity =
           drivebase.driveFieldOriented(driveAngularVelocity);
@@ -270,7 +273,8 @@ public class RobotContainer {
         drivebase.resetPose(new Pose2d(2, 2, new Rotation2d()));
         drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Change this one
       } else {
-        drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+        drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
+        //drivebase.driveCommand(() ->m_driverController.getLeftX(),)
       }
 
       if (Robot.isSimulation()) {
