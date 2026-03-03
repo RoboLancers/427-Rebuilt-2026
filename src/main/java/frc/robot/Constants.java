@@ -81,7 +81,7 @@ public final class Constants {
     // of movement.
     public static final int SoftLowerLimit = -50;
     public static final int SoftUpperLimit = 110;
-    public static final int HardMi
+    public static final int HardMin = -50;
     public static final int HardMax = 110;
     public static final int StartingPosition = 90;
 
