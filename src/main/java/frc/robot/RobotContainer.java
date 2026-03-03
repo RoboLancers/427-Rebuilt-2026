@@ -310,10 +310,12 @@ public class RobotContainer {
         m_driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
         m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
         m_driverController.back().whileTrue(drivebase.centerModulesCommand());
-        m_driverController
-            .leftTrigger()
-            .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-        m_driverController.rightBumper().onTrue(Commands.none());
+        // m_driverController
+        //     .leftTrigger()
+        //     .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+        // m_driverController.rightBumper().onTrue(Commands.none());
+        m_driverController.b().whileTrue(m_ClimbSubsystem.set(0.8));
+        m_driverController.y().whileTrue(m_ClimbSubsystem.set(-0.8));
       }
     }
     autoChooser = AutoBuilder.buildAutoChooser();
