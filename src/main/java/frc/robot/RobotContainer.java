@@ -199,35 +199,31 @@ public class RobotContainer {
    * joysticks}.
    */
   public Command Intake() {
-    // return m_IntakeShooter
-    //     //.set(FuelConstants.IntakingIntake)
-    //     // .alongWith(m_feeder.set(FuelConstants.IntakingFeeder));
-    //     .setVelocity(RPM.of(500))
-    //     .alongWith(m_feeder.setVelocity(RPM.of(500)));
-    return m_feeder
-    .setVelocity(RPM.of(500));
+    return m_IntakeShooter
+      .setVelocity(RPM.of(FuelConstants.IntakingIntake))
+      .alongWith(m_feeder.setVelocity(RPM.of(FuelConstants.IntakingFeeder)));
   }
 
   public Command Eject() {
     return m_IntakeShooter
-        .set(FuelConstants.EjectingIntake)
-        .alongWith(m_feeder.set(FuelConstants.EjectingFeeder));
+        .setVelocity(RPM.of(FuelConstants.EjectingIntake))
+        .alongWith(m_feeder.setVelocity(RPM.of(FuelConstants.EjectingFeeder)));
   }
 
   public Command Launch() {
     return m_IntakeShooter
-        .set(FuelConstants.LaunchingIntake)
-        .alongWith(m_feeder.set(FuelConstants.LaunchingFeeder));
+        .setVelocity(RPM.of(FuelConstants.LaunchingIntake))
+        .alongWith(m_feeder.setVelocity(RPM.of(FuelConstants.LaunchingFeeder)));
   }
 
   public Command Stop() {
     return m_IntakeShooter
-        .set(FuelConstants.StoppingIntake)
-        .alongWith(m_feeder.set(FuelConstants.StoppingFeeder));
+        .setVelocity(RPM.of(FuelConstants.StoppingIntake))
+        .alongWith(m_feeder.setVelocity(RPM.of(FuelConstants.StoppingFeeder)));
   }
 
   public Command SpinUp() {
-    return m_IntakeShooter.set(FuelConstants.SpinupIntake);
+    return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinupIntake));
   }
 
   private void configureBindings() {

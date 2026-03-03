@@ -39,7 +39,6 @@ import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 
 // This is the main class for the swerve drive subsystem
-@Logged
 public class SwerveSubsystem extends SubsystemBase {
   public static final String getSimPose = null;
   double maximumSpeed = Units.feetToMeters(4.5);

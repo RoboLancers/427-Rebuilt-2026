@@ -202,7 +202,7 @@ public final class Constants {
     public static final int controllerBmagnitude = 300;
 
     public static final double ks = 0;
-    public static final double kv = 0;
+    public static final double kv = 0.18;
     public static final double ka = 0;
     public static final int reductionStages = 3;   //on swerve bot 1/3
     public static final int StatorLimit = 40;
@@ -229,19 +229,19 @@ public final class Constants {
 
     public static final int FuelLimit = 8;
 
-    public static final double IntakingFeeder = 0.1;
-    public static final double IntakingIntake = 0.1;
+    public static final double IntakingFeeder = 2500;
+    public static final double IntakingIntake = 3000;
 
-    public static final double EjectingFeeder = -0.7;
-    public static final double EjectingIntake = -0.7;
+    public static final double EjectingFeeder = -2500;
+    public static final double EjectingIntake = -3000;
 
-    public static final double LaunchingFeeder = -0.7;
-    public static final double LaunchingIntake = 0.7;
+    public static final double LaunchingFeeder = -2500;
+    public static final double LaunchingIntake = 3000;
 
     public static final int StoppingFeeder = 0;
     public static final int StoppingIntake = 0;
 
-    public static final double SpinupIntake = 0.4;
+    public static final double SpinupIntake = 3000;
   }
 
   public static class CameraConstants {

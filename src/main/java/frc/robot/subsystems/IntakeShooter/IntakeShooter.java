@@ -9,6 +9,8 @@ import static edu.wpi.first.units.Units.Seconds;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.epilogue.Epilogue;
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.Debouncer;
@@ -28,6 +30,7 @@ import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
 import yams.motorcontrollers.local.SparkWrapper;
 import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
+@Logged
 public class IntakeShooter extends SubsystemBase {
   public static int FuelCounter = 0;
   public static double ShootSpeed;
@@ -43,13 +46,6 @@ public class IntakeShooter extends SubsystemBase {
   }
 
   /** Creates a new intake. */
-  SmartMotorControllerTelemetryConfig motorTelemetryConfig =
-      new SmartMotorControllerTelemetryConfig()
-          .withMechanismPosition()
-          .withRotorPosition()
-          .withMechanismLowerLimit()
-          .withMechanismUpperLimit();
-
   private SmartMotorControllerConfig smcConfig =
       new SmartMotorControllerConfig(this)
           .withControlMode(ControlMode.CLOSED_LOOP)
@@ -121,9 +117,10 @@ public class IntakeShooter extends SubsystemBase {
   public void simulationPeriodic() {
     intake.simIterate();
   }
-
+  @Logged(name = "IntakeShooterVelocity")
   public AngularVelocity getVelocity() {
-    return intake.getSpeed();
+    AngularVelocity velocity = intake.getSpeed();
+    return velocity;
   }
 
   public Command setVelocity(AngularVelocity speed) {
