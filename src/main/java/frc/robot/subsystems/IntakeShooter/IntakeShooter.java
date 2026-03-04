@@ -32,14 +32,14 @@ import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 @Logged
 public class IntakeShooter extends SubsystemBase {
-  public static int FuelCounter = 0;
+  //public static int FuelCounter = 0;
   public static double ShootSpeed;
   private SparkMax spark = new SparkMax(IntakeConstants.Intake_SparkMax_ID, MotorType.kBrushless);
   private SparkMax sparkFollower =
       new SparkMax(IntakeConstants.IntakeFollower_SparkMax_ID, MotorType.kBrushless);
 
   protected void execute() {
-    SmartDashboard.putNumber("Fuel Number", FuelCounter);
+    //SmartDashboard.putNumber("Fuel Number", FuelCounter);
   }
 
   public IntakeShooter() {
@@ -104,7 +104,7 @@ public class IntakeShooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Fuel Number", FuelCounter);
+    //SmartDashboard.putNumber("Fuel Number", FuelCounter);
     intake.updateTelemetry();
     // boolean GamePiece = isGamePieceIn();
     // if (GamePiece == true) {

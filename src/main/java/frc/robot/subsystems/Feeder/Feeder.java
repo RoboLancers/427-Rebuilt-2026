@@ -6,6 +6,7 @@ import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Seconds;
 
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -67,7 +68,7 @@ public class Feeder extends SubsystemBase {
           .withClosedLoopRampRate(Seconds.of(FeederConstants.ClosedLoopRampRate))
           .withOpenLoopRampRate(Seconds.of(FeederConstants.OpenLoopRampRate));
 
-  private SparkMax spark = new SparkMax(FeederConstants.FeederdeviceId, MotorType.kBrushless);
+  private SparkFlex spark = new SparkFlex(FeederConstants.FeederdeviceId, MotorType.kBrushless);
 
   private SmartMotorController sparkSmartMotorController =
       new SparkWrapper(spark, DCMotor.getNEO(FeederConstants.FeedernumMotors), smcConfig);

@@ -159,7 +159,7 @@ public final class Constants {
     public static final double KI = 0;
     public static final double KD = 0;
     public static final double ks = 0;
-    public static final double kv = 0.18;
+    public static final double kv = 0.187;
     public static final double ka = 0;
 
     public static final int CurrentLimit = 40;
@@ -201,9 +201,9 @@ public final class Constants {
     public static final int controllerBmagnitude = 300;
 
     public static final double ks = 0;
-    public static final double kv = 0.18;
+    public static final double kv = 0.125;
     public static final double ka = 0;
-    public static final int reductionStages = 3; // on swerve bot 1/3
+    public static final int reductionStages = 1; // on swerve bot 1/3
     public static final int StatorLimit = 40;
 
     public static final double ClosedLoopRampRate = 0.25;
