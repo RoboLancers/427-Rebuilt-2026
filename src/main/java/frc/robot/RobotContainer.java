@@ -59,19 +59,6 @@ public class RobotContainer {
   private final SwerveSubsystem drivebase =
       new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
 
-  SwerveInputStream aimWhileDriving =
-      SwerveInputStream.of(
-              drivebase.getSwerveDrive(),
-              () -> -m_driverController.getLeftY() * Constants.DriveConstants.MAX_SPEED,
-              () -> -m_driverController.getLeftX() * Constants.DriveConstants.MAX_SPEED)
-          .withControllerRotationAxis(
-              () -> m_driverController.getRightX() * Constants.DriveConstants.MAX_ANGULAR_SPEED)
-          .deadband(OperatorConstants.DEADBAND)
-          .scaleTranslation(0.8)
-          .allianceRelativeControl(true)
-          .aim(FieldConstants.BLUE_HUB)
-          .aimWhile(m_driverController.y());
-
   SwerveInputStream driveAngularVelocity =
       SwerveInputStream.of(
               drivebase.getSwerveDrive(),
@@ -82,6 +69,9 @@ public class RobotContainer {
           .deadband(DriveConstants.DEADBAND)
           .scaleTranslation(0.8)
           .allianceRelativeControl(true);
+
+  SwerveInputStream aimWhileDriving =
+      driveAngularVelocity.copy().aim(FieldConstants.BLUE_HUB).aimWhile(m_driverController.y());
 
   SwerveInputStream driveAngularVelocityKeyboard =
       SwerveInputStream.of(
