@@ -70,25 +70,6 @@ public class RobotContainer {
           .scaleTranslation(0.8)
           .allianceRelativeControl(true);
 
-      driveAngularVelocityKeyboard =
-          SwerveInputStream.of(
-                  drivebase.getSwerveDrive(),
-                  () -> -m_driverController.getLeftY(),
-                  () -> -m_driverController.getLeftX())
-              .withControllerRotationAxis(() -> m_driverController.getRawAxis(2))
-              .deadband(DEADBAND)
-              .scaleTranslation(0.8)
-              .allianceRelativeControl(true);
-
-      driveDirectAngleKeyboard =
-          driveAngularVelocityKeyboard
-              .copy()
-              .withControllerHeadingAxis(
-                  () -> Math.sin(m_driverController.getRawAxis(2) * Math.PI) * (Math.PI * 2),
-                  () -> Math.cos(m_driverController.getRawAxis(2) * Math.PI) * (Math.PI * 2))
-              .headingWhile(true)
-              .translationHeadingOffset(true)
-              .translationHeadingOffset(Rotation2d.fromDegrees(0));
   SwerveInputStream aimWhileDriving =
       driveAngularVelocity.copy().aim(FieldConstants.BLUE_HUB).aimWhile(m_driverController.y());
 
