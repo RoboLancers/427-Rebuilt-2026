@@ -1,6 +1,5 @@
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Degrees;
 import static frc.robot.Constants.OperatorConstants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -22,12 +21,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.ClimbConstants;
-import frc.robot.Constants.DriveConstants;
+// import frc.robot.Constants.ClimbConstants;
+// import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.CANDriveSubsystem;
-import frc.robot.subsystems.Climb.ClimbSubsystem;
+// import frc.robot.subsystems.Climb.ClimbSubsystem;
 import frc.robot.subsystems.Feeder.Feeder;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -44,7 +43,7 @@ public class RobotContainer {
   // private final IntakeShooter m_IntakeShooter = new IntakeShooter();
   private final Feeder m_feeder = new Feeder();
   private CANDriveSubsystem driveSubsystem; // = new CANDriveSubsystem();
-  private final ClimbSubsystem m_ClimbSubsystem = new ClimbSubsystem();
+  // private final ClimbSubsystem m_ClimbSubsystem = new ClimbSubsystem();
 
   boolean isCompetition = true;
 
@@ -98,7 +97,7 @@ public class RobotContainer {
                   () -> m_driverController.getLeftY(),
                   () -> m_driverController.getLeftX())
               .withControllerRotationAxis(() -> m_driverController.getRightX())
-              .deadband(DriveConstants.DEADBAND)
+              .deadband(DEADBAND)
               .scaleTranslation(0.8)
               .allianceRelativeControl(true);
 
@@ -108,7 +107,7 @@ public class RobotContainer {
                   () -> -m_driverController.getLeftY(),
                   () -> -m_driverController.getLeftX())
               .withControllerRotationAxis(() -> m_driverController.getRawAxis(2))
-              .deadband(DriveConstants.DEADBAND)
+              .deadband(DEADBAND)
               .scaleTranslation(0.8)
               .allianceRelativeControl(true);
 
@@ -174,8 +173,8 @@ public class RobotContainer {
         });
 
     // Set the default command to force the arm to go to 0.
-    m_ClimbSubsystem.setDefaultCommand(
-        m_ClimbSubsystem.setAngle(Degrees.of(ClimbConstants.DefaultAngle)));
+    //   m_ClimbSubsystem.setDefaultCommand(
+    //       m_ClimbSubsystem.setAngle(Degrees.of(ClimbConstants.DefaultAngle)));
   }
 
   public void updateVisionSim() {}
@@ -302,19 +301,15 @@ public class RobotContainer {
 
         m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
         m_driverController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-        m_driverController.back().whileTrue(drivebase.centerModulesCommand());
-        m_driverController.leftBumper().onTrue(Commands.none());
-        m_driverController.rightBumper().onTrue(Commands.none());
       } else {
         m_driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
         m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-        m_driverController.back().whileTrue(drivebase.centerModulesCommand());
         // m_driverController
         //     .leftTrigger()
         //     .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
         // m_driverController.rightBumper().onTrue(Commands.none());
-        m_driverController.b().whileTrue(m_ClimbSubsystem.set(0.8));
-        m_driverController.y().whileTrue(m_ClimbSubsystem.set(-0.8));
+        // m_driverController.b().whileTrue(m_ClimbSubsystem.set(0.8));
+        // m_driverController.y().whileTrue(m_ClimbSubsystem.set(-0.8));
       }
     }
     autoChooser = AutoBuilder.buildAutoChooser();
