@@ -152,7 +152,7 @@ public final class Constants {
 
     public static final int Intake_RPM = 60;
     public static final int FlyWheel_Diameter = 4;
-    public static final double FlyWheel_Mass = 2;
+    public static final double FlyWheel_Mass = 4;
     public static final int SoftLimit = 5000;
 
     public static final double KP = 0;
