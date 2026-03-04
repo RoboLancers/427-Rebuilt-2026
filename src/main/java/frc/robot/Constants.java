@@ -37,7 +37,7 @@ public final class Constants {
     public static final double TANK_SPEED_MULTIPLYER = 0.1;
     public static final double TANK__TURNING_SPEED_MULTIPLYER = 0.1;
     // Joystick deadband
-    public static final double DEADBAND = 0.9;
+    public static final double DEADBAND = 0.1;
     public static final double LEFT_Y_DEADBAND = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT = 6;
@@ -146,7 +146,7 @@ public final class Constants {
 
   public static class IntakeConstants {
 
-    public static final int Intake_SparkMax_ID = 14;
+    public static final int Intake_SparkMax_ID = 15;
     public static final int IntakeFollower_SparkMax_ID = 16;
     public static final int IntakenumMotors = 1;
 
@@ -177,7 +177,7 @@ public final class Constants {
 
   public static class FeederConstants {
 
-    public static final int FeederdeviceId = 15;
+    public static final int FeederdeviceId = 14;
     public static final int FeedernumMotors = 1;
 
     public static final int ClosedLoopControllerkP = 4;
