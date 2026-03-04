@@ -1,9 +1,6 @@
 package frc.robot.subsystems.Feeder;
 
 import static edu.wpi.first.units.Units.Amps;
-import static edu.wpi.first.units.Units.Degrees;
-import static edu.wpi.first.units.Units.DegreesPerSecond;
-import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.RPM;
@@ -17,8 +14,6 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FeederConstants;
-import yams.gearing.GearBox;
-import yams.gearing.MechanismGearing;
 import yams.mechanisms.config.FlyWheelConfig;
 import yams.mechanisms.velocity.FlyWheel;
 import yams.motorcontrollers.SmartMotorController;
@@ -39,7 +34,8 @@ public class Feeder extends SubsystemBase {
   //             FeederConstants.ClosedLoopControllerkI,
   //             FeederConstants.ClosedLoopControllerkI,
   //             DegreesPerSecond.of(FeederConstants.ClosedLoopControllerDegreesPerSec),
-  //             DegreesPerSecondPerSecond.of(FeederConstants.ClosedLoopControllerDegreesPerSecPerSec))
+  //
+  // DegreesPerSecondPerSecond.of(FeederConstants.ClosedLoopControllerDegreesPerSecPerSec))
   //         .withSoftLimit(
   //             Degrees.of(FeederConstants.SoftLimitDegree),
   //             Degrees.of(FeederConstants.SoftLimitDegreeMagnitude))

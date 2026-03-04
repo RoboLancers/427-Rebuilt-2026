@@ -35,7 +35,8 @@ public class IntakeShooter extends SubsystemBase {
   public static int FuelCounter = 0;
   public static double ShootSpeed;
   private SparkMax spark = new SparkMax(IntakeConstants.Intake_SparkMax_ID, MotorType.kBrushless);
-  private SparkMax sparkFollower = new SparkMax(IntakeConstants.IntakeFollower_SparkMax_ID, MotorType.kBrushless);
+  private SparkMax sparkFollower =
+      new SparkMax(IntakeConstants.IntakeFollower_SparkMax_ID, MotorType.kBrushless);
 
   protected void execute() {
     SmartDashboard.putNumber("Fuel Number", FuelCounter);

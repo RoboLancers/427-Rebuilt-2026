@@ -79,9 +79,9 @@ public final class Constants {
     public static final int NumMotors = 1;
     // NumMotors and SoftLowerLimit will have to be adjusted based on the actual climb arm's freedom
     // of movement.
-    public static final int SoftLowerLimit = -20;
+    public static final int SoftLowerLimit = -50;
     public static final int SoftUpperLimit = 110;
-    public static final int HardMin = -20;
+    public static final int HardMin = -50;
     public static final int HardMax = 110;
     public static final int StartingPosition = 90;
 
@@ -104,14 +104,13 @@ public final class Constants {
     public static final double Y_DutyCycle = -0.3;
   }
 
-
   public static class OperatorConstants {
 
     // Joystick Deadbband
 
     // Joystick Deadbband
 
-    public static final int kDriverControllerPort = 0; 
+    public static final int kDriverControllerPort = 0;
     public static final String drivebase = "drivebase";
     public static final double DEADBAND = 0.3;
     public static final double LEFT_Y_DEADBAND = 0.1;
@@ -122,11 +121,11 @@ public final class Constants {
     public static final int DRIVE_SCALING = 7;
     public static final int ROTATION_SCALING = 6;
 
-    public static final boolean IsSwerve = false;
+    public static final boolean IsSwerve = true;
   }
 
   public static class VisionConstants {
-    public static final boolean isVision = true;
+    public static final boolean isVision = false;
 
     public static final String kCameraName = "YOUR CAMERA NAME";
     // Cam mounted facing forward, half a meter forward of center, half a meter up from cen
@@ -166,7 +165,7 @@ public final class Constants {
     public static final int CurrentLimit = 40;
     public static final int MaxVelocity = 90;
     public static final int MaxAcceleration = 45;
-    public static final double Intake_GearRatio = 1.5; ///on swerve bot 2/3
+    public static final double Intake_GearRatio = 1.5; // /on swerve bot 2/3
     public static final double x_DutyCycle = 0.3;
     public static final double y_DutyCycle = -0.3;
 
@@ -204,7 +203,7 @@ public final class Constants {
     public static final double ks = 0;
     public static final double kv = 0.18;
     public static final double ka = 0;
-    public static final int reductionStages = 3;   //on swerve bot 1/3
+    public static final int reductionStages = 3; // on swerve bot 1/3
     public static final int StatorLimit = 40;
 
     public static final double ClosedLoopRampRate = 0.25;
