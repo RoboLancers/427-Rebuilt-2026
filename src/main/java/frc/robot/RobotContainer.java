@@ -211,9 +211,8 @@ public class RobotContainer {
   }
 
   public Command Launch() {
-    return m_IntakeShooter
-        .setVelocity(RPM.of(FuelConstants.LaunchingIntake))
-        .alongWith(m_feeder.setVelocity(RPM.of(FuelConstants.LaunchingFeeder)));
+    return m_feeder
+       .setVelocity(RPM.of(FuelConstants.LaunchingFeeder));
   }
 
   public Command Stop() {
@@ -223,19 +222,15 @@ public class RobotContainer {
   }
 
   public Command SpinUp() {
-    return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinupIntake));
+    return m_IntakeShooter
+        .setVelocity(RPM.of(FuelConstants.SpinupIntake));
   }
 
   private void configureBindings() {
     m_driverController.leftBumper().whileTrue(Intake());
-    m_driverController
-        .rightBumper()
-        .whileTrue(
-            SpinUp()
-                .withTimeout(FuelConstants.SpinUpTime)
-                .andThen(Launch())
-                .finallyDo(() -> Stop()));
+    m_driverController.rightBumper().whileTrue(SpinUp());
     m_driverController.rightTrigger().whileTrue(Eject());
+    m_driverController.leftTrigger().whileTrue(Launch());
      if (Constants.OperatorConstants.IsSwerve == false) {
       driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController));
      }

@@ -68,20 +68,20 @@ public class IntakeShooter extends SubsystemBase {
           .withIdleMode(MotorMode.BRAKE)
           .withStatorCurrentLimit(Amps.of(IntakeConstants.CurrentLimit))
           .withClosedLoopRampRate(Seconds.of(IntakeConstants.ClosedLoopRampRate))
-          .withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate));
-         // .withFollowers(Pair.of(sparkFollower, true));
+          .withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate))
+          .withFollowers(Pair.of(sparkFollower, true));
 
   private SmartMotorController sparkSmartMotorController =
       new SparkWrapper(spark, DCMotor.getNEO(IntakeConstants.IntakenumMotors), smcConfig);
 
-  private Debouncer statorDebounce = new Debouncer(IntakeConstants.DebounceTime);
+  // private Debouncer statorDebounce = new Debouncer(IntakeConstants.DebounceTime);
 
-  public boolean isGamePieceIn() {
-    return statorDebounce.calculate(
-        sparkSmartMotorController
-            .getStatorCurrent()
-            .gte(Amps.of(IntakeConstants.DebounceMagnitude)));
-  }
+  // public boolean isGamePieceIn() {
+  //   return statorDebounce.calculate(
+  //       sparkSmartMotorController
+  //           .getStatorCurrent()
+  //           .gte(Amps.of(IntakeConstants.DebounceMagnitude)));
+  // }
 
   private FlyWheelConfig intakeConfig =
       new FlyWheelConfig(sparkSmartMotorController)
@@ -105,10 +105,10 @@ public class IntakeShooter extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Fuel Number", FuelCounter);
     intake.updateTelemetry();
-    boolean GamePiece = isGamePieceIn();
-    if (GamePiece == true) {
-      FuelCounter += 1;
-    }
+    // boolean GamePiece = isGamePieceIn();
+    // if (GamePiece == true) {
+    //   FuelCounter += 1;
+    // }
     ShootSpeed = SmartDashboard.getNumber("ShooterSpeed", ShootSpeed);
     SmartDashboard.putNumber("ShooterRPM", ShootSpeed);
   }
