@@ -1,7 +1,12 @@
 {
+  "Joysticks": {
+    "window": {
+      "visible": false
+    }
+  },
   "System Joysticks": {
     "window": {
-      "enabled": false
+      "visible": false
     }
   },
   "keyboardJoysticks": [
@@ -95,9 +100,12 @@
     }
   ],
   "robotJoysticks": [
-    {},
     {
-      "guid": "Keyboard0"
+      "guid": "78696e70757401000000000000000000",
+      "useGamepad": true
+    },
+    {
+      "useGamepad": true
     }
   ]
 }

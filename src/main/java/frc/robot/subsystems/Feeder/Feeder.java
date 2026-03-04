@@ -31,8 +31,6 @@ import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 public class Feeder extends SubsystemBase {
 
-  // public int FuelCounter;
-
   SmartMotorControllerTelemetryConfig motorTelemetryConfig =
       new SmartMotorControllerTelemetryConfig()
           .withMechanismPosition()
@@ -40,36 +38,26 @@ public class Feeder extends SubsystemBase {
           .withMechanismLowerLimit()
           .withMechanismUpperLimit();
 
-  SmartMotorControllerConfig motorConfig =
-      new SmartMotorControllerConfig(this)
-          .withClosedLoopController(
-              FeederConstants.ClosedLoopControllerkP,
-              FeederConstants.ClosedLoopControllerkI,
-              FeederConstants.ClosedLoopControllerkI,
-              DegreesPerSecond.of(FeederConstants.ClosedLoopControllerDegreesPerSec),
-              DegreesPerSecondPerSecond.of(FeederConstants.ClosedLoopControllerDegreesPerSecPerSec))
-          .withSoftLimit(
-              Degrees.of(FeederConstants.SoftLimitDegree),
-              Degrees.of(FeederConstants.SoftLimitDegreeMagnitude))
-          .withGearing(FeederConstants.GearingreductionStages)
-          .withIdleMode(MotorMode.BRAKE)
-          .withTelemetry("FeederMotor", motorTelemetryConfig);
+  // SmartMotorControllerConfig motorConfig =
+  //     new SmartMotorControllerConfig(this)
+  //         .withClosedLoopController(
+  //             FeederConstants.ClosedLoopControllerkP,
+  //             FeederConstants.ClosedLoopControllerkI,
+  //             FeederConstants.ClosedLoopControllerkI,
+  //             DegreesPerSecond.of(FeederConstants.ClosedLoopControllerDegreesPerSec),
+  //             DegreesPerSecondPerSecond.of(FeederConstants.ClosedLoopControllerDegreesPerSecPerSec))
+  //         .withSoftLimit(
+  //             Degrees.of(FeederConstants.SoftLimitDegree),
+  //             Degrees.of(FeederConstants.SoftLimitDegreeMagnitude))
+  //         .withGearing(FeederConstants.GearingreductionStages)
+  //         .withIdleMode(MotorMode.BRAKE)
+  //         .withTelemetry("FeederMotor", motorTelemetryConfig);
 
   private SmartMotorControllerConfig smcConfig =
       new SmartMotorControllerConfig(this)
           .withControlMode(ControlMode.CLOSED_LOOP)
-          .withClosedLoopController(
-              FeederConstants.kP,
-              FeederConstants.kI,
-              FeederConstants.kD,
-              DegreesPerSecond.of(FeederConstants.DegPerSecmagnitude),
-              DegreesPerSecondPerSecond.of(FeederConstants.DegPerSecPerSecmagnitude))
-          .withSimClosedLoopController(
-              FeederConstants.kP,
-              FeederConstants.kI,
-              FeederConstants.kD,
-              DegreesPerSecond.of(FeederConstants.DegPerSecmagnitude),
-              DegreesPerSecondPerSecond.of(FeederConstants.DegPerSecPerSecmagnitude))
+          .withClosedLoopController(FeederConstants.kP, FeederConstants.kI, FeederConstants.kD)
+          .withSimClosedLoopController(FeederConstants.kP, FeederConstants.kI, FeederConstants.kD)
           .withFeedforward(
               new SimpleMotorFeedforward(
                   FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
@@ -77,8 +65,7 @@ public class Feeder extends SubsystemBase {
               new SimpleMotorFeedforward(
                   FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
           .withTelemetry("FeederMotor", TelemetryVerbosity.HIGH)
-          .withGearing(
-              new MechanismGearing(GearBox.fromReductionStages(FeederConstants.reductionStages)))
+          .withGearing(FeederConstants.reductionStages)
           .withMotorInverted(false)
           .withIdleMode(MotorMode.BRAKE)
           .withStatorCurrentLimit(Amps.of(FeederConstants.StatorLimit))
@@ -90,14 +77,7 @@ public class Feeder extends SubsystemBase {
   private SmartMotorController sparkSmartMotorController =
       new SparkWrapper(spark, DCMotor.getNEO(FeederConstants.FeedernumMotors), smcConfig);
 
-  // private Debouncer statorDebounce = new Debouncer(FeederConstants.debouncerTime);
-
-  // public boolean isGamePieceIn() {
-  //   return
-  // statorDebounce.calculate(sparkSmartMotorController.getStatorCurrent().gte(Amps.of(FeederConstants.StatorAmps)));
-  // }
-
-  private final FlyWheelConfig FeederConfig =
+  private FlyWheelConfig FeederConfig =
       new FlyWheelConfig(sparkSmartMotorController)
           .withDiameter(Inches.of(FeederConstants.Diameter))
           .withMass(Pounds.of(FeederConstants.Mass))
@@ -134,12 +114,6 @@ public class Feeder extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     Feeder.updateTelemetry();
-
-    // boolean Fuel = isGamePieceIn();
-    // if (Fuel) {
-    //   FuelCounter -= 1;
-    // }
-
   }
 
   @Override

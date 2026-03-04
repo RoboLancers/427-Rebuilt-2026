@@ -11,9 +11,15 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "DEPLOY"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "CEN_POS_1"
+            "pathName": "BOT_LEFT_CLIMB"
           }
         },
         {
