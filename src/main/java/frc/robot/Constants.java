@@ -33,11 +33,24 @@ public final class Constants {
     public static final double MAX_SPEED =
         Units.feetToMeters(15); // this used to be like 14 or smth
     public static final double MAX_ANGULAR_SPEED = Units.feetToMeters(15);
+
+    public static final double TANK_SPEED_MULTIPLYER = 0.1;
+    public static final double TANK__TURNING_SPEED_MULTIPLYER = 0.1;
     // Joystick deadband
     public static final double DEADBAND = 0.1;
     public static final double LEFT_Y_DEADBAND = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT = 6;
+
+    // Motor controller IDs for drivetrain motors
+    public static final int LEFT_LEADER_ID = 30;
+    public static final int LEFT_FOLLOWER_ID = 40;
+    public static final int RIGHT_LEADER_ID = 20;
+    public static final int RIGHT_FOLLOWER_ID = 62;
+
+    // Current limit for drivetrain motors. 60A is a reasonable maximum to reduce
+    // likelihood of tripping breakers or damaging CIM motors
+    public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;
   }
 
   public static class ClimbConstants {
@@ -61,14 +74,14 @@ public final class Constants {
     public static final int StatorCurrentLimit = 40;
     public static final double LoopRampRate = 0.25;
 
-    public static final int SparkMaxDeviceID = 16;
+    public static final int SparkMaxDeviceID = 17;
 
     public static final int NumMotors = 1;
     // NumMotors and SoftLowerLimit will have to be adjusted based on the actual climb arm's freedom
     // of movement.
-    public static final int SoftLowerLimit = -20;
+    public static final int SoftLowerLimit = -50;
     public static final int SoftUpperLimit = 110;
-    public static final int HardMin = -20;
+    public static final int HardMin = -50;
     public static final int HardMax = 110;
     public static final int StartingPosition = 90;
 
@@ -104,6 +117,11 @@ public final class Constants {
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT = 6;
     // this used to be 6 if turning speed is stupid make it six
+
+    public static final int DRIVE_SCALING = 7;
+    public static final int ROTATION_SCALING = 6;
+
+    public static final boolean IsSwerve = true;
   }
 
   public static class VisionConstants {
@@ -128,25 +146,26 @@ public final class Constants {
 
   public static class IntakeConstants {
 
-    public static final int Intake_SparkMax_ID = 14;
+    public static final int Intake_SparkMax_ID = 15;
+    public static final int IntakeFollower_SparkMax_ID = 16;
     public static final int IntakenumMotors = 1;
 
     public static final int Intake_RPM = 60;
-    public static final int FlyWheel_Diameter = 2;
-    public static final double FlyWheel_Mass = 0.029;
-    public static final int SoftLimit = 1000;
+    public static final int FlyWheel_Diameter = 4;
+    public static final double FlyWheel_Mass = 2;
+    public static final int SoftLimit = 5000;
 
-    public static final int KP = 50;
-    public static final int KI = 0;
-    public static final int KD = 0;
-    public static final int ks = 0;
-    public static final int kv = 0;
-    public static final int ka = 0;
+    public static final double KP = 0;
+    public static final double KI = 0;
+    public static final double KD = 0;
+    public static final double ks = 0;
+    public static final double kv = 0.18;
+    public static final double ka = 0;
 
     public static final int CurrentLimit = 40;
     public static final int MaxVelocity = 90;
     public static final int MaxAcceleration = 45;
-    public static final double Intake_GearRatio = 12;
+    public static final double Intake_GearRatio = 1.5; // /on swerve bot 2/3
     public static final double x_DutyCycle = 0.3;
     public static final double y_DutyCycle = -0.3;
 
@@ -158,7 +177,7 @@ public final class Constants {
 
   public static class FeederConstants {
 
-    public static final int FeederdeviceId = 15;
+    public static final int FeederdeviceId = 14;
     public static final int FeedernumMotors = 1;
 
     public static final int ClosedLoopControllerkP = 4;
@@ -170,23 +189,21 @@ public final class Constants {
     public static final int SoftLimitDegree = -30;
     public static final int SoftLimitDegreeMagnitude = 100;
 
-    public static final int GearingreductionStages = 3;
+    public static final double GearingreductionStages = 8.4;
 
-    public static final int kP = 50;
-    public static final int kI = 0;
-    public static final int kD = 0;
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
 
     public static final int DegPerSecmagnitude = 90;
     public static final int DegPerSecPerSecmagnitude = 45;
     public static final int controllerAmagnitude = 60;
     public static final int controllerBmagnitude = 300;
 
-    /** Need info for below */
-    public static final int ks = 0;
-
-    public static final int kv = 0;
-    public static final int ka = 0;
-    public static final int reductionStages = 12;
+    public static final double ks = 0;
+    public static final double kv = 0;
+    public static final double ka = 0;
+    public static final int reductionStages = 3; // on swerve bot 1/3
     public static final int StatorLimit = 40;
 
     public static final double ClosedLoopRampRate = 0.25;
@@ -196,16 +213,13 @@ public final class Constants {
 
     public static final int StatorAmps = 40;
 
-    /** Need info for below */
     public static final int Diameter = 4;
 
     public static final double Mass = 0.3;
-    public static final int UpperSoftLimit = 1000;
+    public static final int UpperSoftLimit = 5000;
 
     public static final double controllerxdutyCycle = 0.3;
     public static final double controllerydutyCycle = -0.3;
-
-    /** Need info for below */
   }
 
   public static class FuelConstants {
@@ -214,14 +228,14 @@ public final class Constants {
 
     public static final int FuelLimit = 8;
 
-    public static final double IntakingFeeder = 1.0;
-    public static final double IntakingIntake = 1.0;
+    public static final double IntakingFeeder = 0.1;
+    public static final double IntakingIntake = 0.1;
 
-    public static final double EjectingFeeder = -0.9;
-    public static final double EjectingIntake = -0.9;
+    public static final double EjectingFeeder = -0.7;
+    public static final double EjectingIntake = -0.7;
 
-    public static final double LaunchingFeeder = -0.9;
-    public static final double LaunchingIntake = 0.8;
+    public static final double LaunchingFeeder = -0.7;
+    public static final double LaunchingIntake = 0.7;
 
     public static final int StoppingFeeder = 0;
     public static final int StoppingIntake = 0;

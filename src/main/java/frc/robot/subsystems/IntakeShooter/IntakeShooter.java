@@ -1,8 +1,6 @@
 package frc.robot.subsystems.IntakeShooter;
 
 import static edu.wpi.first.units.Units.Amps;
-import static edu.wpi.first.units.Units.DegreesPerSecond;
-import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.RPM;
@@ -30,9 +28,17 @@ import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 public class IntakeShooter extends SubsystemBase {
   public static int FuelCounter = 0;
+  public static double ShootSpeed;
+  private SparkMax spark = new SparkMax(IntakeConstants.Intake_SparkMax_ID, MotorType.kBrushless);
+  private SparkMax sparkFollower =
+      new SparkMax(IntakeConstants.IntakeFollower_SparkMax_ID, MotorType.kBrushless);
 
   protected void execute() {
     SmartDashboard.putNumber("Fuel Number", FuelCounter);
+  }
+
+  public IntakeShooter() {
+    SmartDashboard.putNumber("ShooterSpeed", ShootSpeed);
   }
 
   /** Creates a new intake. */
@@ -47,18 +53,8 @@ public class IntakeShooter extends SubsystemBase {
       new SmartMotorControllerConfig(this)
           .withControlMode(ControlMode.CLOSED_LOOP)
           // Feedback Constants (PID Constants)
-          .withClosedLoopController(
-              IntakeConstants.KP,
-              IntakeConstants.KI,
-              IntakeConstants.KD,
-              DegreesPerSecond.of(IntakeConstants.MaxVelocity),
-              DegreesPerSecondPerSecond.of(IntakeConstants.MaxAcceleration))
-          .withSimClosedLoopController(
-              IntakeConstants.KP,
-              IntakeConstants.KI,
-              IntakeConstants.KD,
-              DegreesPerSecond.of(IntakeConstants.MaxVelocity),
-              DegreesPerSecondPerSecond.of(IntakeConstants.MaxAcceleration))
+          .withClosedLoopController(IntakeConstants.KP, IntakeConstants.KI, IntakeConstants.KD)
+          .withSimClosedLoopController(IntakeConstants.KP, IntakeConstants.KI, IntakeConstants.KD)
           // FeedForward Constants
           .withFeedforward(
               new SimpleMotorFeedforward(
@@ -67,7 +63,7 @@ public class IntakeShooter extends SubsystemBase {
               new SimpleMotorFeedforward(
                   IntakeConstants.ks, IntakeConstants.kv, IntakeConstants.ka))
           // Telemtry name and verbosity level
-          .withTelemetry("IntakeMotor", motorTelemetryConfig)
+          .withTelemetry("IntakeMotor", TelemetryVerbosity.HIGH)
           // Gearing from the motor rotor to final shaft
           .withGearing(IntakeConstants.Intake_GearRatio)
           // Motor Properties to prevent over currenting
@@ -76,9 +72,7 @@ public class IntakeShooter extends SubsystemBase {
           .withStatorCurrentLimit(Amps.of(IntakeConstants.CurrentLimit))
           .withClosedLoopRampRate(Seconds.of(IntakeConstants.ClosedLoopRampRate))
           .withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate));
-
-  // Vendor motor controller object
-  private SparkMax spark = new SparkMax(IntakeConstants.Intake_SparkMax_ID, MotorType.kBrushless);
+  // .withFollowers(Pair.of(sparkFollower, true));
 
   private SmartMotorController sparkSmartMotorController =
       new SparkWrapper(spark, DCMotor.getNEO(IntakeConstants.IntakenumMotors), smcConfig);
@@ -95,16 +89,11 @@ public class IntakeShooter extends SubsystemBase {
   private FlyWheelConfig intakeConfig =
       new FlyWheelConfig(sparkSmartMotorController)
           .withDiameter(Inches.of(IntakeConstants.FlyWheel_Diameter))
-          // Mass of the flywheel
           .withMass(Pounds.of(IntakeConstants.FlyWheel_Mass))
-          // Maximmum speed of the intake
           .withUpperSoftLimit(RPM.of(IntakeConstants.SoftLimit))
-          // Telemetry name and verbosity for the arm
           .withTelemetry("IntakeMech", TelemetryVerbosity.HIGH);
 
   private FlyWheel intake = new FlyWheel(intakeConfig);
-
-  public IntakeShooter() {}
 
   public Command intakeMethodCommand() {
     return runOnce(() -> {});
@@ -123,6 +112,8 @@ public class IntakeShooter extends SubsystemBase {
     if (GamePiece == true) {
       FuelCounter += 1;
     }
+    ShootSpeed = SmartDashboard.getNumber("ShooterSpeed", ShootSpeed);
+    SmartDashboard.putNumber("ShooterRPM", ShootSpeed);
   }
 
   @Override
@@ -136,6 +127,10 @@ public class IntakeShooter extends SubsystemBase {
 
   public Command setVelocity(AngularVelocity speed) {
     return intake.setSpeed(speed);
+  }
+
+  public Command ManualSpeedControl() {
+    return intake.setSpeed(() -> RPM.of(IntakeShooter.ShootSpeed));
   }
 
   public Command set(double dutyCycle) {
