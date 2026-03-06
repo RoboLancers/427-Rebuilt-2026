@@ -152,14 +152,14 @@ public final class Constants {
 
     public static final int Intake_RPM = 60;
     public static final int FlyWheel_Diameter = 4;
-    public static final double FlyWheel_Mass = 2;
+    public static final double FlyWheel_Mass = 4;
     public static final int SoftLimit = 5000;
 
     public static final double KP = 0;
     public static final double KI = 0;
     public static final double KD = 0;
-    public static final double ks = 0;
-    public static final double kv = 0.18;
+    public static final double ks = 1;
+    public static final double kv = 0.187;
     public static final double ka = 0;
 
     public static final int CurrentLimit = 40;
@@ -171,8 +171,8 @@ public final class Constants {
 
     public static final double DebounceTime = 0.1;
     public static final double DebounceMagnitude = 40;
-    public static final double ClosedLoopRampRate = 0.25;
-    public static final double OpenLoopRampRate = 0.25;
+    public static final double ClosedLoopRampRate = 0.05;
+    public static final double OpenLoopRampRate = 0.05;
   }
 
   public static class FeederConstants {
@@ -189,7 +189,7 @@ public final class Constants {
     public static final int SoftLimitDegree = -30;
     public static final int SoftLimitDegreeMagnitude = 100;
 
-    public static final double GearingreductionStages = 8.4;
+    public static final double GearingreductionStages = 1;
 
     public static final double kP = 0;
     public static final double kI = 0;
@@ -200,14 +200,14 @@ public final class Constants {
     public static final int controllerAmagnitude = 60;
     public static final int controllerBmagnitude = 300;
 
-    public static final double ks = 0;
-    public static final double kv = 0;
+    public static final double ks = 1.5;
+    public static final double kv = 0.113;
     public static final double ka = 0;
-    public static final int reductionStages = 3; // on swerve bot 1/3
+    public static final int reductionStages = 1; // on swerve bot 1/3
     public static final int StatorLimit = 40;
 
-    public static final double ClosedLoopRampRate = 0.25;
-    public static final double OpenLoopRampRate = 0.25;
+    public static final double ClosedLoopRampRate = 0.05;
+    public static final double OpenLoopRampRate = 0.05;
 
     public static final double debouncerTime = 0.1;
 
@@ -228,19 +228,19 @@ public final class Constants {
 
     public static final int FuelLimit = 8;
 
-    public static final double IntakingFeeder = 0.1;
-    public static final double IntakingIntake = 0.1;
+    public static final double IntakingFeeder = -4000;
+    public static final double IntakingIntake = -3000;
 
-    public static final double EjectingFeeder = -0.7;
-    public static final double EjectingIntake = -0.7;
+    public static final double EjectingFeeder = 4000;
+    public static final double EjectingIntake = 3000;
 
-    public static final double LaunchingFeeder = -0.7;
-    public static final double LaunchingIntake = 0.7;
+    public static final double LaunchingFeeder = 4000;
+    public static final double LaunchingIntake = -3000;
 
     public static final int StoppingFeeder = 0;
     public static final int StoppingIntake = 0;
 
-    public static final double SpinupIntake = 0.4;
+    public static final double SpinupIntake = -3000;
   }
 
   public static class CameraConstants {

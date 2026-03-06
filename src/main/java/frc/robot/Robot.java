@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
@@ -66,16 +67,15 @@ public class Robot extends TimedRobot {
                 outputStream.putFrame(mat);
               }
             });
-    m_visionThread.setDaemon(true);
-    m_visionThread.start();
+    //m_visionThread.setDaemon(true);
+    //m_visionThread.start();
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.
-    DataLogManager.start();
-
     m_robotContainer = new RobotContainer();
     DataLogManager.start();
+    Epilogue.bind(this);
   }
 
   /**

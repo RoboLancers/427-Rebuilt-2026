@@ -8,6 +8,10 @@ import static edu.wpi.first.units.Units.Seconds;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+
+import edu.wpi.first.epilogue.Epilogue;
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -26,15 +30,16 @@ import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
 import yams.motorcontrollers.local.SparkWrapper;
 import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
+@Logged
 public class IntakeShooter extends SubsystemBase {
-  public static int FuelCounter = 0;
+  //public static int FuelCounter = 0;
   public static double ShootSpeed;
   private SparkMax spark = new SparkMax(IntakeConstants.Intake_SparkMax_ID, MotorType.kBrushless);
   private SparkMax sparkFollower =
       new SparkMax(IntakeConstants.IntakeFollower_SparkMax_ID, MotorType.kBrushless);
 
   protected void execute() {
-    SmartDashboard.putNumber("Fuel Number", FuelCounter);
+    //SmartDashboard.putNumber("Fuel Number", FuelCounter);
   }
 
   public IntakeShooter() {
@@ -42,13 +47,6 @@ public class IntakeShooter extends SubsystemBase {
   }
 
   /** Creates a new intake. */
-  SmartMotorControllerTelemetryConfig motorTelemetryConfig =
-      new SmartMotorControllerTelemetryConfig()
-          .withMechanismPosition()
-          .withRotorPosition()
-          .withMechanismLowerLimit()
-          .withMechanismUpperLimit();
-
   private SmartMotorControllerConfig smcConfig =
       new SmartMotorControllerConfig(this)
           .withControlMode(ControlMode.CLOSED_LOOP)
@@ -71,20 +69,20 @@ public class IntakeShooter extends SubsystemBase {
           .withIdleMode(MotorMode.BRAKE)
           .withStatorCurrentLimit(Amps.of(IntakeConstants.CurrentLimit))
           .withClosedLoopRampRate(Seconds.of(IntakeConstants.ClosedLoopRampRate))
-          .withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate));
-  // .withFollowers(Pair.of(sparkFollower, true));
+          .withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate))
+          .withFollowers(Pair.of(sparkFollower, true));
 
   private SmartMotorController sparkSmartMotorController =
       new SparkWrapper(spark, DCMotor.getNEO(IntakeConstants.IntakenumMotors), smcConfig);
 
-  private Debouncer statorDebounce = new Debouncer(IntakeConstants.DebounceTime);
+  // private Debouncer statorDebounce = new Debouncer(IntakeConstants.DebounceTime);
 
-  public boolean isGamePieceIn() {
-    return statorDebounce.calculate(
-        sparkSmartMotorController
-            .getStatorCurrent()
-            .gte(Amps.of(IntakeConstants.DebounceMagnitude)));
-  }
+  // public boolean isGamePieceIn() {
+  //   return statorDebounce.calculate(
+  //       sparkSmartMotorController
+  //           .getStatorCurrent()
+  //           .gte(Amps.of(IntakeConstants.DebounceMagnitude)));
+  // }
 
   private FlyWheelConfig intakeConfig =
       new FlyWheelConfig(sparkSmartMotorController)
@@ -106,12 +104,12 @@ public class IntakeShooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Fuel Number", FuelCounter);
+    //SmartDashboard.putNumber("Fuel Number", FuelCounter);
     intake.updateTelemetry();
-    boolean GamePiece = isGamePieceIn();
-    if (GamePiece == true) {
-      FuelCounter += 1;
-    }
+    // boolean GamePiece = isGamePieceIn();
+    // if (GamePiece == true) {
+    //   FuelCounter += 1;
+    // }
     ShootSpeed = SmartDashboard.getNumber("ShooterSpeed", ShootSpeed);
     SmartDashboard.putNumber("ShooterRPM", ShootSpeed);
   }
@@ -120,9 +118,10 @@ public class IntakeShooter extends SubsystemBase {
   public void simulationPeriodic() {
     intake.simIterate();
   }
-
+  @Logged(name = "IntakeShooterVelocity")
   public AngularVelocity getVelocity() {
-    return intake.getSpeed();
+    AngularVelocity velocity = intake.getSpeed();
+    return velocity;
   }
 
   public Command setVelocity(AngularVelocity speed) {

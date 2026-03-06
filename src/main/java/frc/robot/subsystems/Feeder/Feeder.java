@@ -6,6 +6,7 @@ import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Seconds;
 
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -26,12 +27,6 @@ import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 public class Feeder extends SubsystemBase {
 
-  SmartMotorControllerTelemetryConfig motorTelemetryConfig =
-      new SmartMotorControllerTelemetryConfig()
-          .withMechanismPosition()
-          .withRotorPosition()
-          .withMechanismLowerLimit()
-          .withMechanismUpperLimit();
 
   // SmartMotorControllerConfig motorConfig =
   //     new SmartMotorControllerConfig(this)
@@ -48,27 +43,32 @@ public class Feeder extends SubsystemBase {
   //         .withGearing(FeederConstants.GearingreductionStages)
   //         .withIdleMode(MotorMode.BRAKE)
   //         .withTelemetry("FeederMotor", motorTelemetryConfig);
-
+  
   private SmartMotorControllerConfig smcConfig =
       new SmartMotorControllerConfig(this)
           .withControlMode(ControlMode.CLOSED_LOOP)
+          // Feedback Constants (PID Constants)
           .withClosedLoopController(FeederConstants.kP, FeederConstants.kI, FeederConstants.kD)
           .withSimClosedLoopController(FeederConstants.kP, FeederConstants.kI, FeederConstants.kD)
+          // FeedForward Constants
           .withFeedforward(
               new SimpleMotorFeedforward(
                   FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
           .withSimFeedforward(
               new SimpleMotorFeedforward(
                   FeederConstants.ks, FeederConstants.kv, FeederConstants.ka))
+          // Telemtry name and verbosity level
           .withTelemetry("FeederMotor", TelemetryVerbosity.HIGH)
+          // Gearing from the motor rotor to final shaft
           .withGearing(FeederConstants.reductionStages)
+          // Motor Properties to prevent over currenting
           .withMotorInverted(false)
           .withIdleMode(MotorMode.BRAKE)
           .withStatorCurrentLimit(Amps.of(FeederConstants.StatorLimit))
           .withClosedLoopRampRate(Seconds.of(FeederConstants.ClosedLoopRampRate))
           .withOpenLoopRampRate(Seconds.of(FeederConstants.OpenLoopRampRate));
 
-  private SparkMax spark = new SparkMax(FeederConstants.FeederdeviceId, MotorType.kBrushless);
+  private SparkFlex spark = new SparkFlex(FeederConstants.FeederdeviceId, MotorType.kBrushless);
 
   private SmartMotorController sparkSmartMotorController =
       new SparkWrapper(spark, DCMotor.getNEO(FeederConstants.FeedernumMotors), smcConfig);
