@@ -8,12 +8,9 @@ import static edu.wpi.first.units.Units.Seconds;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-
-import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,18 +25,17 @@ import yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
 import yams.motorcontrollers.local.SparkWrapper;
-import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 @Logged
 public class IntakeShooter extends SubsystemBase {
-  //public static int FuelCounter = 0;
+  // public static int FuelCounter = 0;
   public static double ShootSpeed;
   private SparkMax spark = new SparkMax(IntakeConstants.Intake_SparkMax_ID, MotorType.kBrushless);
   private SparkMax sparkFollower =
       new SparkMax(IntakeConstants.IntakeFollower_SparkMax_ID, MotorType.kBrushless);
 
   protected void execute() {
-    //SmartDashboard.putNumber("Fuel Number", FuelCounter);
+    // SmartDashboard.putNumber("Fuel Number", FuelCounter);
   }
 
   public IntakeShooter() {
@@ -104,7 +100,7 @@ public class IntakeShooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    //SmartDashboard.putNumber("Fuel Number", FuelCounter);
+    // SmartDashboard.putNumber("Fuel Number", FuelCounter);
     intake.updateTelemetry();
     // boolean GamePiece = isGamePieceIn();
     // if (GamePiece == true) {
@@ -118,6 +114,7 @@ public class IntakeShooter extends SubsystemBase {
   public void simulationPeriodic() {
     intake.simIterate();
   }
+
   @Logged(name = "IntakeShooterVelocity")
   public AngularVelocity getVelocity() {
     AngularVelocity velocity = intake.getSpeed();

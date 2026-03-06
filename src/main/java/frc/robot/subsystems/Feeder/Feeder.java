@@ -8,7 +8,6 @@ import static edu.wpi.first.units.Units.Seconds;
 
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -23,10 +22,8 @@ import yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
 import yams.motorcontrollers.local.SparkWrapper;
-import yams.telemetry.SmartMotorControllerTelemetryConfig;
 
 public class Feeder extends SubsystemBase {
-
 
   // SmartMotorControllerConfig motorConfig =
   //     new SmartMotorControllerConfig(this)
@@ -43,7 +40,7 @@ public class Feeder extends SubsystemBase {
   //         .withGearing(FeederConstants.GearingreductionStages)
   //         .withIdleMode(MotorMode.BRAKE)
   //         .withTelemetry("FeederMotor", motorTelemetryConfig);
-  
+
   private SmartMotorControllerConfig smcConfig =
       new SmartMotorControllerConfig(this)
           .withControlMode(ControlMode.CLOSED_LOOP)
