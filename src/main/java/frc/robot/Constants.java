@@ -79,9 +79,9 @@ public final class Constants {
     public static final int NumMotors = 1;
     // NumMotors and SoftLowerLimit will have to be adjusted based on the actual climb arm's freedom
     // of movement.
-    public static final int SoftLowerLimit = -20;
+    public static final int SoftLowerLimit = -50;
     public static final int SoftUpperLimit = 110;
-    public static final int HardMin = -20;
+    public static final int HardMin = -50;
     public static final int HardMax = 110;
     public static final int StartingPosition = 90;
 
@@ -125,7 +125,7 @@ public final class Constants {
   }
 
   public static class VisionConstants {
-    public static final boolean isVision = true;
+    public static final boolean isVision = false;
 
     public static final String kCameraName = "YOUR CAMERA NAME";
     // Cam mounted facing forward, half a meter forward of center, half a meter up from cen
@@ -146,8 +146,8 @@ public final class Constants {
 
   public static class IntakeConstants {
 
-    public static final int Intake_SparkMax_ID = 60;
-    public static final int IntakeFollower_SparkMax_ID = 70;
+    public static final int Intake_SparkMax_ID = 15;
+    public static final int IntakeFollower_SparkMax_ID = 16;
     public static final int IntakenumMotors = 1;
 
     public static final int Intake_RPM = 60;
@@ -177,7 +177,7 @@ public final class Constants {
 
   public static class FeederConstants {
 
-    public static final int FeederdeviceId = 50;
+    public static final int FeederdeviceId = 14;
     public static final int FeedernumMotors = 1;
 
     public static final int ClosedLoopControllerkP = 4;
