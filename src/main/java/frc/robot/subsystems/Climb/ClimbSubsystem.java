@@ -115,6 +115,10 @@ public class ClimbSubsystem extends SubsystemBase {
     return arm.setAngle(Degrees.of(ClimbConstants.ClimbAngle));
   }
 
+  public Command autonomousClimb() {
+    return setClimbAngle().finallyDo(() -> setDeployAngle());
+  }
+
   /**
    * Set arm closed loop controller to go to the specified mechanism position.
    *

@@ -155,6 +155,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 1));
     NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 1));
     NamedCommands.registerCommand("END_INTAKE", timedCommand(Stop(), 1));
+    NamedCommands.registerCommand(
+        "DEPLOY", Commands.none()); // timedCommand(m_ClimbSubsystem.setDeployAngle(), 1));
     // NamedCommands.registerCommand("CLIMB", );
 
     configureBindings();
