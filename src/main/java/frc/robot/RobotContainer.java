@@ -151,7 +151,7 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     // SmartDashboard.putData("Auto Chooser", autoChooser);
-    NamedCommands.registerCommand("SHOOT", timedCommand(Launch(), 1));
+    NamedCommands.registerCommand("SHOOT", timedCommand(Shoot(), 1));
     NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 1));
     NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 1));
     NamedCommands.registerCommand("END_INTAKE", timedCommand(Stop(), 1));
@@ -205,7 +205,7 @@ public class RobotContainer {
         .alongWith(m_feeder.setVelocity(RPM.of(FuelConstants.EjectingFeeder)));
   }
 
-  public Command Launch() {
+  public Command Shoot() {
     return m_feeder.setVelocity(RPM.of(FuelConstants.LaunchingFeeder));
   }
 
@@ -215,8 +215,11 @@ public class RobotContainer {
         .alongWith(m_feeder.setVelocity(RPM.of(FuelConstants.StoppingFeeder)));
   }
 
-  public Command SpinUp() {
-    return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinupIntake));
+  public Command SpinUpClose() {
+    return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinUpIntakeClose));
+  }
+  public Command SpinUpFar() {
+    return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinUpIntakeFar));
   }
 
   public Command timedCommand(Command command, double time) {
@@ -234,9 +237,11 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_driverController.leftBumper().whileTrue(Intake());
-    m_driverController.rightBumper().whileTrue(SpinUp());
+    m_driverController.rightBumper().whileTrue(SpinUpClose());
+    m_driverController.y().whileTrue(SpinUpFar());
     m_driverController.rightTrigger().whileTrue(Eject());
-    m_driverController.leftTrigger().whileTrue(Launch());
+    m_driverController.leftTrigger().whileTrue(Shoot());
+    m_driverController.b().whileTrue(Stop());
     if (Constants.OperatorConstants.IsSwerve == false) {
       driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController));
     }

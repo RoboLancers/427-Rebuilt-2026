@@ -16,6 +16,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.FuelConstants;
 import frc.robot.Constants.IntakeConstants;
 import yams.mechanisms.config.FlyWheelConfig;
 import yams.mechanisms.velocity.FlyWheel;
@@ -40,6 +41,8 @@ public class IntakeShooter extends SubsystemBase {
 
   public IntakeShooter() {
     SmartDashboard.putNumber("ShooterSpeed", ShootSpeed);
+    SmartDashboard.putBoolean("AtCloseSpeed", IsClose());
+    SmartDashboard.putBoolean("AtFarSpeed", IsFar());
   }
 
   /** Creates a new intake. */
@@ -106,8 +109,8 @@ public class IntakeShooter extends SubsystemBase {
     // if (GamePiece == true) {
     //   FuelCounter += 1;
     // }
-    ShootSpeed = SmartDashboard.getNumber("ShooterSpeed", ShootSpeed);
-    SmartDashboard.putNumber("ShooterRPM", ShootSpeed);
+    //ShootSpeed = SmartDashboard.getNumber("ShooterSpeed", ShootSpeed);
+    //SmartDashboard.putNumber("ShooterRPM", ShootSpeed);
   }
 
   @Override
@@ -115,7 +118,6 @@ public class IntakeShooter extends SubsystemBase {
     intake.simIterate();
   }
 
-  @Logged(name = "IntakeShooterVelocity")
   public AngularVelocity getVelocity() {
     AngularVelocity velocity = intake.getSpeed();
     return velocity;
@@ -132,4 +134,18 @@ public class IntakeShooter extends SubsystemBase {
   public Command set(double dutyCycle) {
     return intake.set(dutyCycle);
   }
+
+  public boolean IsClose(){
+    return intake.isNear(RPM.of(FuelConstants.SpinUpIntakeClose), RPM.of(100)).getAsBoolean();
+  }
+
+  public boolean IsFar(){
+    return intake.isNear(RPM.of(FuelConstants.SpinUpIntakeFar), RPM.of(100)).getAsBoolean();
+  }
+  
+  // public boolean IsShooting(){
+  //   if(getVelocity() > 10){
+
+  //   }
+  // }
 }
