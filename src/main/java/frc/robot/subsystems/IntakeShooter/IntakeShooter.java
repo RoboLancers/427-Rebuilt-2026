@@ -40,9 +40,6 @@ public class IntakeShooter extends SubsystemBase {
   }
 
   public IntakeShooter() {
-    SmartDashboard.putNumber("ShooterSpeed", ShootSpeed);
-    SmartDashboard.putBoolean("AtCloseSpeed", IsClose());
-    SmartDashboard.putBoolean("AtFarSpeed", IsFar());
   }
 
   /** Creates a new intake. */
@@ -111,6 +108,10 @@ public class IntakeShooter extends SubsystemBase {
     // }
     //ShootSpeed = SmartDashboard.getNumber("ShooterSpeed", ShootSpeed);
     //SmartDashboard.putNumber("ShooterRPM", ShootSpeed);
+    SmartDashboard.putNumber("ShooterSpeed", ShootSpeed);
+    SmartDashboard.putBoolean("AtCloseSpeed", IsClose());
+    SmartDashboard.putBoolean("AtFarSpeed", IsFar());
+    SmartDashboard.putBoolean("IsShooterRunning", IsShooterRunning());
   }
 
   @Override
@@ -143,9 +144,10 @@ public class IntakeShooter extends SubsystemBase {
     return intake.isNear(RPM.of(FuelConstants.SpinUpIntakeFar), RPM.of(100)).getAsBoolean();
   }
   
-  // public boolean IsShooting(){
-  //   if(getVelocity() > 10){
-
-  //   }
-  // }
+  public boolean IsShooterRunning(){
+    if(intake.getSpeed().in(RPM) > 10){
+      return true;
+    }
+    return false;
+  }
 }
