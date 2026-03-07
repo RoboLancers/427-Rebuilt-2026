@@ -5,6 +5,25 @@
     "data": {
       "commands": [
         {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CenterTurn"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "SHOOT"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [

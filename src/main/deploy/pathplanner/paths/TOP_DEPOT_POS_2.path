@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 2.773,
-        "y": 5.259
+        "x": 2.719315263908701,
+        "y": 5.400028530670471
       },
       "prevControl": {
-        "x": 3.0869914646223786,
-        "y": 5.202803105222402
+        "x": 3.0333067285310795,
+        "y": 5.343831635892872
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "TOP_DEPOT_SHOOT_POS"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -34.330000000000005
+    "rotation": 133.73648689083495
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -178.801060094439
   },
   "useDefaultConstraints": true
 }

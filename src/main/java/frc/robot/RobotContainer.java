@@ -5,6 +5,7 @@ import static frc.robot.Constants.OperatorConstants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.events.EventTrigger;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -99,9 +100,9 @@ public class RobotContainer {
       driveAngularVelocity =
           SwerveInputStream.of(
                   drivebase.getSwerveDrive(),
-                  () -> m_driverController.getLeftY(),
-                  () -> m_driverController.getLeftX())
-              .withControllerRotationAxis(() -> m_driverController.getRightX())
+                  () -> m_driverController.getLeftY()*Constants.DriveConstants.MAX_SPEED,
+                  () -> m_driverController.getLeftX()*Constants.DriveConstants.MAX_SPEED)
+              .withControllerRotationAxis(() -> m_driverController.getRightX()*Constants.DriveConstants.MAX_ANGULAR_SPEED)
               .deadband(DEADBAND)
               .scaleTranslation(0.8)
               .allianceRelativeControl(true);
@@ -151,13 +152,17 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     // SmartDashboard.putData("Auto Chooser", autoChooser);
-    NamedCommands.registerCommand("SHOOT", timedCommand(Shoot(), 1));
-    NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 1));
-    NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 1));
+    NamedCommands.registerCommand("SHOOT", timedCommand(SpinUpClose().withTimeout(1).andThen(Shoot()), 2.5));
+    NamedCommands.registerCommand("SHOOT_FAR", timedCommand(SpinUpFar().withTimeout(1).andThen(Shoot()), 2.5));
+    NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 3));
+    NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 2));
     NamedCommands.registerCommand("END_INTAKE", timedCommand(Stop(), 1));
     NamedCommands.registerCommand(
         "DEPLOY", Commands.none()); // timedCommand(m_ClimbSubsystem.setDeployAngle(), 1));
     // NamedCommands.registerCommand("CLIMB", );
+    new EventTrigger("INTAKE_EVENT").whileTrue(m_IntakeShooter
+        .setVelocity(RPM.of(FuelConstants.IntakingIntake))
+        .alongWith(m_feeder.setVelocity(RPM.of(FuelConstants.IntakingFeeder))));
 
     configureBindings();
 
@@ -194,8 +199,8 @@ public class RobotContainer {
 
   // path.preventFlipping = true;
   public Command Intake() {
-    return m_IntakeShooter
-        .setVelocity(RPM.of(FuelConstants.IntakingIntake))
+    return Commands.runEnd(m_IntakeShooter
+        .setVelocity(RPM.of(FuelConstants.IntakingIntake)),m_IntakeShooter.set(0),)
         .alongWith(m_feeder.setVelocity(RPM.of(FuelConstants.IntakingFeeder)));
   }
 
@@ -259,7 +264,7 @@ public class RobotContainer {
     //     .onTrue(new ExampleCommand(m_exampleSubsystem));
 
     if (IsSwerve) {
-      Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
+      Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveAngularVelocity);
       Command driveFieldOrientedAnglularVelocity =
           drivebase.driveFieldOriented(driveAngularVelocity);
       Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
