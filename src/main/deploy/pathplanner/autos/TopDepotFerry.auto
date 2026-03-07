@@ -61,9 +61,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "TOP_POS_2"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "INTAKE"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "TOP_POS_2"
+                }
+              }
+            ]
           }
         },
         {
@@ -73,76 +86,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "INTAKE"
+                  "name": "END_INTAKE"
                 }
               },
               {
                 "type": "path",
                 "data": {
                   "pathName": "TOP_POS_3"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "END_INTAKE"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "TOP_POS_4"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "OUTTAKE"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "INTAKE"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "TOP_POS_5"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "END_INTAKE"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "TOP_POS_6"
                 }
               }
             ]

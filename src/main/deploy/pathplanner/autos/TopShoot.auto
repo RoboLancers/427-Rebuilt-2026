@@ -17,12 +17,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "TOP_POS_2"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -35,7 +29,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_POS_3"
+                  "pathName": "TOP_POS_2"
                 }
               }
             ]
@@ -55,50 +49,6 @@
                 "type": "path",
                 "data": {
                   "pathName": "TOP_SHOOT_POS_1"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "SHOOT"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "INTAKE"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "TOP_SHOOT_POS_2"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "END_INTAKE"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "TOP_SHOOT_POS_3"
                 }
               }
             ]
