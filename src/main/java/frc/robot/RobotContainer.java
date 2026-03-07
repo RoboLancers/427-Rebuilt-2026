@@ -218,6 +218,7 @@ public class RobotContainer {
   public Command SpinUpClose() {
     return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinUpIntakeClose));
   }
+
   public Command SpinUpFar() {
     return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinUpIntakeFar));
   }
@@ -238,10 +239,10 @@ public class RobotContainer {
   private void configureBindings() {
     m_driverController.leftBumper().whileTrue(Intake());
     m_driverController.rightBumper().whileTrue(SpinUpClose());
-    m_driverController.y().whileTrue(SpinUpFar());
-    m_driverController.rightTrigger().whileTrue(Eject());
-    m_driverController.leftTrigger().whileTrue(Shoot());
-    m_driverController.b().whileTrue(Stop());
+    m_driverController.rightTrigger().whileTrue(SpinUpFar());
+    m_driverController.leftTrigger().whileTrue(Eject());
+    m_driverController.b().whileTrue(Shoot());
+    m_driverController.y().whileTrue(Stop());
     if (Constants.OperatorConstants.IsSwerve == false) {
       driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController));
     }
