@@ -241,7 +241,7 @@ public class RobotContainer {
     m_driverController.rightBumper().whileTrue(SpinUpClose());
     m_driverController.rightTrigger().whileTrue(SpinUpFar());
     m_driverController.leftTrigger().whileTrue(Eject());
-    m_driverController.b().whileTrue(Shoot());
+    m_driverController.x().whileTrue(Shoot());
     m_driverController.y().whileTrue(Stop());
     if (Constants.OperatorConstants.IsSwerve == false) {
       driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController));
@@ -307,7 +307,7 @@ public class RobotContainer {
         m_driverController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       } else {
         m_driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-        m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+        m_driverController.b().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
         // m_driverController
         //     .leftTrigger()
         //     .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
