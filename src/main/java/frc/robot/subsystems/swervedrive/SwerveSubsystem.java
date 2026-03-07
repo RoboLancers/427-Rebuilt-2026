@@ -11,7 +11,6 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
-import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -37,9 +36,10 @@ import swervelib.SwerveDriveTest;
 import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
+import swervelib.telemetry.SwerveDriveTelemetry;
+import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 // This is the main class for the swerve drive subsystem
-@Logged
 public class SwerveSubsystem extends SubsystemBase {
   public static final String getSimPose = null;
   double maximumSpeed = Units.feetToMeters(4.5);
@@ -50,10 +50,13 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /* Creates a new SwerveSubsystem. */
   public SwerveSubsystem(File directory) {
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
-    // Catches any errors within the code and crashes the program if there are any
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
 
+    // Catches any errors within the code and crashes the program if there are any
     /* DO NOT TOUCH or everything breaks
+    |
     |
     V    */
     try {
