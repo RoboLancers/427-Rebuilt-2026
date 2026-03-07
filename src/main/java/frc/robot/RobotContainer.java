@@ -199,8 +199,8 @@ public class RobotContainer {
 
   // path.preventFlipping = true;
   public Command Intake() {
-    return Commands.runEnd(m_IntakeShooter
-        .setVelocity(RPM.of(FuelConstants.IntakingIntake)),m_IntakeShooter.set(0),)
+    return m_IntakeShooter
+        .setVelocity(RPM.of(FuelConstants.IntakingIntake))
         .alongWith(m_feeder.setVelocity(RPM.of(FuelConstants.IntakingFeeder)));
   }
 

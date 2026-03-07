@@ -159,7 +159,7 @@ public final class Constants {
     public static final double KI = 0;
     public static final double KD = 0;
     public static final double ks = 1;
-    public static final double kv = 0.2;
+    public static final double kv = 0.175;
     public static final double ka = 0.1;
 
     public static final int CurrentLimit = 40;
@@ -240,7 +240,7 @@ public final class Constants {
     public static final int StoppingFeeder = 0;
     public static final int StoppingIntake = 0;
     public static final double SpinUpIntakeClose = -3000;
-    public static final double SpinUpIntakeFar = -5500;
+    public static final double SpinUpIntakeFar =;
   }
 
   public static class CameraConstants {
