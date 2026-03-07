@@ -39,8 +39,7 @@ public class IntakeShooter extends SubsystemBase {
     // SmartDashboard.putNumber("Fuel Number", FuelCounter);
   }
 
-  public IntakeShooter() {
-  }
+  public IntakeShooter() {}
 
   /** Creates a new intake. */
   private SmartMotorControllerConfig smcConfig =
@@ -106,8 +105,8 @@ public class IntakeShooter extends SubsystemBase {
     // if (GamePiece == true) {
     //   FuelCounter += 1;
     // }
-    //ShootSpeed = SmartDashboard.getNumber("ShooterSpeed", ShootSpeed);
-    //SmartDashboard.putNumber("ShooterRPM", ShootSpeed);
+    // ShootSpeed = SmartDashboard.getNumber("ShooterSpeed", ShootSpeed);
+    // SmartDashboard.putNumber("ShooterRPM", ShootSpeed);
     SmartDashboard.putNumber("ShooterSpeed", ShootSpeed);
     SmartDashboard.putBoolean("AtCloseSpeed", IsClose());
     SmartDashboard.putBoolean("AtFarSpeed", IsFar());
@@ -136,16 +135,26 @@ public class IntakeShooter extends SubsystemBase {
     return intake.set(dutyCycle);
   }
 
-  public boolean IsClose(){
-    return intake.isNear(RPM.of(FuelConstants.SpinUpIntakeClose), RPM.of(100)).getAsBoolean();
+  public boolean IsClose() {
+    //  return intake.isNear(RPM.of(FuelConstants.SpinUpIntakeClose), RPM.of(100)).getAsBoolean();
+    if (intake.getSpeed().in(RPM) <= FuelConstants.SpinUpIntakeClose) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  public boolean IsFar(){
-    return intake.isNear(RPM.of(FuelConstants.SpinUpIntakeFar), RPM.of(100)).getAsBoolean();
+  public boolean IsFar() {
+    // return intake.isNear(RPM.of(FuelConstants.SpinUpIntakeFar), RPM.of(100)).getAsBoolean();
+    if (intake.getSpeed().in(RPM) <= FuelConstants.SpinUpIntakeFar) {
+      return true;
+    } else {
+      return false;
+    }
   }
-  
-  public boolean IsShooterRunning(){
-    if(intake.getSpeed().in(RPM) > 10){
+
+  public boolean IsShooterRunning() {
+    if (intake.getSpeed().in(RPM) > 10) {
       return true;
     }
     return false;
