@@ -240,7 +240,7 @@ public final class Constants {
     public static final int StoppingFeeder = 0;
     public static final int StoppingIntake = 0;
     public static final double SpinUpIntakeClose = -3000;
-    public static final double SpinUpIntakeFar =;
+    public static final double SpinUpIntakeFar = -4600;
   }
 
   public static class CameraConstants {
