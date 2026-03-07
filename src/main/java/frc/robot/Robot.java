@@ -66,8 +66,8 @@ public class Robot extends TimedRobot {
                 outputStream.putFrame(mat);
               }
             });
-    m_visionThread.setDaemon(true);
-    m_visionThread.start();
+    // m_visionThread.setDaemon(true);
+    // m_visionThread.start();
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
