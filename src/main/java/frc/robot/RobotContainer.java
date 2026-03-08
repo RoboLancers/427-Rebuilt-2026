@@ -219,7 +219,7 @@ public class RobotContainer {
   public Command Shoot() {
     return m_feeder
         .setVelocity(RPM.of(FuelConstants.IntakingFeeder))
-        .withTimeout(0.5)
+        .withTimeout(2)
         .andThen(m_feeder.setVelocity(RPM.of(FuelConstants.LaunchingFeeder)));
   }
 
@@ -335,7 +335,7 @@ public class RobotContainer {
       }
     }
     autoChooser = AutoBuilder.buildAutoChooser();
-    autoChooser.setDefaultOption("justShoot Auto", null);
+    autoChooser.setDefaultOption("do Nothing", null);
     // AutoBuilder.buildAutoChooserWithOptionsModifier(
     //     (stream) ->
     //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) : stream);
@@ -344,6 +344,7 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // return autoChooser.getSelected();
-    return shootAuto();
+    // return shootAuto();
+    return Commands.none();
   }
 }
