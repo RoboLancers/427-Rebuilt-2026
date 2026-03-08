@@ -241,6 +241,10 @@ public class RobotContainer {
     return command.withTimeout(time);
   }
 
+  public Command shootAuto() {
+    return SpinUpFar().alongWith(Shoot().withTimeout(10));
+  }
+
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -339,6 +343,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    // return autoChooser.getSelected();
+    return shootAuto();
   }
 }
