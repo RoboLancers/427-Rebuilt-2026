@@ -156,13 +156,15 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "SHOOT", timedCommand(SpinUpClose().withTimeout(1).andThen(Shoot()), 2.5));
     NamedCommands.registerCommand(
-        "SHOOT_FAR", timedCommand(SpinUpFar().withTimeout(1).andThen(Shoot()), 2.5));
+        "SHOOT_FAR", timedCommand(SpinUpFar().withTimeout(1).andThen(Shoot()), 5));
     NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 3));
     NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 2));
     NamedCommands.registerCommand("END_INTAKE", timedCommand(Stop(), 1));
     NamedCommands.registerCommand(
         "DEPLOY", Commands.none()); // timedCommand(m_ClimbSubsystem.setDeployAngle(), 1));
     // NamedCommands.registerCommand("CLIMB", );
+    NamedCommands.registerCommand(
+        "CLOSE_SHOOT", Commands.none());
     new EventTrigger("INTAKE_EVENT")
         .whileTrue(
             m_IntakeShooter
@@ -216,7 +218,8 @@ public class RobotContainer {
   }
 
   public Command Shoot() {
-    return m_feeder.setVelocity(RPM.of(FuelConstants.LaunchingFeeder));
+    return m_feeder.setVelocity(RPM.of(FuelConstants.IntakingFeeder)).withTimeout(0.5)
+    .andThen(m_feeder.setVelocity(RPM.of(FuelConstants.LaunchingFeeder)));
   }
 
   public Command Stop() {
@@ -327,7 +330,7 @@ public class RobotContainer {
       }
     }
     autoChooser = AutoBuilder.buildAutoChooser();
-    autoChooser.setDefaultOption("Do Nothing", null);
+    autoChooser.setDefaultOption("justShoot Auto", null);
     // AutoBuilder.buildAutoChooserWithOptionsModifier(
     //     (stream) ->
     //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) : stream);
