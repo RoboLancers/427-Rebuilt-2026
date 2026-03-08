@@ -242,7 +242,7 @@ public class RobotContainer {
   }
 
   public Command shootAuto() {
-    return SpinUpFar().alongWith(Shoot().withTimeout(10));
+    return SpinUpFar().alongWith(Commands.waitSeconds(3).andThen(Shoot()));
   }
 
   /**
