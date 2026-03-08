@@ -163,8 +163,7 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "DEPLOY", Commands.none()); // timedCommand(m_ClimbSubsystem.setDeployAngle(), 1));
     // NamedCommands.registerCommand("CLIMB", );
-    NamedCommands.registerCommand(
-        "CLOSE_SHOOT", Commands.none());
+    NamedCommands.registerCommand("CLOSE_SHOOT", Commands.none());
     new EventTrigger("INTAKE_EVENT")
         .whileTrue(
             m_IntakeShooter
@@ -218,8 +217,10 @@ public class RobotContainer {
   }
 
   public Command Shoot() {
-    return m_feeder.setVelocity(RPM.of(FuelConstants.IntakingFeeder)).withTimeout(0.5)
-    .andThen(m_feeder.setVelocity(RPM.of(FuelConstants.LaunchingFeeder)));
+    return m_feeder
+        .setVelocity(RPM.of(FuelConstants.IntakingFeeder))
+        .withTimeout(0.5)
+        .andThen(m_feeder.setVelocity(RPM.of(FuelConstants.LaunchingFeeder)));
   }
 
   public Command Stop() {
