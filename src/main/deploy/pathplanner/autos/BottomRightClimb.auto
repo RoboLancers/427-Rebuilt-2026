@@ -1,0 +1,37 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "SHOOT"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DEPLOY"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BOT_RIGHT_CLIMB"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CLIMB"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
