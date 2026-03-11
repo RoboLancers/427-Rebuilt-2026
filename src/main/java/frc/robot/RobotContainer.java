@@ -4,6 +4,7 @@ import static frc.robot.Constants.OperatorConstants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.events.EventTrigger;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -98,9 +99,10 @@ public class RobotContainer {
       driveAngularVelocity =
           SwerveInputStream.of(
                   drivebase.getSwerveDrive(),
-                  () -> m_driverController.getLeftY(),
-                  () -> m_driverController.getLeftX())
-              .withControllerRotationAxis(() -> m_driverController.getRightX())
+                  () -> m_driverController.getLeftY() * Constants.DriveConstants.MAX_SPEED,
+                  () -> m_driverController.getLeftX() * Constants.DriveConstants.MAX_SPEED)
+              .withControllerRotationAxis(
+                  () -> m_driverController.getRightX() * Constants.DriveConstants.MAX_ANGULAR_SPEED)
               .deadband(DEADBAND)
               .scaleTranslation(0.8)
               .allianceRelativeControl(true);
@@ -150,13 +152,22 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     // SmartDashboard.putData("Auto Chooser", autoChooser);
-    NamedCommands.registerCommand("SHOOT", timedCommand(Launch(), 1));
-    NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 1));
-    NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 1));
+    NamedCommands.registerCommand(
+        "SHOOT", timedCommand(SpinUpClose().withTimeout(1).andThen(Shoot()), 2.5));
+    NamedCommands.registerCommand(
+        "SHOOT_FAR", timedCommand(SpinUpFar().withTimeout(1).andThen(Shoot()), 5));
+    NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 3));
+    NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 2));
     NamedCommands.registerCommand("END_INTAKE", timedCommand(Stop(), 1));
     NamedCommands.registerCommand(
         "DEPLOY", Commands.none()); // timedCommand(m_ClimbSubsystem.setDeployAngle(), 1));
     // NamedCommands.registerCommand("CLIMB", );
+    NamedCommands.registerCommand("CLOSE_SHOOT", Commands.none());
+    new EventTrigger("INTAKE_EVENT")
+        .whileTrue(
+            m_IntakeShooter
+                .setVelocity(RPM.of(FuelConstants.IntakingIntake))
+                .alongWith(m_feeder.setVelocity(RPM.of(FuelConstants.IntakingFeeder))));
 
     configureBindings();
 
@@ -203,8 +214,11 @@ public class RobotContainer {
         .alongWith(m_feeder.setVelocity(RPM.of(FuelConstants.EjectingFeeder)));
   }
 
-  public Command Launch() {
-    return m_feeder.setVelocity(RPM.of(FuelConstants.LaunchingFeeder));
+  public Command Shoot() {
+    return m_feeder
+        .setVelocity(RPM.of(FuelConstants.IntakingFeeder))
+        .withTimeout(2)
+        .andThen(m_feeder.setVelocity(RPM.of(FuelConstants.LaunchingFeeder)));
   }
 
   public Command Stop() {
@@ -213,12 +227,20 @@ public class RobotContainer {
         .alongWith(m_feeder.setVelocity(RPM.of(FuelConstants.StoppingFeeder)));
   }
 
-  public Command SpinUp() {
-    return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinupIntake));
+  public Command SpinUpClose() {
+    return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinUpIntakeClose));
+  }
+
+  public Command SpinUpFar() {
+    return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinUpIntakeFar));
   }
 
   public Command timedCommand(Command command, double time) {
     return command.withTimeout(time);
+  }
+
+  public Command shootAuto() {
+    return SpinUpFar().alongWith(Commands.waitSeconds(3).andThen(Shoot()));
   }
 
   /**
@@ -232,9 +254,11 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_driverController.leftBumper().whileTrue(Intake());
-    m_driverController.rightBumper().whileTrue(SpinUp());
-    m_driverController.rightTrigger().whileTrue(Eject());
-    m_driverController.leftTrigger().whileTrue(Launch());
+    m_driverController.rightBumper().whileTrue(SpinUpClose());
+    m_driverController.rightTrigger().whileTrue(SpinUpFar());
+    m_driverController.leftTrigger().whileTrue(Eject());
+    m_driverController.x().whileTrue(Shoot());
+    m_driverController.y().whileTrue(Stop());
     if (Constants.OperatorConstants.IsSwerve == false) {
       driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController));
     }
@@ -251,7 +275,7 @@ public class RobotContainer {
     //     .onTrue(new ExampleCommand(m_exampleSubsystem));
 
     if (IsSwerve) {
-      Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
+      Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveAngularVelocity);
       Command driveFieldOrientedAnglularVelocity =
           drivebase.driveFieldOriented(driveAngularVelocity);
       Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
@@ -299,7 +323,7 @@ public class RobotContainer {
         m_driverController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       } else {
         m_driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-        m_driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+        m_driverController.b().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
         // m_driverController
         //     .leftTrigger()
         //     .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
@@ -309,7 +333,7 @@ public class RobotContainer {
       }
     }
     autoChooser = AutoBuilder.buildAutoChooser();
-    autoChooser.setDefaultOption("Do Nothing", null);
+    autoChooser.setDefaultOption("do Nothing", null);
     // AutoBuilder.buildAutoChooserWithOptionsModifier(
     //     (stream) ->
     //         isCompetition ? stream.filter(auto -> auto.getName().startsWith("comp")) : stream);
@@ -317,6 +341,8 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    // return autoChooser.getSelected();
+    // return shootAuto();
+    return Commands.none();
   }
 }

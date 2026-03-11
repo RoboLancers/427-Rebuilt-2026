@@ -7,13 +7,26 @@
         {
           "type": "path",
           "data": {
-            "pathName": "TOP_POS_1"
+            "pathName": "BOT_POS_1"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "SHOOT_FAR"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Copy of BOT_POS_2"
+                }
+              }
+            ]
           }
         },
         {
@@ -29,26 +42,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_POS_2"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "END_INTAKE"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "TOP_POS_3"
+                  "pathName": "BOT_POS_3"
                 }
               }
             ]
@@ -73,7 +67,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_POS_4"
+                  "pathName": "BOT_POS_4"
                 }
               }
             ]
@@ -92,7 +86,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_POS_5"
+                  "pathName": "BOT_POS_5"
                 }
               }
             ]

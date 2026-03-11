@@ -13,7 +13,7 @@
         {
           "type": "named",
           "data": {
-            "name": "SHOOT"
+            "name": "SHOOT_FAR"
           }
         },
         {
@@ -61,6 +61,12 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "TOP_DEPOT_POS_3"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -92,7 +98,51 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_POS_3"
+                  "pathName": "TOP_POS_4"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "OUTTAKE"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "INTAKE"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "TOP_POS_5"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "END_INTAKE"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "TOP_POS_4"
                 }
               }
             ]
