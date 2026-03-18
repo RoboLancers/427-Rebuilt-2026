@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "TOP_POS_1"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "SHOOT"
@@ -73,7 +67,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_POS_2"
+                  "pathName": "TOP_DEPOT_POS_3"
                 }
               }
             ]
@@ -92,7 +86,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_SHOOT_POS_1"
+                  "pathName": "TOP_DEPOT_SHOOT"
                 }
               }
             ]

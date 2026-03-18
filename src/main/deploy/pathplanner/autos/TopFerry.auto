@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "TOP_POS_1"
+            "pathName": "TOP_POS_0"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "SHOOT_FAR"
+            "name": "SHOOT"
           }
         },
         {
@@ -29,7 +29,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_POS_2"
+                  "pathName": "TOP_POS_1"
                 }
               }
             ]
@@ -48,7 +48,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_POS_3"
+                  "pathName": "TOP_POS_2"
                 }
               }
             ]
@@ -73,7 +73,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_POS_4"
+                  "pathName": "TOP_POS_3"
                 }
               }
             ]
@@ -92,7 +92,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_POS_5"
+                  "pathName": "TOP_POS_4"
                 }
               }
             ]
