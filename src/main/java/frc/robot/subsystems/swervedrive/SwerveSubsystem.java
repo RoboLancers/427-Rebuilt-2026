@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.swervedrive;
 
+import static edu.wpi.first.units.Units.Degrees;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -16,7 +18,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,6 +36,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
+import org.littletonrobotics.junction.AutoLog;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
 import swervelib.math.SwerveMath;
@@ -43,13 +49,22 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 public class SwerveSubsystem extends SubsystemBase {
   public static final String getSimPose = null;
   double maximumSpeed = Units.feetToMeters(4.5);
-  private SwerveSetpointGenerator setpointGenerator;
-  private SwerveSetpoint previousSetpoint;
-  private SwerveDrive swerveDrive;
+  public SwerveSetpointGenerator setpointGenerator;
+  public SwerveSetpoint previousSetpoint;
+  public SwerveDrive swerveDrive;
   public VisionSubsystem vision;
 
+  @AutoLog
+  public static class SwerveInputs {
+    public SwerveModulePosition[] position = new SwerveModulePosition[4];
+    public SwerveModuleState[] state = new SwerveModuleState[4];
+    public Angle gyroRotation = Degrees.of(0);
+    public ChassisSpeeds robotRelativeSpeeds = new ChassisSpeeds(0, 0, 0);
+    public Pose2d estimatedPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
+  }
+
   /* Creates a new SwerveSubsystem. */
-  public SwerveSubsystem(File directory) {
+  public SwerveSubsystem() {
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
