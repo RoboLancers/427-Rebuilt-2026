@@ -67,8 +67,8 @@ public class IntakeShooter extends SubsystemBase {
   //         .withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate))
   //         .withFollowers(Pair.of(sparkFollower, true));
 
-  private SmartMotorController sparkSmartMotorController =
-      new SparkWrapper(spark, DCMotor.getNEO(IntakeConstants.IntakenumMotors), smcConfig);
+  // private SmartMotorController sparkSmartMotorController =
+  //     new SparkWrapper(spark, DCMotor.getNEO(IntakeConstants.IntakenumMotors), smcConfig);
 
   // private Debouncer statorDebounce = new Debouncer(IntakeConstants.DebounceTime);
 

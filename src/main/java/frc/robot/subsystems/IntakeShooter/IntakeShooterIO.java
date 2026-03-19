@@ -28,7 +28,7 @@ import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
 import yams.motorcontrollers.local.SparkWrapper;
 
 
-public class IntakeShooterIO implements IntakeShooterIO
+public class IntakeShooterIO implements IntakeShooterInputsIO {
     private final IntakeShooter intakeshooter;
     private final SmartMotorController motorcontrollers;
 
@@ -59,4 +59,7 @@ public class IntakeShooterIO implements IntakeShooterIO
           .withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate))
           .withFollowers(Pair.of(sparkFollower, true));
 
+          private SmartMotorController sparkSmartMotorController =
+      new SparkWrapper(spark, DCMotor.getNEO(IntakeConstants.IntakenumMotors), smcConfig);
     }
+}
