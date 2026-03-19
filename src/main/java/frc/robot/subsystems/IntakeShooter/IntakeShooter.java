@@ -42,30 +42,30 @@ public class IntakeShooter extends SubsystemBase {
   public IntakeShooter() {}
 
   /** Creates a new intake. */
-  private SmartMotorControllerConfig smcConfig =
-      new SmartMotorControllerConfig(this)
-          .withControlMode(ControlMode.CLOSED_LOOP)
-          // Feedback Constants (PID Constants)
-          .withClosedLoopController(IntakeConstants.KP, IntakeConstants.KI, IntakeConstants.KD)
-          .withSimClosedLoopController(IntakeConstants.KP, IntakeConstants.KI, IntakeConstants.KD)
-          // FeedForward Constants
-          .withFeedforward(
-              new SimpleMotorFeedforward(
-                  IntakeConstants.ks, IntakeConstants.kv, IntakeConstants.ka))
-          .withSimFeedforward(
-              new SimpleMotorFeedforward(
-                  IntakeConstants.ks, IntakeConstants.kv, IntakeConstants.ka))
-          // Telemtry name and verbosity level
-          .withTelemetry("IntakeMotor", TelemetryVerbosity.HIGH)
-          // Gearing from the motor rotor to final shaft
-          .withGearing(IntakeConstants.Intake_GearRatio)
-          // Motor Properties to prevent over currenting
-          .withMotorInverted(false)
-          .withIdleMode(MotorMode.BRAKE)
-          .withStatorCurrentLimit(Amps.of(IntakeConstants.CurrentLimit))
-          .withClosedLoopRampRate(Seconds.of(IntakeConstants.ClosedLoopRampRate))
-          .withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate))
-          .withFollowers(Pair.of(sparkFollower, true));
+  // private SmartMotorControllerConfig smcConfig =
+  //     new SmartMotorControllerConfig(this)
+  //         .withControlMode(ControlMode.CLOSED_LOOP)
+  //         // Feedback Constants (PID Constants)
+  //         .withClosedLoopController(IntakeConstants.KP, IntakeConstants.KI, IntakeConstants.KD)
+  //         .withSimClosedLoopController(IntakeConstants.KP, IntakeConstants.KI, IntakeConstants.KD)
+  //         // FeedForward Constants
+  //         .withFeedforward(
+  //             new SimpleMotorFeedforward(
+  //                 IntakeConstants.ks, IntakeConstants.kv, IntakeConstants.ka))
+  //         .withSimFeedforward(
+  //             new SimpleMotorFeedforward(
+  //                 IntakeConstants.ks, IntakeConstants.kv, IntakeConstants.ka))
+  //         // Telemtry name and verbosity level
+  //         .withTelemetry("IntakeMotor", TelemetryVerbosity.HIGH)
+  //         // Gearing from the motor rotor to final shaft
+  //         .withGearing(IntakeConstants.Intake_GearRatio)
+  //         // Motor Properties to prevent over currenting
+  //         .withMotorInverted(false)
+  //         .withIdleMode(MotorMode.BRAKE)
+  //         .withStatorCurrentLimit(Amps.of(IntakeConstants.CurrentLimit))
+  //         .withClosedLoopRampRate(Seconds.of(IntakeConstants.ClosedLoopRampRate))
+  //         .withOpenLoopRampRate(Seconds.of(IntakeConstants.OpenLoopRampRate))
+  //         .withFollowers(Pair.of(sparkFollower, true));
 
   private SmartMotorController sparkSmartMotorController =
       new SparkWrapper(spark, DCMotor.getNEO(IntakeConstants.IntakenumMotors), smcConfig);
