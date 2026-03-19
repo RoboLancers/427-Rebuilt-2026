@@ -75,7 +75,6 @@ public final class Constants {
     public static final double LoopRampRate = 0.25;
 
     public static final int SparkMaxDeviceID = 17;
-    public static final int SparkMaxDeviceID = 17;
 
     public static final int NumMotors = 1;
     // NumMotors and SoftLowerLimit will have to be adjusted based on the actual climb arm's freedom

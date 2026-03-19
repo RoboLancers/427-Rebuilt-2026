@@ -1,6 +1,9 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.RPM;
 import static frc.robot.Constants.OperatorConstants.*;
+
+import java.io.File;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -14,6 +17,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -341,8 +345,8 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    // return autoChooser.getSelected();
+    return autoChooser.getSelected();
     // return shootAuto();
-    return Commands.none();
+    //return Commands.none();
   }
 }

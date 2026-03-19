@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "TOP_DEPOT_0"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "SHOOT"
