@@ -12,7 +12,7 @@
         "y": 0.65
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "BOT_POS_3_END"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "BOT_POS_4_END"
     }
   ],
   "rotationTargets": [],
@@ -48,7 +48,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 179.9604783567455
+    "rotation": -179.19354985351174
   },
   "useDefaultConstraints": true
 }

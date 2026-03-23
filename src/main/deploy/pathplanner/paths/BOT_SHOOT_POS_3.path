@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.527,
-        "y": 3.106
+        "x": 7.65,
+        "y": 2.15
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.549158345221112,
-        "y": 2.6311554921540665
+        "x": 6.672158345221113,
+        "y": 1.6751554921540666
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "BOT_SHOOT_POS_2_ALT_END"
     },
     {
       "anchor": {
@@ -57,7 +57,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.25148152092195497
+    "rotation": 0.9592492414451477
   },
   "useDefaultConstraints": true
 }

@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.133352353780316,
-        "y": 4.067346647646221
+        "x": 2.9333523537803137,
+        "y": 4.21734664764622
       },
       "isLocked": false,
       "linkedName": "CENTER_TURN_END"
@@ -20,12 +20,12 @@
         "y": 5.969204819277109
       },
       "prevControl": {
-        "x": -0.4996024096385545,
-        "y": 5.969204819277109
+        "x": 0.7110155859750893,
+        "y": 5.834519779559659
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "CENTER_TO_DEPOT_END"
     }
   ],
   "rotationTargets": [],

@@ -17,12 +17,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "BOT_POS_2"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -35,7 +29,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "BOT_POS_3"
+                  "pathName": "BOT_POS_2_ALT"
                 }
               }
             ]
@@ -98,7 +92,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "BOT_SHOOT_POS_3"
+                  "pathName": "BOT_SHOOT_POS_3_ALT"
                 }
               }
             ]

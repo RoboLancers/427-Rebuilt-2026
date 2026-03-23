@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.4676144578293462,
-        "y": 5.914566265064609
+        "x": 0.5003975903614455,
+        "y": 5.969204819277109
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0412048192771084,
-        "y": 6.001987951807228
+        "x": 2.0739879518092077,
+        "y": 6.056626506019728
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "CENTER_TO_DEPOT_END"
     },
     {
       "anchor": {
@@ -48,7 +48,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -179.02152433793248
+    "rotation": 178.79395122078003
   },
   "useDefaultConstraints": true
 }
