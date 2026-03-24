@@ -3,8 +3,6 @@ package frc.robot;
 import static edu.wpi.first.units.Units.RPM;
 import static frc.robot.Constants.OperatorConstants.*;
 
-import java.io.File;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.events.EventTrigger;
@@ -37,6 +35,7 @@ import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.Feeder.Feeder;
 import frc.robot.subsystems.IntakeShooter.IntakeShooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import java.io.File;
 import swervelib.SwerveInputStream;
 
 /**
@@ -349,14 +348,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-<<<<<<< HEAD
     return autoChooser.getSelected();
-    // return shootAuto();
-    //return Commands.none();
-=======
-    // return autoChooser.getSelected();
-    return shootAuto2();
-    // return Commands.none();
->>>>>>> dbe938e4d8e510fab14f2734dec196fdb4fc9f99
   }
 }
