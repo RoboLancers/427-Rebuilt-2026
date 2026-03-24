@@ -43,6 +43,7 @@ public class Robot extends LoggedRobot {
       Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
       Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
     } else {
+      Logger.addDataReceiver(new NT4Publisher());
       setUseTiming(false); // Run as fast as possible
       String logPath =
           LogFileUtil

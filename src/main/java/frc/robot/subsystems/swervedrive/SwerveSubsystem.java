@@ -63,8 +63,10 @@ public class SwerveSubsystem extends SubsystemBase {
     public Pose2d estimatedPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
   }
 
+  private final SwerveInputsAutoLogged swerveInputs = new SwerveInputsAutoLogged();
+
   /* Creates a new SwerveSubsystem. */
-  public SwerveSubsystem() {
+  public SwerveSubsystem(File directory) {
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
