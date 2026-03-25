@@ -189,7 +189,7 @@ public final class Constants {
     public static final int SoftLimitDegree = -30;
     public static final int SoftLimitDegreeMagnitude = 100;
 
-    public static final double GearingreductionStages = 1;
+    public static final double GearingreductionStages = 3;
 
     public static final double kP = 0;
     public static final double kI = 0;

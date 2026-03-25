@@ -6,8 +6,8 @@ import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Seconds;
 
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -31,9 +31,9 @@ import yams.motorcontrollers.local.SparkWrapper;
 public class IntakeShooter extends SubsystemBase {
   // public static int FuelCounter = 0;
   public static double ShootSpeed;
-  private SparkMax spark = new SparkMax(IntakeConstants.Intake_SparkMax_ID, MotorType.kBrushless);
-  private SparkMax sparkFollower =
-      new SparkMax(IntakeConstants.IntakeFollower_SparkMax_ID, MotorType.kBrushless);
+  private SparkFlex spark = new SparkFlex(IntakeConstants.Intake_SparkMax_ID, MotorType.kBrushless);
+  private SparkFlex sparkFollower =
+      new SparkFlex(IntakeConstants.IntakeFollower_SparkMax_ID, MotorType.kBrushless);
 
   protected void execute() {
     // SmartDashboard.putNumber("Fuel Number", FuelCounter);

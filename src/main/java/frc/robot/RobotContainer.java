@@ -219,7 +219,7 @@ public class RobotContainer {
   public Command Shoot() {
     return m_feeder
         .setVelocity(RPM.of(FuelConstants.IntakingFeeder))
-        .withTimeout(2)
+        .withTimeout(0.5)
         .andThen(m_feeder.setVelocity(RPM.of(FuelConstants.LaunchingFeeder)));
   }
 
