@@ -26,6 +26,12 @@ import org.opencv.imgproc.Imgproc;
  */
 @Logged
 public class Robot extends LoggedRobot {
+  public static final Mode currentMode = isReal() ? Mode.REAL : Mode.SIM;
+
+  public static enum Mode {
+    REAL,
+    SIM
+  }
 
   private Command m_autonomousCommand;
   private final RobotContainer m_robotContainer;
@@ -38,6 +44,17 @@ public class Robot extends LoggedRobot {
   public Robot() {
 
     Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
+
+    switch (currentMode) {
+      case REAL:
+        Logger.addDataReceiver(new WPILOGWriter());
+        Logger.addDataReceiver(new NT4Publisher());
+        break;
+
+      case SIM:
+        Logger.addDataReceiver(new NT4Publisher());
+        break;
+    }
 
     if (isReal()) {
       Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
