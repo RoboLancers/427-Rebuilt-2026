@@ -12,7 +12,7 @@
         "y": 5.899852828555936
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "TOP_POS_1-2"
     },
     {
       "anchor": {
@@ -57,10 +57,15 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "TOP_SHOOT_1-2"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.8421874999999872,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
@@ -88,13 +93,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -34.330000000000005
+    "rotation": 145.67
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

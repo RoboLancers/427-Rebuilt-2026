@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BOT_POS_1"
+            "pathName": "BOT_POS_0"
           }
         },
         {
@@ -29,7 +29,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "BOT_POS_2"
+                  "pathName": "BOT_POS_1"
                 }
               }
             ]
@@ -42,13 +42,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "INTAKE"
+                  "name": "END_INTAKE"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "BOT_POS_3"
+                  "pathName": "BOT_POS_2"
                 }
               }
             ]
@@ -73,7 +73,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "BOT_POS_4"
+                  "pathName": "BOT_POS_3"
                 }
               }
             ]
@@ -92,7 +92,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "BOT_POS_5"
+                  "pathName": "BOT_POS_4"
                 }
               }
             ]

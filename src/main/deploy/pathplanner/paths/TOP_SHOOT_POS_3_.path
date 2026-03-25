@@ -12,7 +12,7 @@
         "y": 5.018493975903613
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "TOP_SHOOT_2-3"
     },
     {
       "anchor": {
@@ -57,7 +57,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "TOP_SHOOT_3-4"
     }
   ],
   "rotationTargets": [],
@@ -88,7 +88,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -34.330000000000005
+    "rotation": 145.67
   },
   "reversed": false,
   "folder": null,
