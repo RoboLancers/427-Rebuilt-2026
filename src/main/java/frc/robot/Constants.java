@@ -147,7 +147,7 @@ public final class Constants {
   public static class IntakeConstants {
 
     public static final int Intake_SparkMax_ID = 15;
-    public static final int IntakeFollower_SparkMax_ID = 16;
+    public static final int IntakeFollower_SparkMax_ID = 17;
     public static final int IntakenumMotors = 1;
 
     public static final int Intake_RPM = 60;
@@ -177,7 +177,7 @@ public final class Constants {
 
   public static class FeederConstants {
 
-    public static final int FeederdeviceId = 14;
+    public static final int FeederdeviceId = 16;
     public static final int FeedernumMotors = 1;
 
     public static final int ClosedLoopControllerkP = 4;
