@@ -3,32 +3,69 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.534450784593438,
-        "y": 0.858559201141228
+        "x": 2.7,
+        "y": 2.7
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.3844507845934375,
-        "y": 1.0585592011412275
+        "x": 2.9878316353582606,
+        "y": 2.5312355230174264
+      },
+      "isLocked": false,
+      "linkedName": "BOT_POS_0-1"
+    },
+    {
+      "anchor": {
+        "x": 3.5,
+        "y": 0.65
+      },
+      "prevControl": {
+        "x": 3.1925775291414693,
+        "y": 0.65
+      },
+      "nextControl": {
+        "x": 3.75,
+        "y": 0.65
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.2756776034236803,
-        "y": 1.6219400855920116
+        "x": 5.65,
+        "y": 0.65
       },
       "prevControl": {
-        "x": 3.1542668706290202,
-        "y": 1.4034007665616284
+        "x": 4.635891121575526,
+        "y": 0.65
+      },
+      "nextControl": {
+        "x": 6.401407701320859,
+        "y": 0.65
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.65,
+        "y": 2.15
+      },
+      "prevControl": {
+        "x": 5.65,
+        "y": 2.1500000000000004
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "BOT_POS_1_END"
+      "linkedName": "BOT_POS_1-2"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0499999999999856,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -42,13 +79,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.35775354279133
+    "rotation": 0.9592492414451477
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -143.881
   },
   "useDefaultConstraints": true
 }

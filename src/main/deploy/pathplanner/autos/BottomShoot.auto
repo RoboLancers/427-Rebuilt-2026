@@ -7,19 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BOT_POS_1"
+            "pathName": "BOT_POS_0"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "SHOOT"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "BOT_POS_2"
           }
         },
         {
@@ -35,7 +29,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "BOT_POS_3"
+                  "pathName": "BOT_POS_1"
                 }
               }
             ]
@@ -65,55 +59,11 @@
           "data": {
             "name": "SHOOT"
           }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "INTAKE"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "BOT_SHOOT_POS_2"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "END_INTAKE"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "BOT_SHOOT_POS_3"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "SHOOT"
-          }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

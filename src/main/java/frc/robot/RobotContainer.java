@@ -59,6 +59,8 @@ public class RobotContainer {
 
   private SendableChooser<Command> autoChooser;
 
+  // The robot's subsystems and commands are defined here...
+
   private final Field2d field = new Field2d();
 
   SwerveSubsystem drivebase;
@@ -172,7 +174,6 @@ public class RobotContainer {
 
     configureBindings();
 
-    m_feeder.setDefaultCommand(m_feeder.set(0));
     m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
     m_feeder.setDefaultCommand(m_feeder.set(0));
 
@@ -243,6 +244,10 @@ public class RobotContainer {
 
   public Command shootAuto() {
     return SpinUpFar().alongWith(Commands.waitSeconds(3).andThen(Shoot()));
+  }
+
+  public Command shootAuto2() {
+    return Shoot();
   }
 
   /**
@@ -343,8 +348,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    // return autoChooser.getSelected();
-    // return shootAuto();
-    return Commands.none();
+    return autoChooser.getSelected();
   }
 }

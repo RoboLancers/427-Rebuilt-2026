@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "TOP_POS_1"
+            "pathName": "TOP_DEPOT_0"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "SHOOT_FAR"
+            "name": "SHOOT"
           }
         },
         {
@@ -61,12 +61,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "TOP_DEPOT_POS_3"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -79,7 +73,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_POS_3"
+                  "pathName": "TOP_DEPOT_POS_3"
                 }
               }
             ]
@@ -98,51 +92,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_POS_4"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "OUTTAKE"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "INTAKE"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "TOP_POS_5"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "END_INTAKE"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "TOP_POS_4"
+                  "pathName": "TOP_DEPOT_POS_4"
                 }
               }
             ]
@@ -157,7 +107,7 @@
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "TOP_POS_1"
+            "pathName": "TOP_DEPOT_0"
           }
         },
         {
@@ -61,12 +61,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "TOP_POS_2"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -79,7 +73,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_POS_3"
+                  "pathName": "TOP_DEPOT_POS_3"
                 }
               }
             ]
@@ -98,7 +92,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_SHOOT_POS_1"
+                  "pathName": "TOP_DEPOT_SHOOT"
                 }
               }
             ]
@@ -109,55 +103,11 @@
           "data": {
             "name": "SHOOT"
           }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "INTAKE"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "TOP_SHOOT_POS_2"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "END_INTAKE"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "TOP_POS_6"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "OUTTAKE"
-          }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.5,
-        "y": 0.65
+        "x": 7.65,
+        "y": 3.05
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.3,
-        "y": 0.65
+        "x": 6.510638554216867,
+        "y": 1.3358554216867469
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "BOT_POS_3-4"
     },
     {
       "anchor": {
-        "x": 7.65,
-        "y": 3.1
+        "x": 4.4,
+        "y": 0.65
       },
       "prevControl": {
-        "x": 5.15,
-        "y": 3.1000000000000005
+        "x": 6.685851818453427,
+        "y": 0.6499999999999997
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -2.419458866968619
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 179.9604783567455
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }
