@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 3.2213975903614456,
+        "x": 3.1592296718972896,
         "y": 4.013144578313253
       },
       "prevControl": {
-        "x": 2.7952168674698794,
+        "x": 2.7330489490057235,
         "y": 4.00221686746988
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "CENTER_TURN_END"
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -177.8789036033386
+    "rotation": -178.18169703554815
   },
   "reversed": false,
   "folder": null,

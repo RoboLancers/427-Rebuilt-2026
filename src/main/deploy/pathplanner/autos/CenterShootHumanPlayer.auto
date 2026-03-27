@@ -21,6 +21,18 @@
           "data": {
             "pathName": "CenterToHumanPlayer"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Human Player to Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SHOOT"
+          }
         }
       ]
     }
