@@ -104,8 +104,7 @@ public class RobotContainer {
                   drivebase.getSwerveDrive(),
                   () -> m_driverController.getLeftY(),
                   () -> m_driverController.getLeftX())
-              .withControllerRotationAxis(
-                  () -> m_driverController.getRightX())
+              .withControllerRotationAxis(() -> m_driverController.getRightX())
               .deadband(DEADBAND)
               .scaleTranslation(0.8)
               .allianceRelativeControl(true);
@@ -156,12 +155,13 @@ public class RobotContainer {
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     // SmartDashboard.putData("Auto Chooser", autoChooser);
     NamedCommands.registerCommand(
-        "SHOOT", timedCommand(SpinUpClose().withTimeout(1).andThen(Shoot()), 2.5));
+        "SHOOT", SpinUpClose().withTimeout(1).andThen(Shoot()).withTimeout(3));
     NamedCommands.registerCommand(
-        "SHOOT_FAR", timedCommand(SpinUpFar().withTimeout(1).andThen(Shoot()), 5));
-    NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 3));
-    NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 2));
-    NamedCommands.registerCommand("END_INTAKE", timedCommand(Stop(), 1));
+        "SHOOT_FAR", SpinUpFar().withTimeout(1).andThen(Shoot()).withTimeout(3));
+    NamedCommands.registerCommand("INTAKE", Intake());
+    NamedCommands.registerCommand("OUTTAKE", Eject());
+    NamedCommands.registerCommand("OUTTAKE_2", Eject().withTimeout(3));
+    NamedCommands.registerCommand("END_INTAKE", Stop());
     NamedCommands.registerCommand(
         "DEPLOY", Commands.none()); // timedCommand(m_ClimbSubsystem.setDeployAngle(), 1));
     // NamedCommands.registerCommand("CLIMB", );
