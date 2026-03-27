@@ -39,7 +39,9 @@ public class IntakeShooter extends SubsystemBase {
     // SmartDashboard.putNumber("Fuel Number", FuelCounter);
   }
 
-  public IntakeShooter() {}
+  public IntakeShooter() {
+    SmartDashboard.putNumber("ShooterSpeed", ShootSpeed);
+  }
 
   /** Creates a new intake. */
   private SmartMotorControllerConfig smcConfig =
@@ -105,12 +107,11 @@ public class IntakeShooter extends SubsystemBase {
     // if (GamePiece == true) {
     //   FuelCounter += 1;
     // }
-    // ShootSpeed = SmartDashboard.getNumber("ShooterSpeed", ShootSpeed);
+    ShootSpeed = SmartDashboard.getNumber("ShooterSpeed", ShootSpeed);
     // SmartDashboard.putNumber("ShooterRPM", ShootSpeed);
-    SmartDashboard.putNumber("ShooterSpeed", ShootSpeed);
-    SmartDashboard.putBoolean("AtCloseSpeed", IsClose());
-    SmartDashboard.putBoolean("AtFarSpeed", IsFar());
-    SmartDashboard.putBoolean("IsShooterRunning", IsShooterRunning());
+    // SmartDashboard.putBoolean("AtCloseSpeed", IsClose());
+    // SmartDashboard.putBoolean("AtFarSpeed", IsFar());
+    // SmartDashboard.putBoolean("IsShooterRunning", IsShooterRunning());
   }
 
   @Override

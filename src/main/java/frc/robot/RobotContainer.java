@@ -83,6 +83,9 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
+    SmartDashboard.putNumber("Far Shooter Speed", FuelConstants.SpinUpIntakeFar);
+    SmartDashboard.putNumber("Close Shooter Speed", FuelConstants.SpinUpIntakeClose);
+
     if (IsSwerve) {
       drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
 
@@ -231,7 +234,9 @@ public class RobotContainer {
   }
 
   public Command SpinUpClose() {
-    return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinUpIntakeClose));
+    // return m_IntakeShooter.setVelocity(
+    // RPM.of(FuelConstants.SpinUpIntakeClose));
+    return m_IntakeShooter.ManualSpeedControl();
   }
 
   public Command SpinUpFar() {
