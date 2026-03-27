@@ -7,19 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CenterTurnAround"
+            "pathName": "CenterTurn"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "CLOSE_SHOOT"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "CenterToHumanPlayer"
+            "name": "SHOOT"
           }
         }
       ]
