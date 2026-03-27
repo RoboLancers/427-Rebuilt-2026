@@ -29,7 +29,8 @@ import yams.motorcontrollers.local.SparkWrapper;
 
 @Logged
 public class IntakeShooter extends SubsystemBase {
-  // public static int FuelCounter = 0;
+  // public static in
+  t FuelCounter = 0;
   public static double ShootSpeed;
   private SparkFlex spark = new SparkFlex(IntakeConstants.Intake_SparkMax_ID, MotorType.kBrushless);
   private SparkFlex sparkFollower =

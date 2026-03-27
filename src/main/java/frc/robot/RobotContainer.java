@@ -269,8 +269,8 @@ public class RobotContainer {
     m_driverController.rightBumper().whileTrue(SpinUpClose());
     m_driverController.rightTrigger().whileTrue(SpinUpFar());
     m_driverController.leftTrigger().whileTrue(Eject());
-    m_driverController.x().whileTrue(Shoot());
-    m_driverController.y().whileTrue(Stop());
+    m_driverController.y().whileTrue(Shoot());
+    m_driverController.x().whileTrue(Stop());
     if (!Constants.OperatorConstants.IsSwerve) {
       driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController));
     }
