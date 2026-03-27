@@ -17,82 +17,38 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "INTAKE"
-                }
-              },
               {
                 "type": "path",
                 "data": {
                   "pathName": "BOT_POS_1"
                 }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "END_INTAKE"
-                }
               },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "BOT_POS_2"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "OUTTAKE"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
               {
                 "type": "named",
                 "data": {
                   "name": "INTAKE"
                 }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "BOT_POS_3"
-                }
               }
             ]
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "BOT_POS_2"
+                }
+              },
               {
                 "type": "named",
                 "data": {
                   "name": "END_INTAKE"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "BOT_POS_4"
                 }
               }
             ]
@@ -101,7 +57,51 @@
         {
           "type": "named",
           "data": {
-            "name": "OUTTAKE"
+            "name": "OUTTAKE_2"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "BOT_POS_3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "INTAKE"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "BOT_POS_4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "END_INTAKE"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "OUTTAKE_2"
           }
         }
       ]
