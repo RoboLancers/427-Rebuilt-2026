@@ -17,9 +17,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "TOP_DEPOT_POS_3"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "TOP_DEPOT_POS_3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "INTAKE"
+                }
+              }
+            ]
           }
         },
         {
