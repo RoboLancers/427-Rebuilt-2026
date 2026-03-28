@@ -7,13 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "TOP_DEPOT_POS_3_NO_SHOOT"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "TOP_DEPOT_POS_4"
+            "pathName": "TopFullSweep"
           }
         }
       ]

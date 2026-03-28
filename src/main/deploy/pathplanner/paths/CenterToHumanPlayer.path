@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.276748311367677,
-        "y": 3.7071686746941186
+        "x": 1.5289586305278173,
+        "y": 3.6791868758915847
       },
       "isLocked": false,
       "linkedName": "CENTER_TURN_END"
@@ -20,15 +20,20 @@
         "y": 0.6774179743276942
       },
       "prevControl": {
-        "x": 2.2886917484458187,
-        "y": 2.883131980141628
+        "x": 1.8783024251069897,
+        "y": 0.315135520684737
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "HUMANPLAYER_END"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.4058408862034286,
+      "rotationDegrees": 180.0
+    }
+  ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
