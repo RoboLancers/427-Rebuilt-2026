@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CenterTurn"
+            "pathName": "BOT_POS_0"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "SHOOT"
+            "name": "SHOOT_FAR"
           }
         }
       ]

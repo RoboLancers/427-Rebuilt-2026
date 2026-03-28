@@ -13,7 +13,7 @@
         {
           "type": "named",
           "data": {
-            "name": "SHOOT"
+            "name": "SHOOT_FAR"
           }
         },
         {
@@ -101,7 +101,7 @@
         {
           "type": "named",
           "data": {
-            "name": "SHOOT"
+            "name": "SHOOT_FAR"
           }
         }
       ]
