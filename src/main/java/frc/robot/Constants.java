@@ -30,9 +30,9 @@ public final class Constants {
         new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
     public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms sprk max velocity lag}
 
-    public static final double MAX_SPEED =
-        Units.feetToMeters(16.6); // this used to be like 14 or smth
-    public static final double MAX_ANGULAR_SPEED = Units.feetToMeters(14);
+    public static final double MAX_SPEED = Units.feetToMeters(16.6); // 5.06 m
+    public static final double MAX_ANGULAR_SPEED =
+        Units.feetToMeters(14); // 4.27 m/s tangential speed at 1 rad/s
 
     public static final double TANK_SPEED_MULTIPLYER = 0.1;
     public static final double TANK__TURNING_SPEED_MULTIPLYER = 0.1;
