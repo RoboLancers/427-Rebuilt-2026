@@ -242,15 +242,13 @@ public class RobotContainer {
   }
 
   public Command SpinUpFar() {
-    return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinUpIntakeFar));
-  }
-
+    return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinUpIntakeF
   public Command timedCommand(Command command, double time) {
     return command.withTimeout(time);
   }
 
   public Command shootAuto() {
-    return SpinUpFar().alongWith(Commands.waitSeconds(1).andThen(SpinUpFar().alongWith(Shoot())).withTimeout(3));
+    return SpinUpFar().alongWith(Commands.waitSeconds(1).andThen((Shoot()))).withTimeout(4);
   }
 
   public Command shootAuto2() {
