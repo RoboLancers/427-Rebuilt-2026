@@ -160,8 +160,7 @@ public class RobotContainer {
     // SmartDashboard.putData("Auto Chooser", autoChooser);
     NamedCommands.registerCommand(
         "SHOOT", SpinUpClose().withTimeout(1).andThen(Shoot()).withTimeout(3));
-    NamedCommands.registerCommand(
-        "SHOOT_FAR", shootAuto());
+    NamedCommands.registerCommand("SHOOT_FAR", shootAuto());
     NamedCommands.registerCommand("INTAKE", Intake());
     NamedCommands.registerCommand("OUTTAKE", Eject());
     NamedCommands.registerCommand("OUTTAKE_2", Eject().withTimeout(3));
@@ -242,7 +241,9 @@ public class RobotContainer {
   }
 
   public Command SpinUpFar() {
-    return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinUpIntakeF
+    return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinUpIntakeFar));
+  }
+
   public Command timedCommand(Command command, double time) {
     return command.withTimeout(time);
   }
