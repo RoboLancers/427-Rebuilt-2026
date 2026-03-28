@@ -8,27 +8,32 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6398407492518619,
-        "y": 0.7892213731990616
+        "x": 1.7607111111111111,
+        "y": 0.08849999999999913
       },
       "isLocked": false,
       "linkedName": "HUMANPLAYER_END"
     },
     {
       "anchor": {
-        "x": 3.163911111111111,
-        "y": 1.428
+        "x": 1.5936519258202564,
+        "y": 4.013144578313253
       },
       "prevControl": {
-        "x": 2.9105555555555553,
-        "y": 1.326044444444443
+        "x": 1.5073555555555558,
+        "y": 3.7426666666666666
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "BOT_POS_0-1"
+      "linkedName": "CENTER_TURN_END"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6212180746561884,
+      "rotationDegrees": 180.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -42,7 +47,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -122.47119229084846
+    "rotation": -178.83871146823574
   },
   "reversed": false,
   "folder": null,
