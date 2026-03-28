@@ -9,7 +9,7 @@
       "prevControl": null,
       "nextControl": {
         "x": 3.12542371003321,
-        "y": 0.9809386815632244
+        "y": 0.9809386815632245
       },
       "isLocked": false,
       "linkedName": "BOT_STARTING_POS"
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 5.05,
+    "maxAcceleration": 4.26,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
