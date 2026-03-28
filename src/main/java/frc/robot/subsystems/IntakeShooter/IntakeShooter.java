@@ -108,7 +108,7 @@ public class IntakeShooter extends SubsystemBase {
     // if (GamePiece == true) {
     //   FuelCounter += 1;
     // }
-    ShootSpeed = SmartDashboard.getNumber("ShooterSpeed", ShootSpeed);
+    // ShootSpeed = SmartDashboard.getNumber("ShooterSpeed", ShootSpeed);
     // SmartDashboard.putNumber("ShooterRPM", ShootSpeed);
     // SmartDashboard.putBoolean("AtCloseSpeed", IsClose());
     // SmartDashboard.putBoolean("AtFarSpeed", IsFar());
