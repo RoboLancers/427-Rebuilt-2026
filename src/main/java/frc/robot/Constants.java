@@ -239,7 +239,7 @@ public final class Constants {
 
     public static final int StoppingFeeder = 0;
     public static final int StoppingIntake = 0;
-    public static final double SpinUpIntakeClose = 2000;
+    public static final double SpinUpIntakeClose = 2500;
     public static final double SpinUpIntakeFar = 3000;
   }
 

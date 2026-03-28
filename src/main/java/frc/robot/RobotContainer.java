@@ -234,8 +234,8 @@ public class RobotContainer {
   }
 
   public Command SpinUpClose() {
-    return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinUpIntakeClose));
-    // return m_IntakeShooter.ManualSpeedControl();
+    // return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinUpIntakeClose));
+    return m_IntakeShooter.ManualSpeedControl();
   }
 
   public Command SpinUpFar() {
