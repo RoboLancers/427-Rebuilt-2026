@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.DriveConstants;
 // import frc.robot.Constants.ClimbConstants;
 // import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
@@ -122,7 +121,7 @@ public class RobotContainer {
                   () -> -m_driverController.getLeftY(),
                   () -> -m_driverController.getLeftX())
               .withControllerRotationAxis(() -> m_driverController.getRawAxis(2))
-              .deadband(DriveConstants.DEADBAND)
+              .deadband(DEADBAND)
               .scaleTranslation(0.8)
               .allianceRelativeControl(true);
       // Derive the heading axis with math!

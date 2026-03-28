@@ -66,7 +66,9 @@ public class SwerveSubsystem extends SubsystemBase {
       throw new RuntimeException(e);
     }
 
-    this.vision = new VisionSubsystem(() -> getPose());
+    if (VisionConstants.isVision) {
+      this.vision = new VisionSubsystem(() -> getPose());
+    }
 
     // Configure AutoBuilder last
     try {
