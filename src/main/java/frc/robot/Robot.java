@@ -168,6 +168,7 @@ public class Robot extends TimedRobot {
     //       break;
     //   }
     // } else {
+    //   break;
     // }
     // SmartDashboard.putNumber("Alliance Shift Timer", timer.get());
   }
