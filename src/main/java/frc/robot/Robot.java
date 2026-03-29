@@ -105,14 +105,14 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     SmartDashboard.putBoolean("Red Alliance", false);
-      SmartDashboard.putBoolean("Blue Alliance", false);
+    SmartDashboard.putBoolean("Blue Alliance", false);
   }
 
   @Override
   public void disabledPeriodic() {}
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
-  @Override 
+  @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
@@ -142,35 +142,36 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if(DriverStation.getGameSpecificMessage().length() > 0){
-    switch (DriverStation.getGameSpecificMessage().charAt(0)){
-      case 'B':
-      if(!timer.isRunning()) {
-        timer.restart();
-      }
-      SmartDashboard.putBoolean("Alliance Shift", true); //Note in elestic set true to equal blue for clarity
-      if (timer.hasElapsed(30)) {
-        timer.stop();
-      }
-        break;
-      case 'R':
-      if(!timer.isRunning()) {
-        timer.restart();
-      }
-      SmartDashboard.putBoolean("Alliance Shift", false); //Note in elestic set false to equal red for clarity
-      if (timer.hasElapsed(30)) {
-        timer.stop();
-      }
-        break;
+    if (DriverStation.getGameSpecificMessage().length() > 0) {
+      switch (DriverStation.getGameSpecificMessage().charAt(0)) {
+        case 'B':
+          if (!timer.isRunning()) {
+            timer.restart();
+          }
+          SmartDashboard.putBoolean(
+              "Alliance Shift", true); // Note in elestic set true to equal blue for clarity
+          if (timer.hasElapsed(30)) {
+            timer.stop();
+          }
+          break;
+        case 'R':
+          if (!timer.isRunning()) {
+            timer.restart();
+          }
+          SmartDashboard.putBoolean(
+              "Alliance Shift", false); // Note in elestic set false to equal red for clarity
+          if (timer.hasElapsed(30)) {
+            timer.stop();
+          }
+          break;
 
-      default:
-      SmartDashboard.putBoolean("Alliance Shift", false);
-        break;
+        default:
+          SmartDashboard.putBoolean("Alliance Shift", false);
+          break;
+      }
+    } else {
     }
-    }
-    else {
-  }
-  SmartDashboard.putNumber("Alliance Shift Timer", timer.get());
+    SmartDashboard.putNumber("Alliance Shift Timer", timer.get());
   }
 
   @Override
