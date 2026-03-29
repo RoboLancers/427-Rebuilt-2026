@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6250213980028523,
-        "y": 0.6903566333808839
+        "x": 3.6608777777777783,
+        "y": 0.702399999999999
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.166031280614611,
-        "y": 0.5455215956550898
+        "x": 5.201887660389537,
+        "y": 0.5575649622742049
       },
       "isLocked": false,
       "linkedName": "BOT_STARTING_POS"
@@ -89,7 +89,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }
