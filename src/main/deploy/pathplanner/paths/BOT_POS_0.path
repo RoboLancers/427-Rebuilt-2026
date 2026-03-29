@@ -9,7 +9,7 @@
       "prevControl": null,
       "nextControl": {
         "x": 3.12542371003321,
-        "y": 0.9809386815632245
+        "y": 0.9809386815632246
       },
       "isLocked": false,
       "linkedName": "BOT_STARTING_POS"
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -122.47119229084846
+    "rotation": 54.46232220802562
   },
   "reversed": false,
   "folder": null,
