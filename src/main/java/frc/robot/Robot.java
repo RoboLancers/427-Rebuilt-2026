@@ -6,10 +6,8 @@ import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.opencv.core.Mat;
@@ -104,8 +102,8 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    SmartDashboard.putBoolean("Red Alliance", false);
-    SmartDashboard.putBoolean("Blue Alliance", false);
+    // SmartDashboard.putBoolean("Red Alliance", false);
+    // SmartDashboard.putBoolean("Blue Alliance", false);
   }
 
   @Override
@@ -135,43 +133,43 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    timer.start();
+    // timer.start();
     // m_robotContainer.drivebase.zeroGyro();
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if (DriverStation.getGameSpecificMessage().length() > 0) {
-      switch (DriverStation.getGameSpecificMessage().charAt(0)) {
-        case 'B':
-          if (!timer.isRunning()) {
-            timer.restart();
-          }
-          SmartDashboard.putBoolean(
-              "Alliance Shift", true); // Note in elestic set true to equal blue for clarity
-          if (timer.hasElapsed(30)) {
-            timer.stop();
-          }
-          break;
-        case 'R':
-          if (!timer.isRunning()) {
-            timer.restart();
-          }
-          SmartDashboard.putBoolean(
-              "Alliance Shift", false); // Note in elestic set false to equal red for clarity
-          if (timer.hasElapsed(30)) {
-            timer.stop();
-          }
-          break;
+    // if (DriverStation.getGameSpecificMessage().length() > 0) {
+    //   switch (DriverStation.getGameSpecificMessage().charAt(0)) {
+    //     case 'B':
+    //       if (!timer.isRunning()) {
+    //         timer.restart();
+    //       }
+    //       SmartDashboard.putBoolean(
+    //           "Alliance Shift", true); // Note in elestic set true to equal blue for clarity
+    //       if (timer.hasElapsed(30)) {
+    //         timer.stop();
+    //       }
+    //       break;
+    //     case 'R':
+    //       if (!timer.isRunning()) {
+    //         timer.restart();
+    //       }
+    //       SmartDashboard.putBoolean(
+    //           "Alliance Shift", false); // Note in elestic set false to equal red for clarity
+    //       if (timer.hasElapsed(30)) {
+    //         timer.stop();
+    //       }
+    //       break;
 
-        default:
-          SmartDashboard.putBoolean("Alliance Shift", false);
-          break;
-      }
-    } else {
-    }
-    SmartDashboard.putNumber("Alliance Shift Timer", timer.get());
+    //     default:
+    //       SmartDashboard.putBoolean("Alliance Shift", false);
+    //       break;
+    //   }
+    // } else {
+    // }
+    // SmartDashboard.putNumber("Alliance Shift Timer", timer.get());
   }
 
   @Override
