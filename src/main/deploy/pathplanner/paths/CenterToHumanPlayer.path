@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.276748311367677,
-        "y": 3.7071686746941186
+        "x": 1.5955717261067497,
+        "y": 3.7631519496882073
       },
       "isLocked": false,
       "linkedName": "CENTER_TURN_END"
@@ -20,8 +20,8 @@
         "y": 0.6774179743276942
       },
       "prevControl": {
-        "x": 2.2886917484458187,
-        "y": 2.883131980141628
+        "x": 1.8191777777777784,
+        "y": 1.1214111111111107
       },
       "nextControl": null,
       "isLocked": false,
@@ -56,7 +56,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": null,
