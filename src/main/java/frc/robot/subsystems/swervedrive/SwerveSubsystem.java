@@ -66,7 +66,9 @@ public class SwerveSubsystem extends SubsystemBase {
       throw new RuntimeException(e);
     }
 
-    this.vision = new VisionSubsystem(() -> getPose());
+    if (VisionConstants.isVision) {
+      this.vision = new VisionSubsystem(() -> getPose());
+    }
 
     // Configure AutoBuilder last
     try {
@@ -78,9 +80,9 @@ public class SwerveSubsystem extends SubsystemBase {
           this::getPose,
           this::resetPose,
           this::getSpeeds,
-          (speeds, feedforwards) -> driveFieldOriented(speeds),
+          (speeds, feedforwards) -> swerveDrive.drive(speeds),
           new PPHolonomicDriveController(
-              new PIDConstants(0.0, 0.0, 1.2), new PIDConstants(0.01, 0.0, 0.1)),
+              new PIDConstants(0.002, 0.0, 0), new PIDConstants(0.01, 0.0, 0.1)),
           config,
           () -> {
             var alliance = DriverStation.getAlliance();

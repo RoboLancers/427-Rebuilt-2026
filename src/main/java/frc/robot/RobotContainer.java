@@ -22,9 +22,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.DriveConstants;
 // import frc.robot.Constants.ClimbConstants;
 // import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
@@ -59,6 +59,8 @@ public class RobotContainer {
 
   private SendableChooser<Command> autoChooser;
 
+  // The robot's subsystems and commands are defined here...
+
   private final Field2d field = new Field2d();
 
   SwerveSubsystem drivebase;
@@ -81,6 +83,9 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
+    SmartDashboard.putNumber("Far Shooter Speed", FuelConstants.SpinUpIntakeFar);
+    SmartDashboard.putNumber("Close Shooter Speed", FuelConstants.SpinUpIntakeClose);
+
     if (IsSwerve) {
       drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
 
@@ -100,10 +105,9 @@ public class RobotContainer {
       driveAngularVelocity =
           SwerveInputStream.of(
                   drivebase.getSwerveDrive(),
-                  () -> m_driverController.getLeftY() * Constants.DriveConstants.MAX_SPEED,
-                  () -> m_driverController.getLeftX() * Constants.DriveConstants.MAX_SPEED)
-              .withControllerRotationAxis(
-                  () -> m_driverController.getRightX() * Constants.DriveConstants.MAX_ANGULAR_SPEED)
+                  () -> m_driverController.getLeftY(),
+                  () -> m_driverController.getLeftX())
+              .withControllerRotationAxis(() -> m_driverController.getRightX())
               .deadband(DEADBAND)
               .scaleTranslation(0.8)
               .allianceRelativeControl(true);
@@ -117,7 +121,7 @@ public class RobotContainer {
                   () -> -m_driverController.getLeftY(),
                   () -> -m_driverController.getLeftX())
               .withControllerRotationAxis(() -> m_driverController.getRawAxis(2))
-              .deadband(DriveConstants.DEADBAND)
+              .deadband(DEADBAND)
               .scaleTranslation(0.8)
               .allianceRelativeControl(true);
       // Derive the heading axis with math!
@@ -154,12 +158,13 @@ public class RobotContainer {
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     // SmartDashboard.putData("Auto Chooser", autoChooser);
     NamedCommands.registerCommand(
-        "SHOOT", timedCommand(SpinUpClose().withTimeout(1).andThen(Shoot()), 2.5));
-    NamedCommands.registerCommand(
-        "SHOOT_FAR", timedCommand(SpinUpFar().withTimeout(1).andThen(Shoot()), 5));
-    NamedCommands.registerCommand("INTAKE", timedCommand(Intake(), 3));
-    NamedCommands.registerCommand("OUTTAKE", timedCommand(Eject(), 2));
-    NamedCommands.registerCommand("END_INTAKE", timedCommand(Stop(), 1));
+        "SHOOT", SpinUpClose().withTimeout(1).andThen(Shoot()).withTimeout(3));
+    NamedCommands.registerCommand("SHOOT_FAR", shootAuto());
+    NamedCommands.registerCommand("INTAKE", Intake());
+    NamedCommands.registerCommand("OUTTAKE", Eject());
+    NamedCommands.registerCommand("OUTTAKE_2", Eject().withTimeout(3));
+    NamedCommands.registerCommand("END_INTAKE", Stop());
+    NamedCommands.registerCommand("WAIT", new WaitCommand(2.5));
     NamedCommands.registerCommand(
         "DEPLOY", Commands.none()); // timedCommand(m_ClimbSubsystem.setDeployAngle(), 1));
     // NamedCommands.registerCommand("CLIMB", );
@@ -172,7 +177,6 @@ public class RobotContainer {
 
     configureBindings();
 
-    m_feeder.setDefaultCommand(m_feeder.set(0));
     m_IntakeShooter.setDefaultCommand(m_IntakeShooter.set(0));
     m_feeder.setDefaultCommand(m_feeder.set(0));
 
@@ -219,7 +223,7 @@ public class RobotContainer {
   public Command Shoot() {
     return m_feeder
         .setVelocity(RPM.of(FuelConstants.IntakingFeeder))
-        .withTimeout(2)
+        .withTimeout(0.5)
         .andThen(m_feeder.setVelocity(RPM.of(FuelConstants.LaunchingFeeder)));
   }
 
@@ -230,7 +234,8 @@ public class RobotContainer {
   }
 
   public Command SpinUpClose() {
-    return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinUpIntakeClose));
+    // return m_IntakeShooter.setVelocity(RPM.of(FuelConstants.SpinUpIntakeClose));
+    return m_IntakeShooter.ManualSpeedControl();
   }
 
   public Command SpinUpFar() {
@@ -242,11 +247,15 @@ public class RobotContainer {
   }
 
   public Command shootAuto() {
-    return SpinUpFar().alongWith(Commands.waitSeconds(3).andThen(Shoot()));
+    return SpinUpFar().alongWith(Commands.waitSeconds(1).andThen((Shoot()))).withTimeout(4);
+  }
+
+  public Command shootAuto2() {
+    return Shoot();
   }
 
   /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
+   * Use this method to define your trigger->command mappings. Triggers can be created via then
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
    * predicate, or via the named factories in {@link
    * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
@@ -259,9 +268,9 @@ public class RobotContainer {
     m_driverController.rightBumper().whileTrue(SpinUpClose());
     m_driverController.rightTrigger().whileTrue(SpinUpFar());
     m_driverController.leftTrigger().whileTrue(Eject());
-    m_driverController.x().whileTrue(Shoot());
-    m_driverController.y().whileTrue(Stop());
-    if (Constants.OperatorConstants.IsSwerve == false) {
+    m_driverController.y().whileTrue(Shoot());
+    m_driverController.x().whileTrue(Stop());
+    if (!Constants.OperatorConstants.IsSwerve) {
       driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController));
     }
 
@@ -343,8 +352,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    // return autoChooser.getSelected();
-    // return shootAuto();
-    return Commands.none();
+    return autoChooser.getSelected();
   }
 }

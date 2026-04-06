@@ -6,8 +6,8 @@ import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Seconds;
 
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -29,17 +29,20 @@ import yams.motorcontrollers.local.SparkWrapper;
 
 @Logged
 public class IntakeShooter extends SubsystemBase {
-  // public static int FuelCounter = 0;
+  // public static in
+  public static int FuelCounter = 0;
   public static double ShootSpeed;
-  private SparkMax spark = new SparkMax(IntakeConstants.Intake_SparkMax_ID, MotorType.kBrushless);
-  private SparkMax sparkFollower =
-      new SparkMax(IntakeConstants.IntakeFollower_SparkMax_ID, MotorType.kBrushless);
+  private SparkFlex spark = new SparkFlex(IntakeConstants.Intake_SparkMax_ID, MotorType.kBrushless);
+  private SparkFlex sparkFollower =
+      new SparkFlex(IntakeConstants.IntakeFollower_SparkMax_ID, MotorType.kBrushless);
 
   protected void execute() {
     // SmartDashboard.putNumber("Fuel Number", FuelCounter);
   }
 
-  public IntakeShooter() {}
+  public IntakeShooter() {
+    SmartDashboard.putNumber("ShooterSpeed", ShootSpeed);
+  }
 
   /** Creates a new intake. */
   private SmartMotorControllerConfig smcConfig =
@@ -100,17 +103,16 @@ public class IntakeShooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // SmartDashboard.putNumber("Fuel Number", FuelCounter);
-    intake.updateTelemetry();
+    // intake.updateTelemetry();
     // boolean GamePiece = isGamePieceIn();
     // if (GamePiece == true) {
     //   FuelCounter += 1;
     // }
-    // ShootSpeed = SmartDashboard.getNumber("ShooterSpeed", ShootSpeed);
+    ShootSpeed = SmartDashboard.getNumber("ShooterSpeed", ShootSpeed);
     // SmartDashboard.putNumber("ShooterRPM", ShootSpeed);
-    SmartDashboard.putNumber("ShooterSpeed", ShootSpeed);
-    SmartDashboard.putBoolean("AtCloseSpeed", IsClose());
-    SmartDashboard.putBoolean("AtFarSpeed", IsFar());
-    SmartDashboard.putBoolean("IsShooterRunning", IsShooterRunning());
+    // SmartDashboard.putBoolean("AtCloseSpeed", IsClose());
+    // SmartDashboard.putBoolean("AtFarSpeed", IsFar());
+    // SmartDashboard.putBoolean("IsShooterRunning", IsShooterRunning());
   }
 
   @Override
