@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.5473894436519258,
-        "y": 4.067346647646221
+        "x": 16.1,
+        "y": 7.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.2973894436519258,
-        "y": 4.067346647646221
+        "x": 14.600000000000001,
+        "y": 7.4
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "CenterToHumanPlayerRedEnd"
     },
     {
       "anchor": {
-        "x": 1.5936519258202564,
-        "y": 4.013144578313253
+        "x": 14.9,
+        "y": 4.0
       },
       "prevControl": {
-        "x": 1.8436519258202564,
-        "y": 4.013144578313253
+        "x": 14.9,
+        "y": 4.2839108384855376
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "CENTER_TURN_END"
+      "linkedName": "CenterTurnRedEnd"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5781250000000007,
+      "rotationDegrees": 180.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -42,7 +47,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": null,
