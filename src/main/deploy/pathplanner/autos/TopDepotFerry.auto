@@ -13,7 +13,7 @@
         {
           "type": "named",
           "data": {
-            "name": "SHOOT"
+            "name": "SHOOT_FAR"
           }
         },
         {
@@ -63,7 +63,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "TOP_POS_2"
+            "pathName": "TOP_DEPOT_POS_3"
           }
         },
         {
@@ -142,7 +142,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_POS_6"
+                  "pathName": "TOP_POS_4"
                 }
               }
             ]

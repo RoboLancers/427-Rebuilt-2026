@@ -13,13 +13,7 @@
         {
           "type": "named",
           "data": {
-            "name": "SHOOT"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "TOP_POS_2"
+            "name": "SHOOT_FAR"
           }
         },
         {
@@ -30,6 +24,25 @@
                 "type": "named",
                 "data": {
                   "name": "INTAKE"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "TOP_POS_2"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "END_INTAKE"
                 }
               },
               {
@@ -42,13 +55,19 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "OUTTAKE"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "END_INTAKE"
+                  "name": "INTAKE"
                 }
               },
               {
@@ -61,19 +80,13 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "OUTTAKE"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "INTAKE"
+                  "name": "END_INTAKE"
                 }
               },
               {
@@ -83,75 +96,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "END_INTAKE"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "TOP_POS_6"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "OUTTAKE"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "INTAKE"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "TOP_POS_7"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "END_INTAKE"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "TOP_POS_8"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "OUTTAKE"
           }
         }
       ]
