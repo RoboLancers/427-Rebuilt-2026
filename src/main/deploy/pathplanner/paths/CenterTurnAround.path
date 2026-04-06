@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 3.2213975903614456,
+        "x": 1.5936519258202564,
         "y": 4.013144578313253
       },
       "prevControl": {
-        "x": 2.7952168674698794,
-        "y": 4.00221686746988
+        "x": 1.838760518483468,
+        "y": 3.9639330166365516
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "CENTER_TURN_END"
     }
   ],
   "rotationTargets": [],
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 5.05,
+    "maxAcceleration": 4.26,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -177.8789036033386
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": null,

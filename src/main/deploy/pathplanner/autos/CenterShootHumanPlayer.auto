@@ -5,33 +5,45 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "SHOOT"
+            "pathName": "CenterTurn"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "DEPLOY"
+            "name": "SHOOT_FAR"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "TOP_RIGHT_CLIMB"
+            "pathName": "CenterToHumanPlayer"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Human Player to Center Shoot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "CLIMB"
+            "name": "SHOOT_FAR"
           }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

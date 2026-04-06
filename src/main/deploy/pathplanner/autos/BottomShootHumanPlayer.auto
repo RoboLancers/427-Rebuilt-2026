@@ -5,33 +5,45 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "SHOOT"
+            "pathName": "BOT_POS_0"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "DEPLOY"
+            "name": "SHOOT_FAR"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "CEN_RIGHT_CLIMB"
+            "pathName": "Shoot to Human Player"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Human Player to Shoot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "CLIMB"
+            "name": "SHOOT_FAR"
           }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

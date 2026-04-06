@@ -3,52 +3,38 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.401,
-        "y": 4.975
+        "x": 0.4162339515000718,
+        "y": 0.6774179743276942
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.952631752559968,
-        "y": 5.037422325713391
+        "x": 0.6398407492518619,
+        "y": 0.7892213731990616
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "HUMANPLAYER_END"
     },
     {
       "anchor": {
-        "x": 4.8,
-        "y": 5.25
+        "x": 2.9522111269614832,
+        "y": 1.4278601997146938
       },
       "prevControl": {
-        "x": 5.578758915834522,
-        "y": 5.529415121255349
+        "x": 2.4864194008559197,
+        "y": 0.6903566333808838
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "BOT_POS_0-1"
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [
-    {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.3,
-      "maxWaypointRelativePos": 0.2,
-      "constraints": {
-        "maxVelocity": 3.0,
-        "maxAcceleration": 3.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
-    }
-  ],
+  "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 5.05,
+    "maxAcceleration": 4.26,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -56,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 60.74699999999999
   },
   "reversed": false,
   "folder": null,

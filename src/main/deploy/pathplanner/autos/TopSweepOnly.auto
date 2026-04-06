@@ -7,25 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CenterTurnAround"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "CLOSE_SHOOT"
+            "pathName": "TOP_DEPOT_POS_3_NO_SHOOT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "CenterToDepot"
+            "pathName": "TOP_DEPOT_POS_4"
           }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

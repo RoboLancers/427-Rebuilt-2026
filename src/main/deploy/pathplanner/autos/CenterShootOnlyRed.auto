@@ -5,33 +5,21 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "SHOOT"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "DEPLOY"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "BOT_LEFT_CLIMB"
+            "pathName": "RED_POS_0"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "CLIMB"
+            "name": "SHOOT_FAR"
           }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

@@ -5,7 +5,7 @@
     "data": {
       "commands": [
         {
-          "type": "sequential",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -17,14 +17,14 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "SHOOT"
+                  "name": "SHOOT_FAR"
                 }
               }
             ]
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -49,21 +49,46 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "Depot to Shoot"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Depot Back"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "INTAKE"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "SHOOT"
+            "name": "END_INTAKE"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Depot to Center Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SHOOT_FAR"
           }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }
