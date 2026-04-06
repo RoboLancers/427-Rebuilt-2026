@@ -28,7 +28,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private final RobotContainer m_robotContainer;
   Thread m_visionThread;
-  Timer timer;
+  Timer timer = new Timer();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -107,6 +107,7 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putBoolean("Red Alliance", false);
     // SmartDashboard.putBoolean("Blue Alliance", false);
     SmartDashboard.putBoolean("Alliance Shift", false);
+    timer.isRunning(); // Here so value is not null.
   }
 
   @Override
@@ -129,6 +130,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    timer.isRunning(); // Here so value is not null.
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -143,27 +145,30 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    Timer.getMatchTime();
     if (DriverStation.getGameSpecificMessage().length() > 0) {
       switch (DriverStation.getGameSpecificMessage().charAt(0)) {
         case 'B':
+          timer.start();
           SmartDashboard.putBoolean(
               "Alliance Shift", true); // Note in elestic set true to equal blue for clarity
-          // if (!timer.isRunning()) {
-          //   timer.restart();
-          // }
-          // if (timer.hasElapsed(30)) {
-          //   // timer.stop();
-          // }
+          if (!timer.isRunning()) {
+            timer.reset();
+          }
+          if (timer.hasElapsed(25)) {
+            timer.stop();
+          }
           break;
         case 'R':
+          timer.start();
           SmartDashboard.putBoolean(
               "Alliance Shift", true); // Note in elestic set true to equal blue for clarity
-          // if (!timer.isRunning()) {
-          //   timer.restart();
-          // }
-          // if (timer.hasElapsed(30)) {
-          //   // timer.stop();
-          // }
+          if (!timer.isRunning()) {
+            timer.reset();
+          }
+          if (timer.hasElapsed(25)) {
+            timer.stop();
+          }
           break;
 
         default:
@@ -173,7 +178,7 @@ public class Robot extends TimedRobot {
     } else {
       SmartDashboard.putBoolean("Alliance Shift", false);
     }
-    // SmartDashboard.putNumber("Alliance Shift Timer", timer.get());
+    SmartDashboard.putNumber("Alliance Shift Timer", timer.get());
   }
 
   @Override
