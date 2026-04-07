@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7607111111111111,
-        "y": 0.08849999999999913
+        "x": 1.9162339515000717,
+        "y": 0.6774179743276942
       },
       "isLocked": false,
       "linkedName": "HUMANPLAYER_END"
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 1.5936519258202564,
-        "y": 4.013144578313253
+        "y": 4.0
       },
       "prevControl": {
-        "x": 1.5073555555555558,
-        "y": 3.7426666666666666
+        "x": 1.5936519258202564,
+        "y": 3.7160891615144624
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,8 +30,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.6212180746561884,
-      "rotationDegrees": 180.0
+      "waypointRelativePos": 0.6,
+      "rotationDegrees": 0.0
     }
   ],
   "constraintZones": [],

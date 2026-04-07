@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 1.5936519258202564,
-        "y": 4.013144578313253
+        "y": 4.0
       },
       "prevControl": null,
       "nextControl": {
         "x": 1.6712838801711831,
-        "y": 6.173900641080727
+        "y": 6.160756062767474
       },
       "isLocked": false,
       "linkedName": "CENTER_TURN_END"
