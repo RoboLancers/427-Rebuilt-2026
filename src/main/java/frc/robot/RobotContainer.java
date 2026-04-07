@@ -12,7 +12,6 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -20,7 +19,6 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -34,17 +32,12 @@ import frc.robot.Constants.FuelConstants;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.CANDriveSubsystem;
 // import frc.robot.subsystems.Climb.ClimbSubsystem;
-import frc.robot.subsystems.Led.LEDSubsystem;
 import frc.robot.subsystems.Feeder.Feeder;
 import frc.robot.subsystems.IntakeShooter.IntakeShooter;
 import frc.robot.subsystems.Led.LEDSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-
-import static edu.wpi.first.units.Units.RPM;
-
 import java.io.File;
 import swervelib.SwerveInputStream;
-import frc.robot.subsystems.Led.LEDSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -356,5 +349,19 @@ public class RobotContainer {
     // return autoChooser.getSelected();
     // return shootAuto();
     return Commands.none();
+  }
+
+  public void updateLEDs() {
+    if (m_IntakeShooter.getVelocity().in(RPM) > 0) {
+      LEDSubsystem.isIntaking = true;
+    } else {
+      LEDSubsystem.isIntaking = false;
+    }
+
+    if (m_IntakeShooter.getVelocity().in(RPM) < 0) {
+      LEDSubsystem.isEjecting = true;
+    } else {
+      LEDSubsystem.isEjecting = false;
+    }
   }
 }
