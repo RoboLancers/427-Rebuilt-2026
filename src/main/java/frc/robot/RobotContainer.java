@@ -29,6 +29,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 // import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.FuelConstants;
+import frc.robot.commands.AutoCommand.Eject;
+import frc.robot.commands.AutoCommand.Intake;
+import frc.robot.commands.AutoCommand.Shoot;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.CANDriveSubsystem;
 // import frc.robot.subsystems.Climb.ClimbSubsystem;
@@ -159,10 +162,10 @@ public class RobotContainer {
     // SmartDashboard.putData("Auto Chooser", autoChooser);
     NamedCommands.registerCommand(
         "SHOOT", SpinUpClose().withTimeout(1).andThen(Shoot()).withTimeout(3));
-    NamedCommands.registerCommand("SHOOT_FAR", shootAuto());
-    NamedCommands.registerCommand("INTAKE", Intake());
-    NamedCommands.registerCommand("OUTTAKE", Eject());
-    NamedCommands.registerCommand("OUTTAKE_2", Eject().withTimeout(3));
+    NamedCommands.registerCommand("SHOOT_FAR", new Shoot(m_IntakeShooter, m_feeder).withTimeout(3));
+    NamedCommands.registerCommand("INTAKE", new Intake(m_IntakeShooter, m_feeder));
+    NamedCommands.registerCommand("OUTTAKE", new Eject(m_IntakeShooter, m_feeder));
+    NamedCommands.registerCommand("OUTTAKE_2", new Eject(m_IntakeShooter, m_feeder).withTimeout(3));
     NamedCommands.registerCommand("END_INTAKE", Stop());
     NamedCommands.registerCommand("WAIT", new WaitCommand(2.5));
     NamedCommands.registerCommand(

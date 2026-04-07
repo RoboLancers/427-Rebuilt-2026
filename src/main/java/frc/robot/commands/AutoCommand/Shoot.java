@@ -17,16 +17,12 @@ public class Shoot extends Command {
   Feeder feeder;
 
   /** Creates a new Shoot. */
-  public Shoot(IntakeShooter intakeShooter) {
+  public Shoot(IntakeShooter intakeShooter, Feeder feeder) {
     this.intakeShooter = intakeShooter;
     this.feeder = feeder;
     addRequirements(intakeShooter);
     addRequirements(feeder);
-
-    // Use addRequirements() here to declare subsystem dependencies.
   }
-
-  // Called when the command is initially scheduled.
 
   @Override
   public void initialize() {
@@ -48,8 +44,8 @@ public class Shoot extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakeShooter.setVelocity(RPM.of(0));
-    feeder.setVelocity(RPM.of(0));
+    intakeShooter.set(0);
+    feeder.set(0);
   }
 
   // Returns true when the command should end.
