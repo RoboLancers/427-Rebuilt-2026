@@ -12,20 +12,20 @@
         "y": 3.9897146932952925
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "RED_STARTING_POS"
     },
     {
       "anchor": {
-        "x": 14.95,
+        "x": 14.752268188302425,
         "y": 3.9897146932952925
       },
       "prevControl": {
-        "x": 13.95,
+        "x": 13.752268188302425,
         "y": 3.9897146932952925
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "RED_ENDING_POS_0"
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -2.07328318760851
   },
   "reversed": false,
   "folder": null,
