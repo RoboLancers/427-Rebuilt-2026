@@ -1,25 +1,31 @@
 {
   "name": "WPILib Robot Development",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
-  "postCreateCommand": "cd /home/vscode && wget 'https://github.com/wpilibsuite/vscode-wpilib/releases/download/v2025.2.1/vscode-wpilib-2025.2.1.vsix' && git config core.hooksPath .githooks",
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
   "features": {
     "ghcr.io/devcontainers/features/java:1": {
       "version": "17",
       "installGradle": "true",
       "installMaven": "true"
     },
-    "desktop-lite": {
-      "password": "vscode",
-      "webPort": "6080",
-      "vncPort": "5901"
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/desktop-lite:1": {
+      "password": "vscode"
     }
   },
-  "runArgs": ["--shm-size=1g"],
+  "remoteEnv": {
+    "DISPLAY": ":1",
+    "WPILIB_SIMULATION": "true"
+  },
+  "runArgs": [
+    "--shm-size=2g",
+    "-e", "DISPLAY=:1"
+  ],
   "forwardPorts": [6080, 5901],
   "customizations": {
     "vscode": {
       "extensions": [
-        "/home/vscode/vscode-wpilib-2025.2.1.vsix",
+        "wpilibsuite.vscode-wpilib",
         "vscjava.vscode-java-pack",
         "vscjava.vscode-gradle"
       ]

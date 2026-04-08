@@ -125,7 +125,7 @@ public final class Constants {
   }
 
   public static class VisionConstants {
-    public static final boolean isVision = false;
+    public static final boolean isVision = true;
 
     public static final String kCameraName = "YOUR CAMERA NAME";
     // Cam mounted facing forward, half a meter forward of center, half a meter up from cen
