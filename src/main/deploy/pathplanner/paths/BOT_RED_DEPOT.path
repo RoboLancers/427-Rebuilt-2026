@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 13.743052781740369,
-        "y": 1.311412268188302
+        "x": 13.726888888888888,
+        "y": 2.115344444444444
       },
       "isLocked": false,
       "linkedName": "BOT_SHOOTING_POS_RED"
@@ -20,15 +20,20 @@
         "y": 2.1006704707622452
       },
       "prevControl": {
-        "x": 15.883515498953125,
-        "y": 1.9720465319053626
+        "x": 14.428488888888888,
+        "y": 2.0276444444444452
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "DEPOT_RED"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.7568464730290463,
+      "rotationDegrees": 180.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],

@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 13.159877556392606,
-        "y": 7.292685066128705
+        "x": 13.173986405259324,
+        "y": 7.353597057546205
       },
       "isLocked": false,
       "linkedName": "TOP_STARTING_POS_RED"
@@ -20,8 +20,8 @@
         "y": 6.765623342175067
       },
       "prevControl": {
-        "x": 13.380074379225753,
-        "y": 6.936202904765068
+        "x": 13.522255555555557,
+        "y": 7.046033333333332
       },
       "nextControl": null,
       "isLocked": false,

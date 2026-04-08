@@ -23,7 +23,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_DEPOT_POS_1"
+                  "pathName": "BOT_RED_DEPOT"
                 }
               },
               {
@@ -80,7 +80,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Depot Back"
+                  "pathName": "Depot Back Red"
                 }
               },
               {
