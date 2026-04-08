@@ -12,8 +12,7 @@ public class Eject extends Command {
   IntakeShooter intakeShooter;
   Feeder feeder;
 
-  public Eject(IntakeShooter intakeShooter) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public Eject(IntakeShooter intakeShooter, Feeder feeder) {
     this.feeder = feeder;
     addRequirements(intakeShooter);
     addRequirements(feeder);

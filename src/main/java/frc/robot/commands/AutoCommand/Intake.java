@@ -16,7 +16,7 @@ public class Intake extends Command {
   Feeder feeder;
 
   // creates a new shoot
-  public Intake(IntakeShooter intakeShooter) {
+  public Intake(IntakeShooter intakeShooter, Feeder feeder) {
     this.intakeShooter = intakeShooter;
     this.feeder = feeder;
     addRequirements(intakeShooter);
