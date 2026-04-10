@@ -13,30 +13,37 @@ import java.util.Map;
 
 public class LEDPatterns {
 
-
   public static LEDPattern defaultPattern = LEDPattern.solid(Color.kBlack);
 
-    public static LEDPattern red = LEDPattern.solid(Color.kRed);
-    public static LEDPattern orange = LEDPattern.solid(Color.kOrange);
-    public static LEDPattern yellow = LEDPattern.solid(Color.kYellow);
-    public static LEDPattern green = LEDPattern.solid(Color.kGreen);
-    public static LEDPattern blue = LEDPattern.solid(Color.kBlue);
-    public static LEDPattern pink = LEDPattern.solid(Color.kPink);
+  public static LEDPattern red = LEDPattern.solid(Color.kRed);
+  public static LEDPattern orange = LEDPattern.solid(Color.kOrange);
+  public static LEDPattern yellow = LEDPattern.solid(Color.kYellow);
+  public static LEDPattern green = LEDPattern.solid(Color.kGreen);
+  public static LEDPattern blue = LEDPattern.solid(Color.kBlue);
+  public static LEDPattern pink = LEDPattern.solid(Color.kPink);
 
-    public static LEDPattern redBreathe = red.breathe(Seconds.of(2));
-    public static LEDPattern blueBreathe = blue.breathe(Seconds.of(2));
-    
-    public static LEDPattern seizure =
-        LEDPattern.steps(
-            Map.of(
-                0, Color.kRed,
-                0.125, Color.kOrange,
-                0.25, Color.kYellow,
-                0.375, Color.kGreen,
-                0.5, Color.kBlue,
-                0.625, Color.kPink,
-                0.75, Color.kRed,
-                0.875, Color.kOrange));
+  public static LEDPattern redBreathe = red.breathe(Seconds.of(2));
+  public static LEDPattern blueBreathe = blue.breathe(Seconds.of(2));
+
+  public static LEDPattern seizure =
+      LEDPattern.steps(
+          Map.of(
+              0,
+              Color.kRed,
+              0.125,
+              Color.kOrange,
+              0.25,
+              Color.kYellow,
+              0.375,
+              Color.kGreen,
+              0.5,
+              Color.kBlue,
+              0.625,
+              Color.kPink,
+              0.75,
+              Color.kRed,
+              0.875,
+              Color.kOrange));
 
   public static LEDPattern bluePinkYellowWhiteGradient =
       LEDPattern.gradient(

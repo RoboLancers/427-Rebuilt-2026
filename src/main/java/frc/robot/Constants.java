@@ -330,6 +330,8 @@ public final class Constants {
   public static final class LedConstants {
     public static final int kPort = 9;
     public static final int kLength = 60;
+    public static final boolean isLED = true;
+    public static final boolean isCandle = true;
     // will declare LED situations here ex: if(test) pattern = kTestPattern
   }
 }
