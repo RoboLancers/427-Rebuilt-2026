@@ -34,6 +34,7 @@ import frc.robot.subsystems.CANDriveSubsystem;
 // import frc.robot.subsystems.Climb.ClimbSubsystem;
 import frc.robot.subsystems.Feeder.Feeder;
 import frc.robot.subsystems.IntakeShooter.IntakeShooter;
+import frc.robot.subsystems.Led.LEDSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -62,6 +63,9 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   private final Field2d field = new Field2d();
+
+  private final LEDSubsystem ledSubsystem = new LEDSubsystem();
+  // private final CANDleLED candleLED = new CANDleLED();
 
   SwerveSubsystem drivebase;
 
@@ -353,5 +357,19 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
+  }
+
+  public void updateLEDs() {
+    if (m_IntakeShooter.getVelocity().in(RPM) > 0) {
+      LEDSubsystem.isIntaking = true;
+    } else {
+      LEDSubsystem.isIntaking = false;
+    }
+
+    if (m_IntakeShooter.getVelocity().in(RPM) < 0) {
+      LEDSubsystem.isEjecting = true;
+    } else {
+      LEDSubsystem.isEjecting = false;
+    }
   }
 }

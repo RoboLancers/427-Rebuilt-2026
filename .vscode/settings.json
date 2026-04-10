@@ -77,6 +77,9 @@
     "editor.codeActionsOnSave": {
       "source.fixAll.spotlessGradle": "explicit"
     }
-  }
+  },
+  "java.compile.nullAnalysis.mode": "automatic",
+  "spotlessGradle.diagnostics.enable": true,
+  "spotlessGradle.format.enable": true
 }
 

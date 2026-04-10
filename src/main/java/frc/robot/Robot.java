@@ -22,7 +22,6 @@ import org.opencv.imgproc.Imgproc;
  */
 @Logged
 public class Robot extends TimedRobot {
-
   private Command m_autonomousCommand;
   private final RobotContainer m_robotContainer;
   Thread m_visionThread;
@@ -84,8 +83,8 @@ public class Robot extends TimedRobot {
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
    * that you want ran during disabled, autonomous, teleoperated and test.
    *
-   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
-   * SmartDashboard integrated updating.
+   * <p>This runs after the mode specific periodic functions, but before LiveWindow and Dashboard
+   * integrated updating.
    */
   @Override
   public void robotPeriodic() {
@@ -97,6 +96,7 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    m_robotContainer.updateLEDs();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
