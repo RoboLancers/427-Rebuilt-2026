@@ -105,9 +105,9 @@ public class RobotContainer {
       driveAngularVelocity =
           SwerveInputStream.of(
                   drivebase.getSwerveDrive(),
-                  () -> m_driverController.getLeftY(),
-                  () -> m_driverController.getLeftX())
-              .withControllerRotationAxis(() -> m_driverController.getRightX())
+                  () -> -m_driverController.getLeftY(),
+                  () -> -m_driverController.getLeftX())
+              .withControllerRotationAxis(() -> -m_driverController.getRightX())
               .deadband(DEADBAND)
               .scaleTranslation(0.8)
               .allianceRelativeControl(true);
