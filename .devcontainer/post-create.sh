@@ -100,6 +100,36 @@ for TOOL in "${!NATIVE_TOOLS[@]}"; do
   rm /tmp/$TOOL.zip
 done
 
+# AdvantageScope and Elastic are not frcmaven artifacts — they're bundled separately by the
+# WPILib installer from GitHub releases. The installer extracts them to ~/wpilib/2026/<app>/
+# and creates a processstarter-based launcher in tools/. We use a plain shell script instead,
+# which is simpler and doesn't require processstarter's StartExeTool logic.
+
+echo "Installing AdvantageScope..."
+mkdir -p ~/wpilib/2026/advantagescope
+wget -q "https://github.com/Mechanical-Advantage/AdvantageScope/releases/download/v26.0.0/advantagescope-wpilib-linux-x64.zip" -O /tmp/advantagescope.zip
+unzip -q /tmp/advantagescope.zip -d ~/wpilib/2026/advantagescope
+chmod +x ~/wpilib/2026/advantagescope/advantagescope-wpilib
+# Electron apps need --no-sandbox in containers (no user namespace sandbox support)
+cat > "$TOOLS_DIR/AdvantageScope" << 'LAUNCHER'
+#!/bin/bash
+exec "$HOME/wpilib/2026/advantagescope/advantagescope-wpilib" --no-sandbox "$@"
+LAUNCHER
+chmod +x "$TOOLS_DIR/AdvantageScope"
+rm /tmp/advantagescope.zip
+
+echo "Installing Elastic..."
+mkdir -p ~/wpilib/2026/elastic
+wget -q "https://github.com/Gold872/elastic-dashboard/releases/download/v2026.1.1/Elastic-WPILib-Linux.zip" -O /tmp/elastic.zip
+unzip -q /tmp/elastic.zip -d ~/wpilib/2026/elastic
+chmod +x ~/wpilib/2026/elastic/elastic_dashboard
+cat > "$TOOLS_DIR/Elastic" << 'LAUNCHER'
+#!/bin/bash
+exec "$HOME/wpilib/2026/elastic/elastic_dashboard" "$@"
+LAUNCHER
+chmod +x "$TOOLS_DIR/Elastic"
+rm /tmp/elastic.zip
+
 echo "WPILib tools installed to $TOOLS_DIR"
 
 # Write tools.json so GradleRIO's ToolInstallTask sees the tools as already installed.
@@ -110,10 +140,12 @@ echo "WPILib tools installed to $TOOLS_DIR"
 # Each entry needs "name" (matched against tool name) and "version" (compared to artifact version).
 cat > "$TOOLS_DIR/tools.json" << EOF
 [
-  {"name": "SmartDashboard", "version": "$WPILIB_VER"},
-  {"name": "ShuffleBoard",   "version": "$WPILIB_VER"},
-  {"name": "PathWeaver",     "version": "$WPILIB_VER"},
-  {"name": "RobotBuilder",   "version": "$WPILIB_VER"}
+  {"name": "SmartDashboard",  "version": "$WPILIB_VER"},
+  {"name": "ShuffleBoard",    "version": "$WPILIB_VER"},
+  {"name": "PathWeaver",      "version": "$WPILIB_VER"},
+  {"name": "RobotBuilder",    "version": "$WPILIB_VER"},
+  {"name": "AdvantageScope",  "version": "26.0.0"},
+  {"name": "Elastic",         "version": "2026.1.1"}
 ]
 EOF
 
