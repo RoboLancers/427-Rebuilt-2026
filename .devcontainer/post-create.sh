@@ -45,6 +45,78 @@ mkdir -p ~/wpilib/2026
 ln -sf "$WPILIB_JDK" ~/wpilib/2026/jdk
 mkdir -p ~/wpilib/2026/maven  # Gradle checks this path (settings.gradle pluginManagement)
 
+# Install WPILib tools directly from frcmaven.
+# GradleRIO's ToolInstallTask looks for a processstarter binary via getClass().getResourceAsStream(),
+# but the wpiCppTools configuration that should provide it never resolves in this environment.
+# Pre-installing the tools bypasses that broken mechanism entirely.
+TOOLS_DIR="$HOME/wpilib/2026/tools"
+mkdir -p "$TOOLS_DIR"
+FRCMAVEN="https://frcmaven.wpi.edu/artifactory/release/edu/wpi/first/tools"
+WPILIB_VER="2026.2.1"
+
+echo "Downloading processstarter launcher..."
+wget -q "$FRCMAVEN/processstarter/$WPILIB_VER/processstarter-$WPILIB_VER-linuxx86-64.zip" -O /tmp/processstarter.zip
+unzip -p /tmp/processstarter.zip "linux/x86-64/processstarter" > /tmp/processstarter-bin
+chmod +x /tmp/processstarter-bin
+rm /tmp/processstarter.zip
+
+# Java tools: processstarter binary (renamed to tool name) + tool JAR.
+# processstarter finds the JAR by looking for <its-own-name>.jar in the same directory.
+# Also create an empty <ToolName>.exe stub: GradleRIO's ToolInstallTask.getScriptFile()
+# always checks for the .exe path on all platforms (including Linux). runToolUnix() uses
+# the extension-less binary, so the stub is never executed — it only satisfies the check.
+echo "Installing Java tools..."
+# Tool name (used for file names) vs Maven artifact ID (used for download URL) differ for ShuffleBoard.
+# GradleRIO WPIToolsPlugin: new WPITool(project, "<ToolName>", ..., "edu.wpi.first.tools", "<artifactId>", ...)
+# Files on disk must match the tool name, not the artifact ID.
+for TOOL_AND_ARTIFACT in "SmartDashboard:SmartDashboard" "ShuffleBoard:Shuffleboard" "PathWeaver:PathWeaver"; do
+  TOOL="${TOOL_AND_ARTIFACT%%:*}"
+  ARTIFACT="${TOOL_AND_ARTIFACT##*:}"
+  wget -q "$FRCMAVEN/$ARTIFACT/$WPILIB_VER/$ARTIFACT-$WPILIB_VER-linuxx64.jar" -O "$TOOLS_DIR/$TOOL.jar"
+  cp /tmp/processstarter-bin "$TOOLS_DIR/$TOOL"
+  touch "$TOOLS_DIR/$TOOL.exe"
+done
+# RobotBuilder has no platform classifier
+wget -q "$FRCMAVEN/RobotBuilder/$WPILIB_VER/RobotBuilder-$WPILIB_VER.jar" -O "$TOOLS_DIR/RobotBuilder.jar"
+cp /tmp/processstarter-bin "$TOOLS_DIR/RobotBuilder"
+touch "$TOOLS_DIR/RobotBuilder.exe"
+
+rm /tmp/processstarter-bin
+
+# Native C++ tools: self-contained binaries, extracted and renamed to PascalCase tool name.
+echo "Installing native tools..."
+declare -A NATIVE_TOOLS=(
+  [Glass]="glass"
+  [OutlineViewer]="outlineviewer"
+  [SysId]="sysid"
+  [DataLogTool]="datalogtool"
+  [wpical]="wpical"
+)
+for TOOL in "${!NATIVE_TOOLS[@]}"; do
+  BIN="${NATIVE_TOOLS[$TOOL]}"
+  wget -q "$FRCMAVEN/$TOOL/$WPILIB_VER/$TOOL-$WPILIB_VER-linuxx86-64.zip" -O /tmp/$TOOL.zip
+  unzip -p /tmp/$TOOL.zip "linux/x86-64/$BIN" > "$TOOLS_DIR/$TOOL"
+  chmod +x "$TOOLS_DIR/$TOOL"
+  rm /tmp/$TOOL.zip
+done
+
+echo "WPILib tools installed to $TOOLS_DIR"
+
+# Write tools.json so GradleRIO's ToolInstallTask sees the tools as already installed.
+# Without this, getExistingToolVersion() returns an empty Optional even when the binaries
+# exist, causing the task to call extractAndInstall() which then crashes trying to load
+# processstarter via getResourceAsStream() — a resource that never resolves in this env.
+# tools.json is a JSON array of ToolConfig objects (Gson parses it as ToolConfig[]).
+# Each entry needs "name" (matched against tool name) and "version" (compared to artifact version).
+cat > "$TOOLS_DIR/tools.json" << EOF
+[
+  {"name": "SmartDashboard", "version": "$WPILIB_VER"},
+  {"name": "ShuffleBoard",   "version": "$WPILIB_VER"},
+  {"name": "PathWeaver",     "version": "$WPILIB_VER"},
+  {"name": "RobotBuilder",   "version": "$WPILIB_VER"}
+]
+EOF
+
 # Pre-populate the Gradle cache with WPILib and vendor JARs.
 # Without this, the Java Language Server has no classpath and IntelliSense shows nothing.
 chmod +x gradlew
