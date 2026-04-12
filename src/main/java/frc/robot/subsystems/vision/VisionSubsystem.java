@@ -378,7 +378,7 @@ public class VisionSubsystem extends SubsystemBase {
       latencyAlert =
           new Alert("'" + name + "' Camera is experiencing high latency.", AlertType.kWarning);
 
-      camera = new PhotonCamera(new NetworkTableInstance(name), name);
+      camera = new PhotonCamera(NetworkTableInstance.getDefault(), name);
 
       // https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html
       robotToCamTransform = new Transform3d(robotToCamTranslation, robotToCamRotation);

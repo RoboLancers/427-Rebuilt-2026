@@ -21,6 +21,10 @@
     "--shm-size=2g",
     "-e", "DISPLAY=:1"
   ],
+  "mounts": [
+		"source=/home/carl/.claude,target=/home/vscode/.claude,type=bind,consistency=cached",
+		"source=/home/carl/.claude.json,target=/home/vscode/.claude.json,type=bind,consistency=cached"
+	],
   "forwardPorts": [6080, 5901],
   "customizations": {
     "vscode": {
