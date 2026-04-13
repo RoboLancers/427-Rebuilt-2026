@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "TOP_DEPOT_0"
+            "pathName": "BOT_POS_0_R"
           }
         },
         {
@@ -23,7 +23,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_DEPOT_POS_1"
+                  "pathName": "BOT_RED_DEPOT"
                 }
               },
               {
@@ -42,7 +42,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Depot to Shoot"
+                  "pathName": "Depot to Shoot Red"
                 }
               },
               {
@@ -61,7 +61,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Shoot to Depot"
+                  "pathName": "Shoot to Depot Red"
                 }
               },
               {
@@ -80,7 +80,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Depot Back"
+                  "pathName": "Depot Back Red"
                 }
               },
               {
@@ -95,7 +95,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Depot to Shoot"
+            "pathName": "Depot to Shoot Red"
           }
         },
         {

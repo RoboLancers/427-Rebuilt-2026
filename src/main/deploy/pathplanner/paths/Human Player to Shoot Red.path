@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6,
-        "y": 4.0
+        "x": 16.1,
+        "y": 7.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.35,
-        "y": 4.0
+        "x": 15.8601321477559,
+        "y": 7.329548502785236
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "CenterToHumanPlayerRedEnd"
     },
     {
       "anchor": {
-        "x": 1.6,
-        "y": 4.0
+        "x": 13.393708987161197,
+        "y": 6.810342368045649
       },
       "prevControl": {
-        "x": 1.85,
-        "y": 4.0
+        "x": 13.627409319706102,
+        "y": 6.899135129960129
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "CENTER_TURN_END"
+      "linkedName": "TOP_SHOOT_POS_RED"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -1.3195831533878577
+    "rotation": -121.29665273161473
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 14.17002853067047,
-        "y": 1.182025677603425
+        "x": 13.497218259629099,
+        "y": 1.1949643366619125
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.41586305278174,
-        "y": 1.2984736091298146
+        "x": 13.743052781740369,
+        "y": 1.311412268188302
       },
       "isLocked": false,
       "linkedName": "BOT_SHOOTING_POS_RED"
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 179.3874704768616
   },
   "reversed": false,
   "folder": null,

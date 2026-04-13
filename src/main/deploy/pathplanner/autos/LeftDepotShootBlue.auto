@@ -5,22 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "deadline",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "CenterTurn"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "SHOOT_FAR"
-                }
-              }
-            ]
+            "pathName": "TOP_DEPOT_0"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SHOOT_FAR"
           }
         },
         {
@@ -30,7 +23,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Center to Depot"
+                  "pathName": "TOP_BLUE_DEPOT"
                 }
               },
               {
@@ -43,9 +36,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "END_INTAKE"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Depot to Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "END_INTAKE"
+                }
+              }
+            ]
           }
         },
         {
@@ -55,7 +61,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Depot Back"
+                  "pathName": "Shoot to Depot"
                 }
               },
               {
@@ -68,15 +74,28 @@
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "END_INTAKE"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Depot Back Blue"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "END_INTAKE"
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Depot to Center Shoot"
+            "pathName": "Depot to Shoot"
           }
         },
         {

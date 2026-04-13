@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 14.17002853067047,
-        "y": 1.182025677603425
+        "x": 13.497218259629099,
+        "y": 1.1949643366619125
       },
       "prevControl": {
-        "x": 14.410908008076017,
-        "y": 1.2489366435569238
+        "x": 13.738097737034646,
+        "y": 1.2618753026154113
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 179.3874704768616
   },
   "useDefaultConstraints": true
 }
