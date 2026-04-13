@@ -23,7 +23,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_DEPOT_POS_3"
+                  "pathName": "LEFT_SHOOT_TO_SWEEP_BLUE"
                 }
               },
               {
@@ -42,7 +42,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TOP_DEPOT_POS_4"
+                  "pathName": "LEFT_SWEEP_BACK_B"
                 }
               },
               {

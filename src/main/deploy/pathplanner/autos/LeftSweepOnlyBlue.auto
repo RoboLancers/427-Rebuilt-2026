@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "TOP_DEPOT_POS_3_NO_SHOOT"
+            "pathName": "LEFT_SWEEP_ONLY_B"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "TOP_DEPOT_POS_4"
+            "pathName": "LEFT_SWEEP_BACK_B"
           }
         }
       ]
