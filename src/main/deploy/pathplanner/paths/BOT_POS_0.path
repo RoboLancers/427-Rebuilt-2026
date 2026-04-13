@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.161280089808136,
-        "y": 0.9929820481823397
+        "x": 3.430941512125534,
+        "y": 0.9879457917261072
       },
       "isLocked": false,
       "linkedName": "BOT_STARTING_POS"
     },
     {
       "anchor": {
-        "x": 2.9522111269614832,
-        "y": 1.4278601997146938
+        "x": 3.1851069900142646,
+        "y": 1.4019828815977178
       },
       "prevControl": {
-        "x": 3.366248216833095,
-        "y": 1.0267617689015696
+        "x": 3.2835868146590577,
+        "y": 1.1721966240932038
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 57.74528947313284
+    "rotation": -130.15599962491927
   },
   "reversed": false,
   "folder": null,

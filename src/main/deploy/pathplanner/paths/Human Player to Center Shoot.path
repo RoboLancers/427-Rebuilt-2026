@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9162339515000717,
-        "y": 0.6774179743276942
+        "x": 1.728762446657183,
+        "y": 0.6353627311522052
       },
       "isLocked": false,
       "linkedName": "HUMANPLAYER_END"
@@ -30,8 +30,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.6,
-      "rotationDegrees": 0.0
+      "waypointRelativePos": 0.688409197559828,
+      "rotationDegrees": -178.50478239338062
     }
   ],
   "constraintZones": [],
@@ -47,13 +47,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -1.3195831533878577
+    "rotation": -179.58546716512458
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -1.5035234475891615e-10
   },
   "useDefaultConstraints": true
 }
