@@ -20,8 +20,8 @@
         "y": 1.4019828815977178
       },
       "prevControl": {
-        "x": 3.5991440798858765,
-        "y": 1.0008844507845938
+        "x": 3.392125534950071,
+        "y": 1.1043937232524967
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": -130.15599962491927
   },
   "reversed": false,
-  "folder": null,
+  "folder": "STARTING POS",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

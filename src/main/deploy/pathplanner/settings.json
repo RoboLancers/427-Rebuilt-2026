@@ -3,9 +3,15 @@
   "robotLength": 0.8001,
   "holonomicMode": true,
   "pathFolders": [
-    "New Folder"
+    "HUMAN PLAYER B",
+    "HUMAN PLAYER R",
+    "STARTING POS",
+    "SWEEPONLY"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "BLUE",
+    "RED"
+  ],
   "defaultMaxVel": 5.05,
   "defaultMaxAccel": 4.26,
   "defaultMaxAngVel": 540.0,

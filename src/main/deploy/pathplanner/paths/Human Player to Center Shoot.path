@@ -50,7 +50,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "HUMAN PLAYER B",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -1.5035234475891615e-10

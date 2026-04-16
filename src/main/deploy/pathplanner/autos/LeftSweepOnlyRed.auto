@@ -7,7 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RIGHT_SWEEP_ONLY_R"
+            "pathName": "LEFT_SWEEP_ONLY_R"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LEFT_SWEEP_BACK_R"
           }
         }
       ]

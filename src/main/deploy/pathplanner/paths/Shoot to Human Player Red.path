@@ -50,7 +50,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "HUMAN PLAYER R",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 55.543246394686314

@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6608777777777783,
-        "y": 0.702399999999999
+        "x": 12.95379457917261,
+        "y": 0.6386019971469341
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.909491194537868,
-        "y": 0.6761061032390787
+        "x": 13.574850213980028,
+        "y": 0.6256633380884462
       },
       "isLocked": false,
-      "linkedName": "BOT_STARTING_POS"
+      "linkedName": "BOT_STARTING_POS_RED"
     },
     {
       "anchor": {
-        "x": 7.636611111111112,
-        "y": 0.858311111111111
+        "x": 8.282938659058486,
+        "y": 0.7938659058487882
       },
       "prevControl": {
-        "x": 6.505030603318286,
-        "y": 0.5981776610437939
+        "x": 8.308815977175463,
+        "y": 0.522154065620541
       },
       "nextControl": {
-        "x": 8.762274449199559,
-        "y": 1.1170842922808697
+        "x": 8.255839914556349,
+        "y": 1.078402723121214
       },
       "isLocked": false,
       "linkedName": null
@@ -33,25 +33,25 @@
     {
       "anchor": {
         "x": 8.282938659058486,
-        "y": 3.8085734664764628
+        "y": 3.666248216833096
       },
       "prevControl": {
-        "x": 8.218245363766048,
-        "y": 2.501768901569187
+        "x": 8.267344087519692,
+        "y": 3.9157613614538183
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "BOT_POS_1-2"
+      "linkedName": "BOT_OBSTACLE_POS"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.5383104125736714,
+      "waypointRelativePos": 0.44206008583690726,
       "rotationDegrees": 180.0
     },
     {
-      "waypointRelativePos": 1.2503904216553945,
-      "rotationDegrees": -90.0
+      "waypointRelativePos": 0.9,
+      "rotationDegrees": -90.07629260406185
     }
   ],
   "constraintZones": [],
@@ -67,13 +67,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": -91.5481576989782
   },
   "reversed": false,
-  "folder": null,
+  "folder": "SWEEPONLY",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -179.24615166692922
   },
   "useDefaultConstraints": true
 }

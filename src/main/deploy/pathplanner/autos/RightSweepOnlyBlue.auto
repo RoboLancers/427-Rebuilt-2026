@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BOT_POS_1_NO_SHOOT"
+            "pathName": "BOT_SWEEP_BLUE"
           }
         },
         {
@@ -20,6 +20,6 @@
     }
   },
   "resetOdom": false,
-  "folder": null,
+  "folder": "BLUE",
   "choreoAuto": false
 }

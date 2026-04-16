@@ -89,6 +89,6 @@
     }
   },
   "resetOdom": false,
-  "folder": null,
+  "folder": "BLUE",
   "choreoAuto": false
 }
