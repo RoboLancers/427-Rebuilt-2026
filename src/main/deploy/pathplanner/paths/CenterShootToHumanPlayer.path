@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6,
+        "x": 1.5936519258202564,
         "y": 4.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.03693877550807523,
-        "y": 1.5536920222579167
+        "x": 1.5936519258202564,
+        "y": 3.75
       },
       "isLocked": false,
-      "linkedName": "CENTER_STARTING_POS_BLUE"
+      "linkedName": "CENTER_TURN_END"
     },
     {
       "anchor": {
@@ -20,16 +20,35 @@
         "y": 0.6644793152639579
       },
       "prevControl": {
-        "x": 0.4201667688745055,
-        "y": 0.9126956640848904
+        "x": 1.7933004596609885,
+        "y": 1.1084724520473743
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "HUMANPLAYER_END"
     }
   ],
-  "rotationTargets": [],
-  "constraintZones": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.41151385927505285,
+      "rotationDegrees": 180.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.8912630579297255,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -48,7 +67,7 @@
   "folder": "HUMAN PLAYER B",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

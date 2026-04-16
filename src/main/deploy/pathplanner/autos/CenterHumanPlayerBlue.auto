@@ -7,19 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CenterTurn"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "SHOOT_FAR"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "CenterShootToHumanPlayer"
+            "pathName": "CentertoHumanPlayer"
           }
         },
         {
