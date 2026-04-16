@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BOT_SWEEP_BLUE"
+            "pathName": "RIGHT_SWEEP_ONLY_R"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LOCK_WHEELS"
           }
         }
       ]
     }
   },
   "resetOdom": false,
-  "folder": "BLUE",
+  "folder": "RED",
   "choreoAuto": false
 }

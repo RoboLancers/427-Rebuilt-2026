@@ -165,6 +165,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("OUTTAKE_2", Eject().withTimeout(3));
     NamedCommands.registerCommand("END_INTAKE", Stop());
     NamedCommands.registerCommand("WAIT", new WaitCommand(2.5));
+    NamedCommands.registerCommand("LOCK_WHEELS", Commands.runOnce(drivebase::lock, drivebase).repeatedly());
     NamedCommands.registerCommand(
         "DEPLOY", Commands.none()); // timedCommand(m_ClimbSubsystem.setDeployAngle(), 1));
     // NamedCommands.registerCommand("CLIMB", );
