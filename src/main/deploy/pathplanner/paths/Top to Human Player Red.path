@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.3015549215406566,
-        "y": 1.337289586305278
+        "x": 12.932910256410258,
+        "y": 7.418807692307692
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.090519847076708,
-        "y": 1.2032590026834955
+        "x": 13.182909035352694,
+        "y": 7.418026329849323
       },
       "isLocked": false,
-      "linkedName": "BOT_POS_0-1"
+      "linkedName": "TOP_STARTING_POS_RED"
     },
     {
       "anchor": {
-        "x": 0.4291726105563479,
-        "y": 0.6774179743223976
+        "x": 16.120124444449186,
+        "y": 7.391961111113135
       },
       "prevControl": {
-        "x": 0.6879457917261055,
-        "y": 0.7809272467903008
+        "x": 15.166305278174036,
+        "y": 7.379643366619116
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "HUMANPLAYER_END"
+      "linkedName": "TOP_HUMANPLAYER"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.8232365145228229,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -42,13 +47,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -1.5035234475891615e-10
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "HUMAN PLAYER B",
+  "folder": "HUMAN PLAYER R",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -115.0
+    "rotation": -178.29018595585842
   },
   "useDefaultConstraints": true
 }
