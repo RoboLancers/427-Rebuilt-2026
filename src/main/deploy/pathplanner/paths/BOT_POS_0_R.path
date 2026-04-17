@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 13.574850213980028,
-        "y": 0.6386019971469341
+        "x": 13.43252496433666,
+        "y": 0.5997860199714706
       },
       "isLocked": false,
       "linkedName": "BOT_STARTING_POS_RED"
     },
     {
       "anchor": {
-        "x": 13.497218259629099,
-        "y": 1.1949643366619125
+        "x": 13.30313837375178,
+        "y": 1.2337803138373749
       },
       "prevControl": {
-        "x": 13.531707679966122,
-        "y": 0.9473548055755341
+        "x": 13.337627794088803,
+        "y": 0.9861707827509965
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "BOT_SHOOTING_POS_RED"
+      "linkedName": "BOT_SHOOT_POS_RED"
     }
   ],
   "rotationTargets": [],

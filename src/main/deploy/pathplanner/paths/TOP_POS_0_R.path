@@ -64,7 +64,7 @@
     "rotation": 60.543000000000006
   },
   "reversed": false,
-  "folder": null,
+  "folder": "STARTING POS",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -178.29018595585842

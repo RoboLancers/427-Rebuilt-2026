@@ -12,7 +12,7 @@
         "y": 0.6453516060302087
       },
       "isLocked": false,
-      "linkedName": "BOT_STARTING_POS"
+      "linkedName": "BOT_STARTING_POS_BLUE"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "HUMANPLAYER_END"
+      "linkedName": "HUMANPLAYER_BLUE"
     }
   ],
   "rotationTargets": [],

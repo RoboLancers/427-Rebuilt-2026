@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BOT_SWEEP_BLUE"
+            "pathName": "RIGHT_SWEEP_ONLY_B"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "BOT_POS_2"
+            "pathName": "RIGHT_SWEEP_BACK_B"
           }
         }
       ]

@@ -3,8 +3,10 @@
   "robotLength": 0.8001,
   "holonomicMode": true,
   "pathFolders": [
+    "DEPOT B",
     "HUMAN PLAYER B",
     "HUMAN PLAYER R",
+    "DEPOT R",
     "STARTING POS",
     "SWEEPONLY"
   ],

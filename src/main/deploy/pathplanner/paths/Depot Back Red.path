@@ -9,7 +9,7 @@
       "prevControl": null,
       "nextControl": {
         "x": 16.326384488296494,
-        "y": 2.202108573143662
+        "y": 2.2021085731436623
       },
       "isLocked": false,
       "linkedName": "DEPOT_RED"
@@ -59,7 +59,7 @@
     "rotation": 179.3874704768616
   },
   "reversed": false,
-  "folder": null,
+  "folder": "DEPOT R",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 179.3874704768616

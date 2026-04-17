@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 13.497218259629099,
-        "y": 1.1949643366619125
+        "x": 13.30313837375178,
+        "y": 1.2337803138373749
       },
       "prevControl": {
-        "x": 13.738097737034646,
-        "y": 1.2618753026154113
+        "x": 13.544017851157328,
+        "y": 1.3006912797908736
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "BOT_SHOOTING_POS_RED"
+      "linkedName": "BOT_SHOOT_POS_RED"
     }
   ],
   "rotationTargets": [],
@@ -45,7 +45,7 @@
     "rotation": -60.388999999999996
   },
   "reversed": false,
-  "folder": null,
+  "folder": "DEPOT R",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 179.3874704768616

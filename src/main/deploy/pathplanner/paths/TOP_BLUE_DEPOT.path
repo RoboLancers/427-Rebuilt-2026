@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.3274322396576315,
-        "y": 6.745649072753209
+        "x": 3.2886162624821687,
+        "y": 6.823281027104137
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.66756062767475,
-        "y": 6.202225392296719
+        "x": 2.628744650499287,
+        "y": 6.279857346647647
       },
       "isLocked": false,
-      "linkedName": "TOP_POS_0-1"
+      "linkedName": "TOP_SHOOT_POS_BLUE"
     },
     {
       "anchor": {
@@ -59,7 +59,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "DEPOT B",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 115.0

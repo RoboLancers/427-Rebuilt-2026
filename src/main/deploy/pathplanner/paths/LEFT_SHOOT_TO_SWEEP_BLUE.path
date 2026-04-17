@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.3274322396576315,
-        "y": 6.745649072753209
+        "x": 3.2886162624821687,
+        "y": 6.823281027104137
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.8967332382310973,
-        "y": 7.353766048502139
+        "x": 3.8579172610556345,
+        "y": 7.431398002853068
       },
       "isLocked": false,
-      "linkedName": "TOP_POS_0-1"
+      "linkedName": "TOP_SHOOT_POS_BLUE"
     },
     {
       "anchor": {
@@ -57,7 +57,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "TOP_DEPOT_3-4"
+      "linkedName": "TOP_OBSTACLE_POS"
     }
   ],
   "rotationTargets": [
