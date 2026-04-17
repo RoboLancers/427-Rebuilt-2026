@@ -9,6 +9,12 @@
           "data": {
             "pathName": "LEFT_SWEEP_ONLY_R"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LOCK_WHEELS"
+          }
         }
       ]
     }
