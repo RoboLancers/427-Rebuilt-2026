@@ -105,11 +105,11 @@ public class RobotContainer {
       driveAngularVelocity =
           SwerveInputStream.of(
                   drivebase.getSwerveDrive(),
-                  () -> m_driverController.getLeftY(),
-                  () -> m_driverController.getLeftX())
-              .withControllerRotationAxis(() -> m_driverController.getRightX())
+                  () -> -m_driverController.getLeftY(),
+                  () -> -m_driverController.getLeftX())
+              .withControllerRotationAxis(() -> -m_driverController.getRightX())
               .deadband(DEADBAND)
-              .scaleTranslation(0.8)
+              .scaleTranslation(1)
               .allianceRelativeControl(true);
 
       aimWhileDriving =
@@ -160,11 +160,13 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "SHOOT", SpinUpClose().withTimeout(1).andThen(Shoot()).withTimeout(3));
     NamedCommands.registerCommand("SHOOT_FAR", shootAuto());
+    NamedCommands.registerCommand("SHOOT_ONLY", shootAutoOnly());
     NamedCommands.registerCommand("INTAKE", Intake());
     NamedCommands.registerCommand("OUTTAKE", Eject());
     NamedCommands.registerCommand("OUTTAKE_2", Eject().withTimeout(3));
     NamedCommands.registerCommand("END_INTAKE", Stop());
     NamedCommands.registerCommand("WAIT", new WaitCommand(2.5));
+    NamedCommands.registerCommand("LOCK_WHEELS", Commands.runOnce(drivebase::lock, drivebase).repeatedly());
     NamedCommands.registerCommand(
         "DEPLOY", Commands.none()); // timedCommand(m_ClimbSubsystem.setDeployAngle(), 1));
     // NamedCommands.registerCommand("CLIMB", );
@@ -250,8 +252,9 @@ public class RobotContainer {
     return SpinUpFar().alongWith(Commands.waitSeconds(1).andThen((Shoot()))).withTimeout(4);
   }
 
-  public Command shootAuto2() {
-    return Shoot();
+  public Command shootAutoOnly() {
+    //return Shoot();
+    return SpinUpFar().alongWith(Commands.waitSeconds(1).andThen((Shoot())));
   }
 
   /**

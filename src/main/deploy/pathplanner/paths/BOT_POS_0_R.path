@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 12.95379457917261,
+        "y": 0.6386019971469341
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 13.43252496433666,
+        "y": 0.5997860199714706
+      },
+      "isLocked": false,
+      "linkedName": "BOT_STARTING_POS_RED"
+    },
+    {
+      "anchor": {
+        "x": 13.30313837375178,
+        "y": 1.2337803138373749
+      },
+      "prevControl": {
+        "x": 13.337627794088803,
+        "y": 0.9861707827509965
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "BOT_SHOOT_POS_RED"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.05,
+    "maxAcceleration": 4.26,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -60.388999999999996
+  },
+  "reversed": false,
+  "folder": "STARTING POS",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -179.24615166692922
+  },
+  "useDefaultConstraints": true
+}

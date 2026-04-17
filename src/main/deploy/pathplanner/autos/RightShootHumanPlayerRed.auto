@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "TOP_POS_0_R"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SHOOT_FAR"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Shoot to Human Player Red"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Human Player to Shoot Red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SHOOT_FAR"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": false,
+  "folder": "RED",
+  "choreoAuto": false
+}

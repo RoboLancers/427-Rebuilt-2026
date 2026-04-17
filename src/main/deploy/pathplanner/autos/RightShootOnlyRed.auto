@@ -1,0 +1,25 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "TOP_POS_0_R"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SHOOT_ONLY"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": false,
+  "folder": "RED",
+  "choreoAuto": false
+}

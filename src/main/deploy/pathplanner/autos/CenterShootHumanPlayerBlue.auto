@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CEN_TURN_B"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SHOOT_FAR"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterShootToHumanPlayer"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Human Player to Center Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SHOOT_FAR"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": false,
+  "folder": "BLUE",
+  "choreoAuto": false
+}

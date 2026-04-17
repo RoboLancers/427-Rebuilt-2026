@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.4162339515000718,
-        "y": 0.6774179743276942
+        "x": 0.4291726105563479,
+        "y": 0.6774179743223976
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7607111111111111,
-        "y": 0.08849999999999913
+        "x": 1.7417011057134597,
+        "y": 0.6353627311469086
       },
       "isLocked": false,
       "linkedName": "HUMANPLAYER_END"
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 1.5936519258202564,
-        "y": 4.013144578313253
+        "y": 4.0
       },
       "prevControl": {
-        "x": 1.5073555555555558,
-        "y": 3.7426666666666666
+        "x": 1.5936519258202564,
+        "y": 3.7160891615144624
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,8 +30,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.6212180746561884,
-      "rotationDegrees": 180.0
+      "waypointRelativePos": 0.688409197559828,
+      "rotationDegrees": -178.50478239338062
     }
   ],
   "constraintZones": [],
@@ -47,13 +47,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "HUMAN PLAYER B",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -1.5035234475891615e-10
   },
   "useDefaultConstraints": true
 }

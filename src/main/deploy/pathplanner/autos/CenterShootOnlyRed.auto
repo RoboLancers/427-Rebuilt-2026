@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RED_POS_0"
+            "pathName": "CEN_TURN_R"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "SHOOT_FAR"
+            "name": "SHOOT_ONLY"
           }
         }
       ]
     }
   },
   "resetOdom": false,
-  "folder": null,
+  "folder": "RED",
   "choreoAuto": false
 }

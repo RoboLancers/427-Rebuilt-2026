@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CenterTurn"
+            "pathName": "CEN_TURN_B"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "SHOOT_FAR"
+            "name": "SHOOT_ONLY"
           }
         }
       ]
     }
   },
   "resetOdom": false,
-  "folder": null,
+  "folder": "BLUE",
   "choreoAuto": false
 }

@@ -1,0 +1,25 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LEFT_SWEEP_ONLY_R"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LEFT_SWEEP_BACK_R"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": false,
+  "folder": "RED",
+  "choreoAuto": false
+}

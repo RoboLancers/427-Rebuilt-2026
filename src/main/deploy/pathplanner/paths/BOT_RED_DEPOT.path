@@ -1,0 +1,59 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 13.30313837375178,
+        "y": 1.2337803138373749
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 13.53280900301157,
+        "y": 2.154160421619906
+      },
+      "isLocked": false,
+      "linkedName": "BOT_SHOOT_POS_RED"
+    },
+    {
+      "anchor": {
+        "x": 16.09788873038126,
+        "y": 2.1006704707622452
+      },
+      "prevControl": {
+        "x": 14.428488888888888,
+        "y": 2.0276444444444452
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "DEPOT_RED"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.7568464730290463,
+      "rotationDegrees": 180.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.05,
+    "maxAcceleration": 4.26,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 179.3874704768616
+  },
+  "reversed": false,
+  "folder": "DEPOT R",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -60.388999999999996
+  },
+  "useDefaultConstraints": true
+}

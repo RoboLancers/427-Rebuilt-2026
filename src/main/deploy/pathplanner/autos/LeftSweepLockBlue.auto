@@ -1,0 +1,25 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LEFT_SWEEP_ONLY_B"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LOCK_WHEELS"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": false,
+  "folder": "BLUE",
+  "choreoAuto": false
+}

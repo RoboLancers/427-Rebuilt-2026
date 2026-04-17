@@ -1,0 +1,113 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BOT_POS_0_R"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SHOOT_FAR"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "BOT_RED_DEPOT"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "INTAKE"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Depot to Shoot Red"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "END_INTAKE"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Shoot to Depot Red"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "INTAKE"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Depot Back Red"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "END_INTAKE"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Depot to Shoot Red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SHOOT_FAR"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": false,
+  "folder": "RED",
+  "choreoAuto": false
+}

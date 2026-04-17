@@ -1,0 +1,94 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CEN_TURN_B"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "SHOOT_FAR"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center to Depot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "INTAKE"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "END_INTAKE"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Depot Back Blue"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "INTAKE"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "END_INTAKE"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Depot to Center Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SHOOT_FAR"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": false,
+  "folder": "BLUE",
+  "choreoAuto": false
+}

@@ -1,0 +1,63 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "TOP_POS_0"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SHOOT_FAR"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LEFT_SHOOT_TO_SWEEP_BLUE"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "INTAKE"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LEFT_SWEEP_BACK_B"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "END_INTAKE"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": false,
+  "folder": "BLUE",
+  "choreoAuto": false
+}
