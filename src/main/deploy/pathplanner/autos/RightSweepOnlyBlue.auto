@@ -9,6 +9,12 @@
           "data": {
             "pathName": "BOT_SWEEP_BLUE"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BOT_POS_2"
+          }
         }
       ]
     }
