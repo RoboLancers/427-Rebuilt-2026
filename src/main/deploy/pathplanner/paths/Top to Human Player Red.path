@@ -53,7 +53,7 @@
   "folder": "HUMAN PLAYER R",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -178.29018595585842
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
