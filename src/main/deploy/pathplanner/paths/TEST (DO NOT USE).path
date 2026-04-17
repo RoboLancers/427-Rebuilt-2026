@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6608777777777783,
-        "y": 0.702399999999999
+        "x": 16.1,
+        "y": 7.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.6608777777777775,
-        "y": 0.702399999999999
+        "x": 17.1,
+        "y": 7.4
       },
       "isLocked": false,
-      "linkedName": "BOT_STARTING_POS_BLUE"
+      "linkedName": "CenterToHumanPlayerRedEnd"
     },
     {
       "anchor": {
@@ -45,7 +45,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "SWEEPONLY",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

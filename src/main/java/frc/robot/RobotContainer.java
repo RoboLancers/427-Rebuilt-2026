@@ -160,6 +160,7 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "SHOOT", SpinUpClose().withTimeout(1).andThen(Shoot()).withTimeout(3));
     NamedCommands.registerCommand("SHOOT_FAR", shootAuto());
+    NamedCommands.registerCommand("SHOOT_ONLY", shootAutoOnly());
     NamedCommands.registerCommand("INTAKE", Intake());
     NamedCommands.registerCommand("OUTTAKE", Eject());
     NamedCommands.registerCommand("OUTTAKE_2", Eject().withTimeout(3));
@@ -251,8 +252,9 @@ public class RobotContainer {
     return SpinUpFar().alongWith(Commands.waitSeconds(1).andThen((Shoot()))).withTimeout(4);
   }
 
-  public Command shootAuto2() {
-    return Shoot();
+  public Command shootAutoOnly() {
+    //return Shoot();
+    return SpinUpFar().alongWith(Commands.waitSeconds(1).andThen((Shoot())));
   }
 
   /**

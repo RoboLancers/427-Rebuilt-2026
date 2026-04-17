@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.352010893043391,
-        "y": 3.9683550504683054
+        "x": 3.352010895093166,
+        "y": 3.968355034405024
       },
       "isLocked": false,
       "linkedName": "CENTER_STARTING_POS_BLUE"
@@ -41,7 +41,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 180.0
   },
   "reversed": false,
