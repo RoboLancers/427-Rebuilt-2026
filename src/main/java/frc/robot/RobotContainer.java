@@ -53,6 +53,8 @@ public class RobotContainer {
 
   boolean isCompetition = true;
 
+  boolean isSlowMode = false;
+
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(kDriverControllerPort);
@@ -105,9 +107,9 @@ public class RobotContainer {
       driveAngularVelocity =
           SwerveInputStream.of(
                   drivebase.getSwerveDrive(),
-                  () -> m_driverController.getLeftY(),
-                  () -> m_driverController.getLeftX())
-              .withControllerRotationAxis(() -> m_driverController.getRightX())
+                  () -> m_driverController.getLeftY() * (isSlowMode ? Constants.DriveConstants.SLOW_SPEED : 1.0),
+                  () -> m_driverController.getLeftX() * (isSlowMode ? Constants.DriveConstants.SLOW_SPEED : 1.0))
+              .withControllerRotationAxis(() -> m_driverController.getRightX() * (isSlowMode ? Constants.DriveConstants.SLOW_ANGULAR_SPEED : 1.0))
               .deadband(DEADBAND)
               .scaleTranslation(0.8)
               .allianceRelativeControl(true);
@@ -269,7 +271,7 @@ public class RobotContainer {
     m_driverController.rightTrigger().whileTrue(SpinUpFar());
     m_driverController.leftTrigger().whileTrue(Eject());
     m_driverController.y().whileTrue(Shoot());
-    m_driverController.x().whileTrue(Stop());
+    m_driverController.x().onTrue(Commands.runOnce(() -> isSlowMode = !isSlowMode));
     if (!Constants.OperatorConstants.IsSwerve) {
       driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController));
     }

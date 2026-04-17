@@ -33,6 +33,8 @@ public final class Constants {
     public static final double MAX_SPEED = Units.feetToMeters(16.6); // 5.06 m
     public static final double MAX_ANGULAR_SPEED =
         Units.feetToMeters(14); // 4.27 m/s tangential speed at 1 rad/s
+    public static final double SLOW_SPEED = 0.5;
+    public static final double SLOW_ANGULAR_SPEED = 0.5;
 
     public static final double TANK_SPEED_MULTIPLYER = 0.1;
     public static final double TANK__TURNING_SPEED_MULTIPLYER = 0.1;
