@@ -200,7 +200,7 @@ public final class Constants {
     public static final int controllerAmagnitude = 60;
     public static final int controllerBmagnitude = 300;
 
-    public static final double ks = 1;
+    public static final double ks = 1.5;
     public static final double kv = 0.1;
     public static final double ka = 0.1;
     public static final int reductionStages = 1; // on swerve bot 1/3
