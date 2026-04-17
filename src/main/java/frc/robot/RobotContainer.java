@@ -109,7 +109,7 @@ public class RobotContainer {
                   () -> -m_driverController.getLeftX())
               .withControllerRotationAxis(() -> -m_driverController.getRightX())
               .deadband(DEADBAND)
-              .scaleTranslation(0.8)
+              .scaleTranslation(1)
               .allianceRelativeControl(true);
 
       aimWhileDriving =
