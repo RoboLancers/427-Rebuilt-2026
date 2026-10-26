@@ -1,28 +1,63 @@
 {
   "name": "WPILib Robot Development",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
-  "postCreateCommand": "cd /home/vscode && wget 'https://github.com/wpilibsuite/vscode-wpilib/releases/download/v2025.2.1/vscode-wpilib-2025.2.1.vsix' && git config core.hooksPath .githooks",
+  "build": { "dockerfile": "Dockerfile" },
+  // Both run at the same time, so a WPILib setup failure can't skip the plugin install.
+  "postCreateCommand": {
+    "wpilib": "bash .devcontainer/post-create.sh",
+    "frc-mentor": "bash .devcontainer/install-frc-mentor.sh"
+  },
+  "postAttachCommand": "bash .devcontainer/post-attach.sh",
   "features": {
     "ghcr.io/devcontainers/features/java:1": {
-      "version": "17",
+      "version": "21",
       "installGradle": "true",
       "installMaven": "true"
     },
-    "desktop-lite": {
-      "password": "vscode",
-      "webPort": "6080",
-      "vncPort": "5901"
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    },
+    "ghcr.io/devcontainers/features/desktop-lite:1": {
+      "password": "vscode"
     }
   },
-  "runArgs": ["--shm-size=1g"],
+  "containerEnv": {
+    "CLAUDE_CODE_PLUGIN_PREFER_HTTPS": "1"
+  },
+  "remoteEnv": {
+    "DISPLAY": ":1",
+    "WPILIB_SIMULATION": "true"
+  },
+  "runArgs": [
+    "--shm-size=2g",
+    "-e", "DISPLAY=:1"
+  ],
+  
   "forwardPorts": [6080, 5901],
   "customizations": {
     "vscode": {
       "extensions": [
-        "/home/vscode/vscode-wpilib-2025.2.1.vsix",
         "vscjava.vscode-java-pack",
-        "vscjava.vscode-gradle"
-      ]
+        "vscjava.vscode-gradle",
+        "anthropic.claude-code",
+        // Copilot off: "-" stops Codespaces/VS Code from auto-installing these.
+        "-GitHub.copilot",
+        "-GitHub.copilot-chat"
+      ],
+      "settings": {
+        // Turns off VS Code's built-in AI (Copilot chat, inline suggestions) in case
+        // Copilot ships built in. Claude Code is a separate extension and stays on.
+        "chat.disableAIFeatures": true,
+        "github.copilot.enable": { "*": false }
+      }
+    }
+  },
+  // frc-mentor is in another organization, so Codespaces can't grant this Codespace
+  // access to it. install-frc-mentor.sh uses this secret instead (see the notes there).
+  // Codespaces lists it on the "New with options" page so people know to set it.
+  "secrets": {
+    "FRC_MENTOR_TOKEN": {
+      "description": "Fine-grained GitHub token with read-only Contents access to RoboLancers/frc-mentor, used to install the FRC Mentor plugin."
     }
   }
 }

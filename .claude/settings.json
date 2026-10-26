@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "frc-mentor": {
+      "source": {
+        "source": "github",
+        "repo": "RoboLancers/frc-mentor"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "frc-mentor@frc-mentor": true
+  }
+}
