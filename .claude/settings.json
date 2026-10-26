@@ -3,11 +3,12 @@
     "frc-mentor": {
       "source": {
         "source": "github",
-        "repo": "RoboLancers/frc-mentor"
+        "repo": "RoboLancers/frc-mentor",
+        "ref": "copilot-port"
       }
     }
   },
   "enabledPlugins": {
-    "frc-mentor@frc-mentor": false
+    "frc-mentor@frc-mentor": true
   }
 }

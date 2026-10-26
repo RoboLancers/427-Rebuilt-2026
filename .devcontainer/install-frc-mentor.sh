@@ -30,6 +30,12 @@ if ! "$CLAUDE" plugin marketplace list 2>/dev/null | grep -q "frc-mentor"; then
   fi
 fi
 "$CLAUDE" plugin install frc-mentor@frc-mentor --scope user
+
+# Managed settings override every other settings file, so a "false" in the repo's
+# .claude/settings.json (or a settings.local.json) can't turn the plugin off here.
+sudo mkdir -p /etc/claude-code
+echo '{ "enabledPlugins": { "frc-mentor@frc-mentor": true } }' \
+  | sudo tee /etc/claude-code/managed-settings.json > /dev/null
 echo "FRC Mentor plugin installed"
 
 # Ask for one window reload, so the Claude panel starts a fresh session with the
