@@ -8,6 +8,6 @@
     }
   },
   "enabledPlugins": {
-    "frc-mentor@frc-mentor": true
+    "frc-mentor@frc-mentor": false
   }
 }

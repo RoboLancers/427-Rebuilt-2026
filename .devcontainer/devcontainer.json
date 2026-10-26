@@ -50,14 +50,18 @@
         "chat.disableAIFeatures": true,
         "github.copilot.enable": { "*": false }
       }
-    }
-  },
-  // frc-mentor is in another organization, so Codespaces can't grant this Codespace
-  // access to it. install-frc-mentor.sh uses this secret instead (see the notes there).
-  // Codespaces lists it on the "New with options" page so people know to set it.
-  "secrets": {
-    "FRC_MENTOR_TOKEN": {
-      "description": "Fine-grained GitHub token with read-only Contents access to RoboLancers/frc-mentor, used to install the FRC Mentor plugin."
+    },
+    // A Codespace's token can only read its own repo by default. This asks for read
+    // access to frc-mentor (same org) so install-frc-mentor.sh can clone it.
+    // Codespaces asks you to authorize this when the Codespace is created.
+    "codespaces": {
+      "repositories": {
+        "RoboLancers/frc-mentor": {
+          "permissions": {
+            "contents": "read"
+          }
+        }
+      }
     }
   }
 }
